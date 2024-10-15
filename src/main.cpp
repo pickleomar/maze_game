@@ -1,41 +1,28 @@
-#include "Engine.h"
-#include "maze.h"
+#include "Map/map.cpp"
+#include "Map/map.h"
+#include <Engine.h>
 #include <iostream>
 #include <raylib.h>
 
+Texture2D walls;
+Texture2D floor_texture;
+
 int main() {
-  // Initialize window
-  InitWindow(0, 0, "Random Maze Generator - Recursive Backtracking");
+  Engine::Window window(1270, 720, "Maze Game");
 
-  Cell maze[WIDTH][HEIGHT];
+  walls = LoadTexture("../Resources/walls.png");
+  floor_texture = LoadTexture("../Resources/floor.png");
 
-  // Initialize the maze with coordinates
-  for (int x = 0; x < WIDTH; x++) {
-    for (int y = 0; y < HEIGHT; y++) {
-      maze[x][y].x = x;
-      maze[x][y].y = y;
-    }
-  }
-
-  // Seed the random generator with the current time
-  std::random_device rd;
-  std::mt19937 rng(rd());
-
-  // Generate the maze
-  GenerateMaze(maze, rng);
-
-  // Main loop
-  while (!WindowShouldClose()) {
+  while (!window.ShouldClose()) {
     BeginDrawing();
+
+    DrawTexture(walls, 0, 0, WHITE);
+
+    MapTile().DrawLeftWall(walls);
     ClearBackground(GRAY);
-
-    DrawFPS(10, 10);
-
-    DrawMaze(maze);
 
     EndDrawing();
   }
 
-  CloseWindow(); // Close the window
   return 0;
 }

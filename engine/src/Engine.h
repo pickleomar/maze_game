@@ -16,8 +16,6 @@ public:
 
   int getWindowHeight();
   int getWindowWidth();
-  void init(void);
-  void init(int fps);
   bool windowCloseConfirmation = false;
   bool ShouldClose(void);
   void SetConfigFlags(unsigned int flags);
@@ -29,15 +27,8 @@ private:
   string __win_title;
   int __win_width = 0;
   int __win_height = 0;
+
+  void init(void);
 };
 
-class Game {
-public:
-  Game();
-  ~Game();
-
-  virtual void onMount();
-  virtual void OnUpdate();
-  virtual void onDestroy();
-};
-} // namespace Engine
+}; // namespace Engine
