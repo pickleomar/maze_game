@@ -1,0 +1,43 @@
+#pragma once
+
+#include <string>
+using string = std::string;
+
+namespace Engine {
+
+class Window {
+public:
+  // Init window int height= 0 and width=0
+  Window(string window_title);
+  // Init window with all params
+  Window(int window_width, int window_height, string window_title);
+
+  ~Window();
+
+  int getWindowHeight();
+  int getWindowWidth();
+  void init(void);
+  void init(int fps);
+  bool windowCloseConfirmation = false;
+  bool ShouldClose(void);
+  void SetConfigFlags(unsigned int flags);
+  void SetExitKey(int key);
+  int windowHeight(void);
+  int windowWidth(void);
+
+private:
+  string __win_title;
+  int __win_width = 0;
+  int __win_height = 0;
+};
+
+class Game {
+public:
+  Game();
+  ~Game();
+
+  virtual void onMount();
+  virtual void OnUpdate();
+  virtual void onDestroy();
+};
+} // namespace Engine
