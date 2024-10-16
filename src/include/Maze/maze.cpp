@@ -1,5 +1,7 @@
 #include "maze.h"
+#include "Map/map.h"
 #include <algorithm>
+#include <raylib.h>
 #include <vector>
 
 // Offsets for moving in each direction
@@ -87,20 +89,23 @@ void GenerateMaze(Cell maze[WIDTH][HEIGHT], std::mt19937 &rng) {
 }
 
 // Function to draw the maze
-void DrawMaze(Cell maze[WIDTH][HEIGHT]) {
+void DrawMaze(Cell maze[WIDTH][HEIGHT], Texture2D wallsTexture) {
   for (int x = 0; x < WIDTH; x++) {
     for (int y = 0; y < HEIGHT; y++) {
-      int px = x * CELL_SIZE;
-      int py = y * CELL_SIZE;
+      int px = 50 + x * CELL_SIZE;
+      int py = 50 + y * CELL_SIZE;
 
       if (maze[x][y].walls[TOP])
         DrawLine(px, py, px + CELL_SIZE, py, BLACK); // Top wall
+
       if (maze[x][y].walls[RIGHT])
         DrawLine(px + CELL_SIZE, py, px + CELL_SIZE, py + CELL_SIZE,
                  BLACK); // Right wall
+
       if (maze[x][y].walls[BOTTOM])
         DrawLine(px, py + CELL_SIZE, px + CELL_SIZE, py + CELL_SIZE,
                  BLACK); // Bottom wall
+
       if (maze[x][y].walls[LEFT])
         DrawLine(px, py, px, py + CELL_SIZE, BLACK); // Left wall
     }

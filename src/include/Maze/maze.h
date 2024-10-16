@@ -7,9 +7,9 @@
 #include <stack>
 
 // Constants
-const int CELL_SIZE = 30;
-const int WIDTH = 40;  // Number of cells horizontally
-const int HEIGHT = 30; // Number of cells vertically
+const int CELL_SIZE = 64;
+const int WIDTH = 10;  // Number of cells horizontally
+const int HEIGHT = 10; // Number of cells vertically
 
 // Enum for movement directions
 enum Direction { TOP, RIGHT, BOTTOM, LEFT };
@@ -55,6 +55,6 @@ void GenerateMaze(Cell maze[WIDTH][HEIGHT], std::mt19937 &rng);
  * Draw the maze to the screen using Raylib.
  * @param maze - 2D array of cells to draw.
  */
-void DrawMaze(Cell maze[WIDTH][HEIGHT]);
+void DrawMaze(Cell maze[WIDTH][HEIGHT], Texture2D wallsTexture);
 
 #endif // MAZE_H

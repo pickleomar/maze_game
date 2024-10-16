@@ -15,6 +15,10 @@ add_subdirectory(engine)
 file(GLOB include_files
 					"src/include/*.h"
 					"src/include/*.cpp"
+					"src/include/Map/*.h"
+					"src/include/Map/*.cpp"
+					"src/include/Maze/*.h"
+					"src/include/Maze/*.cpp"
 )
 
 add_executable(game src/main.cpp ${include_files})
