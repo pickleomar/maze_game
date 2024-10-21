@@ -1,23 +1,14 @@
-#include "Map/map.h"
-#include <Engine.h>
-#include <iostream>
+#include "Game/Game.h"
+#include "Window/Window.h"
+
 #include <raylib.h>
 
-Texture2D walls_texture;
-Texture2D floor_texture;
-
 int main() {
-  Engine::Window window(1270, 720, "Maze Game");
-  walls_texture = LoadTexture("../Resources/walls.png");
-  floor_texture = LoadTexture("../Resources/floor.png");
+  Window window(1270, 720, "Hello World");
 
-  while (!window.ShouldClose()) {
-    BeginDrawing();
+  Game game(window);
+  game.Loop();
 
-    ClearBackground(GRAY);
-
-    EndDrawing();
-  }
-
+  CloseWindow();
   return 0;
 }

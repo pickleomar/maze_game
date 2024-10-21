@@ -3,16 +3,12 @@
 #include <string>
 using string = std::string;
 
-namespace Engine {
-
 class Window {
 public:
   // Init window int height= 0 and width=0
   Window(string window_title);
   // Init window with all params
   Window(int window_width, int window_height, string window_title);
-
-  ~Window();
 
   int getWindowHeight();
   int getWindowWidth();
@@ -30,5 +26,3 @@ private:
 
   void init(void);
 };
-
-}; // namespace Engine

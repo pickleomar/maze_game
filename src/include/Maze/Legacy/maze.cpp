@@ -1,5 +1,4 @@
 #include "maze.h"
-#include "Map/map.h"
 #include <algorithm>
 #include <raylib.h>
 #include <vector>
@@ -89,7 +88,7 @@ void GenerateMaze(Cell maze[WIDTH][HEIGHT], std::mt19937 &rng) {
 }
 
 // Function to draw the maze
-void DrawMaze(Cell maze[WIDTH][HEIGHT], Texture2D wallsTexture) {
+void DrawMaze(Cell maze[WIDTH][HEIGHT]) {
   for (int x = 0; x < WIDTH; x++) {
     for (int y = 0; y < HEIGHT; y++) {
       int px = 50 + x * CELL_SIZE;

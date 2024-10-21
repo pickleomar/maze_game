@@ -9,16 +9,18 @@ find_package(raylib REQUIRED)
 
 project(game LANGUAGES CXX)
 
-include_directories(engine)
-add_subdirectory(engine)
+# include_directories(engine)
+# add_subdirectory(engine)
 
 file(GLOB include_files
 					"src/include/*.h"
 					"src/include/*.cpp"
-					"src/include/Map/*.h"
-					"src/include/Map/*.cpp"
 					"src/include/Maze/*.h"
 					"src/include/Maze/*.cpp"
+					"src/include/Window/*.h"
+					"src/include/Window/*.cpp"
+					"src/include/Game/*.h"
+					"src/include/Game/*.cpp"
 )
 
 add_executable(game src/main.cpp ${include_files})
@@ -27,4 +29,5 @@ target_include_directories(game PUBLIC ${CMAKE_CURRENT_LIST_DIR}/3rd_lib ${CMAKE
 
 
 
-target_link_libraries(game Engine ${raylib_LIBRARIES})
+# target_link_libraries(game Engine ${raylib_LIBRARIES})
+target_link_libraries(game  ${raylib_LIBRARIES})

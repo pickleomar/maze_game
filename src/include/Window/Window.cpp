@@ -3,10 +3,9 @@
 
 */
 
-#include "Engine.h"
+#include "Window.h"
 #include "raylib.h"
 using string = std::string;
-using namespace Engine;
 
 // Constructor definition
 Window::Window(int window_width, int window_height, string window_title)
@@ -17,14 +16,8 @@ Window::Window(int window_width, int window_height, string window_title)
 
 Window::Window(string window_title)
     : __win_title(window_title), __win_width(0), __win_height(0) {
-
   this->init();
 };
-
-Window::~Window() {
-  // End and Clean OpenGl Stuff
-  CloseWindow();
-}
 
 // default init function
 void Window::init() {
