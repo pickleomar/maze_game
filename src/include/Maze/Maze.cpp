@@ -1,48 +1,82 @@
 #include "Maze.h"
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
+#include <random>
 #include <stack>
+#include <vector>
 
 int dx[4] = {0, 1, 0, -1}; // Directions: Up, Right, Down, Left
 int dy[4] = {-1, 0, 1, 0};
 
-Maze::Maze(int height, int width)
-    : __width(width), __height(height)
+Maze::Maze(int width, int height) {
+  if (width % 2 == 0)
+    width++; // Ensure maze width is odd for proper path generation
+  if (height % 2 == 0)
+    height++; // Ensure maze height is odd for proper path generation
+  this->__width = width;
+  this->__height = height;
 
-{
-  maze.resize(width,
-              vector<int>(height, 1)); // Initialize all cells as walls (1)
+  maze.resize(height,
+              vector<int>(width, 1)); // Initialize all cells as walls (1)
 }
 
 bool Maze::isWall(int x, int y) { return this->maze[x][y] == 1; }
 
 void Maze::generateMaze() {
-
   std::stack<std::pair<int, int>> stack;
-  stack.push({1, 1});   // Start at the top-left corner
-  this->maze[1][1] = 0; // Mark the start as a path
+
+  // Step 1: Start with a random cell in the grid (ensure it is an odd cell for
+  // proper path generation)
+  int startX = 1;
+  int startY = 1;
+
+  stack.push({startX, startY});
+  maze[startY][startX] = 0; // Mark the start cell as a path
+
+  std::random_device rd;
+  std::mt19937 g(rd());
 
   while (!stack.empty()) {
     auto [x, y] = stack.top();
     stack.pop();
-    std::vector<int> directions = {0, 1, 2,
-                                   3}; // Directions: Up, Right, Down, Left
-    std::random_shuffle(directions.begin(),
-                        directions.end()); // Shuffle directions for randomness
 
+    std::vector<int> directions = {0, 1, 2, 3};
+    std::shuffle(directions.begin(), directions.end(),
+                 g); // Shuffle directions for random exploration
+
+    bool hasUnvisitedNeighbors =
+        false; // Track if we have any unvisited neighbors
+
+    // Step 2: For each shuffled direction, check for valid neighbors
     for (int i = 0; i < 4; i++) {
-      int nx = x + dx[directions[i]] * 2; // Calculate the next x position
-      int ny = y + dy[directions[i]] * 2; // Calculate the next y position
+      int nx =
+          x +
+          dx[directions[i]] *
+              2; // Look two cells away (so the maze has space between walls)
+      int ny = y + dy[directions[i]] * 2;
 
-      // Ensure the new position is within bounds and hasn't been visited
+      // Check if the new position is within bounds and hasn't been visited
       if (nx > 0 && ny > 0 && nx < __width - 1 && ny < __height - 1 &&
-          maze[nx][ny] == 1) {
-        maze[x + dx[directions[i]]][y + dy[directions[i]]] = 0; // Break wall
-        maze[nx][ny] = 0; // Mark the new cell as a path
+          maze[ny][nx] == 1) {
+        // Break the wall between the current cell and the new cell
+        maze[y + dy[directions[i]]][x + dx[directions[i]]] =
+            0;            // Mark the wall as a path
+        maze[ny][nx] = 0; // Mark the new cell as a path
+
+        // Push the new cell onto the stack to explore it further
         stack.push(
-            {nx, ny}); // Push the new cell to the stack for future exploration
+            {x, y}); // Push the current cell (for backtracking if necessary)
+        stack.push({nx, ny}); // Push the new cell
+
+        hasUnvisitedNeighbors = true;
+        break; // Stop after finding a valid neighbor to ensure deeper
+               // exploration
       }
     }
+
+    // If no unvisited neighbors, we will automatically backtrack via stack
   }
 };
 
