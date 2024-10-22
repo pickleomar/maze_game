@@ -8,16 +8,22 @@
 #include <cstdlib> // For std::rand() and std::srand
 #include <ctime>
 
+Texture2D floor_texture;
+Texture2D wall_texture;
+
 int main() {
+
   std::srand(std::time(0));
-  Maze maze(30, 60);
+  Window window(1920, 1080, "Hello World");
+  Maze maze(31, 21);
   maze.generateMaze();
-  // Window window(1270, 720, "Hello World");
+  // maze.printMaze();
+  floor_texture = LoadTexture("../Resources/texture/floor_texture.png");
+  wall_texture = LoadTexture("../Resources/texture/wall.png");
 
-  // Game game(window);
-  // game.Loop();
+  Game game(window);
+  game.Loop(maze.maze, floor_texture, wall_texture);
 
-  // CloseWindow();
-  maze.printMaze();
+  CloseWindow();
   return 0;
 }

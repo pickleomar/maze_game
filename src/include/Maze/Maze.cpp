@@ -6,7 +6,7 @@
 int dx[4] = {0, 1, 0, -1}; // Directions: Up, Right, Down, Left
 int dy[4] = {-1, 0, 1, 0};
 
-Maze::Maze(int width, int height)
+Maze::Maze(int height, int width)
     : __width(width), __height(height)
 
 {

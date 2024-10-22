@@ -4,7 +4,7 @@ using std::vector;
 
 class Maze {
 public:
-  Maze(int width, int height);
+  Maze(int height, int width);
 
   void generateMaze();
   bool isWall(int x, int y);
