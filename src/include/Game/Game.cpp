@@ -4,40 +4,33 @@
 #include <raylib.h>
 #include <vector>
 
-Game::Game(Window &win) : __window(win) {}
+Game::Game(Window &win, Maze &maze) : __window(win), __maze(maze) {}
 Game::~Game() {};
 
-void Game::Loop(std::vector<std::vector<int>> maze, Texture2D floorTexture,
-                Texture2D wallTexture) {
+void Game::Loop(Texture2D wallTexture, Texture2D floorTexture,
+                Texture2D playerIdle) {
+  int playerX = 16;
+  int playerY = 16;
   while (!WindowShouldClose()) {
+    if (IsKeyPressed(KEY_DOWN)) {
+      playerY += 16;
+    }
+    if (IsKeyPressed(KEY_UP)) {
+      playerY -= 16;
+    }
+    if (IsKeyPressed(KEY_RIGHT)) {
+      playerX += 16;
+    }
+    if (IsKeyPressed(KEY_LEFT)) {
+      playerX -= 16;
+    }
     BeginDrawing();
     ClearBackground(RAYWHITE);
-    int originX = 0;
-    int originY = 0;
-    float scale = 1.5;
-    for (int y = 0; y < maze.size(); ++y) {
-      for (int x = 0; x < maze[0].size(); ++x) {
-        if (maze[y][x] == 1) {
-          // DrawTexture(floorTexture, originX + (x * 16), originY + (y * 16),
-          //             RAYWHITE);
-          DrawTextureEx(wallTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
-                        0, scale, RAYWHITE);
-        } else {
-
-          // DrawTexture(floorTexture, originX + (x * 16), originY + (y * 16),
-          //             RAYWHITE);
-          DrawTextureEx(floorTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
-                        0, scale, RAYWHITE);
-        }
-        // std::cout << " "; // Path
-      }
-      // std::cout << std::endl;
-    }
-
+    this->__maze.renderMaze(wallTexture, floorTexture);
+    DrawTextureRec(playerIdle, {0, 0, 16, 16}, {(float)playerX, (float)playerY},
+                   WHITE);
     EndDrawing();
   }
 }
+
+void Game::init() { __maze.generateMaze(); }

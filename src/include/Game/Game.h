@@ -1,4 +1,5 @@
 #pragma once
+#include "Maze/Maze.h"
 #include "Window/Window.h"
 #include "raylib.h"
 #include <vector>
@@ -6,11 +7,14 @@
 class Game {
 
 public:
-  Game(Window &win);
+  Game(Window &win, Maze &maze);
   ~Game();
-  void Loop(std::vector<std::vector<int>> maze, Texture2D floorTexture,
-            Texture2D wallTexture);
+
+  void init();
+  void Loop(Texture2D wallTexture, Texture2D floorTexture,
+            Texture2D playerIdle);
 
 private:
   Window __window;
+  Maze __maze;
 };

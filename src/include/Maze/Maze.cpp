@@ -4,6 +4,7 @@
 #include <ctime>
 #include <iostream>
 #include <random>
+#include <raylib.h>
 #include <stack>
 #include <vector>
 
@@ -89,5 +90,33 @@ void Maze::printMaze() {
         std::cout << " "; // Path
     }
     std::cout << std::endl;
+  }
+}
+
+void Maze::renderMaze(Texture2D wallTexture, Texture2D floorTexture) {
+  int originX = 0;
+  int originY = 0;
+  float scale = 2;
+  for (int y = 0; y < maze.size(); ++y) {
+    for (int x = 0; x < maze[0].size(); ++x) {
+      if (maze[y][x] == 1) {
+        // DrawTexture(floorTexture, originX + (x * 16), originY + (y * 16),
+        //             RAYWHITE);
+        DrawTextureEx(wallTexture,
+                      {(float)(originX + (x * 16 * scale)),
+                       (float)(originY + (y * 16 * scale))},
+                      0, scale, RAYWHITE);
+      } else {
+
+        // DrawTexture(floorTexture, originX + (x * 16), originY + (y * 16),
+        //             RAYWHITE);
+        DrawTextureEx(floorTexture,
+                      {(float)(originX + (x * 16 * scale)),
+                       (float)(originY + (y * 16 * scale))},
+                      0, scale, RAYWHITE);
+      }
+      // std::cout << " "; // Path
+    }
+    // std::cout << std::endl;
   }
 }
