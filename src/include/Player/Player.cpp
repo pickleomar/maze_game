@@ -2,4 +2,12 @@
 #include <utility>
 using std::pair;
 
-pair<int, int> Player::getPosition() { return this->position; }
+pair<int, int> Player::getPosition() {
+
+
+
+
+
+
+
+  return this->position; }

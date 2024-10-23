@@ -21,9 +21,11 @@ file(GLOB include_files
 					"src/include/Window/*.cpp"
 					"src/include/Game/*.h"
 					"src/include/Game/*.cpp"
+					"src/include/Map/*.h"
+					"src/include/Map/*.cpp"
 )
 
-add_executable(game src/main.cpp ${include_files})
+add_executable(game src/utils/screen_scaling.cpp ${include_files})
 
 target_include_directories(game PUBLIC ${CMAKE_CURRENT_LIST_DIR}/3rd_lib ${CMAKE_CURRENT_LIST_DIR}/src/include)
 

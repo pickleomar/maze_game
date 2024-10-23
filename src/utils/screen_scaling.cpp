@@ -2,12 +2,17 @@
 #include "raymath.h" // Required for: Vector2Clamp()
 #include <iostream>
 
+#define MAX_FRAME_SPEED 15
+#define MIN_FRAME_SPEED 1
+
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 //------------------------------------------------------------------------------------
 // Program main entry point
 //------------------------------------------------------------------------------------
+Texture2D player_Idle;
+
 int main(void) {
   const int windowWidth = 0;
   const int windowHeight = 0;
@@ -17,8 +22,8 @@ int main(void) {
   InitWindow(windowWidth, windowHeight,
              "raylib [core] example - window scale letterbox");
   SetWindowMinSize(1270, 720);
-  SetWindowSize(GetMonitorWidth(GetCurrentMonitor()) / 2,
-                GetMonitorHeight(GetCurrentMonitor()) / 2);
+  SetWindowSize(GetMonitorWidth(GetCurrentMonitor()) / 3,
+                GetMonitorHeight(GetCurrentMonitor()) / 3);
 
   int gameScreenWidth = 1270;
   int gameScreenHeight = 720;
@@ -31,6 +36,15 @@ int main(void) {
 
   SetTargetFPS(60); // Set our game to run at 60 frames-per-second
   //--------------------------------------------------------------------------------------
+
+  player_Idle = LoadTexture("../Resources/player/Player_idle.png");
+  Rectangle frameRec = {0.0f, 0.0f, (float)player_Idle.width / 2,
+                        (float)player_Idle.height};
+
+  int currentFrame = 0;
+
+  int framesCounter = 0;
+  int framesSpeed = 8;
 
   // Main game loop
   while (!WindowShouldClose()) // Detect window close button or ESC key
@@ -95,6 +109,32 @@ int main(void) {
             (GetScreenHeight() - ((float)gameScreenHeight * scale)) * 0.5f,
             (float)gameScreenWidth * scale, (float)gameScreenHeight * scale},
         (Vector2){0, 0}, 0.0f, WHITE);
+
+    framesCounter++;
+
+    if (framesCounter >= (60 / framesSpeed)) {
+      framesCounter = 0;
+      currentFrame++;
+
+      if (currentFrame > 2)
+        currentFrame = 0;
+
+      frameRec.x = (float)currentFrame * (float)player_Idle.width / 2;
+    }
+
+    if (IsKeyPressed(KEY_RIGHT))
+      framesSpeed++;
+    else if (IsKeyPressed(KEY_LEFT))
+      framesSpeed--;
+
+    if (framesSpeed > MAX_FRAME_SPEED)
+      framesSpeed = MAX_FRAME_SPEED;
+    else if (framesSpeed < MIN_FRAME_SPEED)
+      framesSpeed = MIN_FRAME_SPEED;
+    // DrawTextureEx(player_Idle, {100, 100}, 0, 10, WHITE);
+    //
+    DrawTextureRec(player_Idle, frameRec, {350.0f, 280.0f}, WHITE);
+
     EndDrawing();
     //--------------------------------------------------------------------------------------
   }
