@@ -25,6 +25,6 @@ int main() {
   game.init();
   game.Loop(wall_texture, floor_texture, player_Idle);
 
-  CloseWindow();
+  // CloseWindow();
   return 0;
 }

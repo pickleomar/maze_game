@@ -27,7 +27,7 @@ file(GLOB include_files
 					"src/include/Gui/*.cpp"
 )
 
-add_executable(game src/main.cpp ${include_files})
+add_executable(game src/main2.cpp ${include_files})
 
 target_include_directories(game PUBLIC  ${CMAKE_CURRENT_LIST_DIR}/src/include)
 
