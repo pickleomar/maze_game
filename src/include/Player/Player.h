@@ -5,29 +5,26 @@ class Player {
 public:
   Player();
   ~Player();
+
   // Texture Started
   Texture2D playerIdle;
   Texture2D playerMovingDown;
   Texture2D playerMovingUp;
   Texture2D playerMovingSide;
-  // Texture Ended
-  float getSpeed();
-  float setSpeed(float speed);
-  Vector2 getPositionV();
-  float getPosX();
-  float getPosY();
-
-  void moveUp();
+  // Movement
   void moveDown();
-  void moveRight();
+  void moveUp();
   void moveLeft();
+  void moveRight();
+  //
 
+  int getPosX();
+  int getPosY();
+  // Texture Ended
   void renderPlayer();
 
 private:
-  float speed;
   float posX;
   float posY;
-  float scale;
-  int textureSize = 16;
+  float speed;
 };

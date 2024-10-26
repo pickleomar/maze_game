@@ -1,5 +1,6 @@
 #pragma once
 #include "Maze/Maze.h"
+#include "Player/Player.h"
 #include "Window/Window.h"
 #include "raylib.h"
 #include <vector>
@@ -7,7 +8,7 @@
 class Game {
 
 public:
-  Game(Window &win, Maze &maze);
+  Game(Window &win, Maze &maze, Player &player);
   ~Game();
 
   void init();
@@ -17,4 +18,5 @@ public:
 private:
   Window __window;
   Maze __maze;
+  Player __player;
 };

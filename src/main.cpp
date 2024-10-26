@@ -1,4 +1,5 @@
 #include "Game/Game.h"
+#include "Player/Player.h"
 #include "Window/Window.h"
 #include <Maze/Maze.h>
 #include <raylib.h>
@@ -16,12 +17,14 @@ int main() {
   Window window(1270, 720, "Hello World");
   Maze maze(20, 10);
 
+  Player player;
   floor_texture = LoadTexture("../Resources/texture/floor_texture.png");
   wall_texture = LoadTexture("../Resources/texture/wall.png");
 
-  player_Idle = LoadTexture("../Resources/player/Player_idle.png");
+  player_Idle = LoadTexture("../Resources/player/player_idle.png");
 
-  Game game(window, maze);
+  // player.init();
+  Game game(window, maze, player);
   game.init();
   game.Loop(wall_texture, floor_texture, player_Idle);
 
