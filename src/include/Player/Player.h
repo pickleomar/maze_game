@@ -21,7 +21,9 @@ public:
   int getPosX();
   int getPosY();
   // Texture Ended
-  void renderPlayer();
+  // void renderPlayer(Rectangle frameRec);
+  void renderPlayer(Rectangle frameRec);
+  float scale;
 
 private:
   float posX;

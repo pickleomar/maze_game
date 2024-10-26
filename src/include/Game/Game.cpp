@@ -4,7 +4,6 @@
 #include <Maze/Maze.h>
 #include <iostream>
 #include <raylib.h>
-#include <vector>
 
 Game::Game(Window &win, Maze &maze, Player &player)
     : __window(win), __maze(maze), __player(player) {}
@@ -20,7 +19,25 @@ Game::~Game() {
 void Game::Loop(Texture2D wallTexture, Texture2D floorTexture,
                 Texture2D playerIdle) {
 
+  int currentFrame = 0;
+
+  int framesCounter = 0;
+  int framesSpeed = 4;
+  Rectangle frameRec = {0.0f, 0.0f, (float)playerIdle.width / 2,
+                        (float)playerIdle.height};
+
   while (!WindowShouldClose()) {
+
+    framesCounter++;
+    if (framesCounter >= (60 / framesSpeed)) {
+      framesCounter = 0;
+      currentFrame++;
+
+      if (currentFrame > 5)
+        currentFrame = 0;
+
+      frameRec.x = (float)currentFrame * (float)playerIdle.width / 2;
+    }
 
     int leftX = static_cast<int>(__player.getPosX()) / 16;
     int rightX = static_cast<int>(__player.getPosX() + 16) / 16;
@@ -44,7 +61,8 @@ void Game::Loop(Texture2D wallTexture, Texture2D floorTexture,
     ClearBackground(RAYWHITE);
 
     __maze.renderMaze(wallTexture, floorTexture);
-    __player.renderPlayer();
+
+    __player.renderPlayer(frameRec);
 
     EndDrawing();
   }

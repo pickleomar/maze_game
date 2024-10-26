@@ -11,6 +11,10 @@
 int dx[4] = {0, 1, 0, -1}; // Directions: Up, Right, Down, Left
 int dy[4] = {-1, 0, 1, 0};
 
+int Maze::getWidth() { return __width; }
+
+int Maze::getHeight() { return __height; }
+
 Maze::Maze(int width, int height) {
   if (width % 2 == 0)
     width++; // Ensure maze width is odd for proper path generation
@@ -96,7 +100,8 @@ void Maze::printMaze() {
 void Maze::renderMaze(Texture2D wallTexture, Texture2D floorTexture) {
   int originX = 0;
   int originY = 0;
-  float scale = 1;
+  float scale = 2;
+
   for (int y = 0; y < maze.size(); ++y) {
     for (int x = 0; x < maze[0].size(); ++x) {
       if (maze[y][x] == 1) {
@@ -104,10 +109,15 @@ void Maze::renderMaze(Texture2D wallTexture, Texture2D floorTexture) {
                       {(float)(originX + (x * 16 * scale)),
                        (float)(originY + (y * 16 * scale))},
                       0, scale, RAYWHITE);
+        DrawRectangleLinesEx({(float)(originX + (x * 16 * scale)),
+                              (float)(originY + (y * 16 * scale)), 16 * scale,
+                              16 * scale},
+                             2, BLACK);
       } else {
-
-        DrawTexture(floorTexture, originX + (x * 16), originY + (y * 16),
-                    RAYWHITE);
+        DrawTextureEx(floorTexture,
+                      {(float)(originX + (x * 16 * scale)),
+                       (float)(originY + (y * 16 * scale))},
+                      0, scale, RAYWHITE);
       }
       // std::cout << " "; // Path
     }

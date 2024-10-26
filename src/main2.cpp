@@ -11,7 +11,7 @@ Image player;
 int main() {
 
   Window win(1270, 720, "Hello World");
-  player_Idle = LoadTexture("../Resources/player/player_moving_side.png");
+  player_Idle = LoadTexture("../Resources/player/player_idle.png");
 
   float playerX = 100;
   float playerY = 100;
@@ -21,8 +21,8 @@ int main() {
   int currentFrame = 0;
 
   int framesCounter = 0;
-  int framesSpeed = 8;
-  Rectangle frameRec = {0.0f, 0.0f, (float)player_Idle.width / 4,
+  int framesSpeed = 4;
+  Rectangle frameRec = {0.0f, 0.0f, (float)player_Idle.width / 2,
                         (float)player_Idle.height};
 
   // Sprite ANimation ended
@@ -38,7 +38,7 @@ int main() {
       if (currentFrame > 5)
         currentFrame = 0;
 
-      frameRec.x = (float)currentFrame * (float)player_Idle.width / 4;
+      frameRec.x = (float)currentFrame * (float)player_Idle.width / 2;
     }
 
     // FrameAnimationsEnded

@@ -12,6 +12,8 @@ public:
   vector<vector<int>> maze;
   void printMaze();
   void renderMaze(Texture2D wallTexture, Texture2D floorTexture);
+  int getWidth();
+  int getHeight();
 
 private:
   int __width;

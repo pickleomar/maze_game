@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <raylib.h>
 
-Player::Player() : posX(16), posY(16), speed(1) {
+Player::Player() : posX(16), posY(16), speed(1), scale(2) {
   this->playerIdle = LoadTexture("../Resources/player/player_idle.png");
   this->playerMovingDown =
       LoadTexture("../Resources/player/player_moving_down.png");
@@ -13,8 +13,12 @@ Player::Player() : posX(16), posY(16), speed(1) {
 
 Player::~Player() {}
 
-void Player::renderPlayer() {
-  DrawTextureRec(playerIdle, {0, 0, 16, 16}, {posX, posY}, WHITE);
+void Player::renderPlayer(Rectangle frameRec) {
+
+  Rectangle playerRec = {posX * scale, posY * scale, 16 * scale, 16 * scale};
+  DrawTexturePro(playerIdle, frameRec, playerRec, {0, 0}, 0, WHITE);
+
+  DrawRectangleLinesEx(playerRec, 3, RED);
 }
 
 void Player::moveDown() { posY += speed; }
