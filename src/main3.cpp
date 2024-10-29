@@ -1,132 +1,100 @@
 #include "raylib.h"
+#include <cstdlib>
+#include <ctime>
+#include <iostream>
 #include <vector>
 
-#define TILE_SIZE 40 // Tile size in pixels
+const int WIDTH = 41;     // Maze width (without borders)
+const int HEIGHT = 31;    // Maze height (without borders)
+const int CELL_SIZE = 20; // Size of each cell
+std::vector<std::vector<int>>
+    maze(HEIGHT + 2, std::vector<int>(WIDTH + 2, 1)); // 1 = wall, 0 = path
 
 struct Player {
-  float x, y;
-  float width, height;
-  float speed;
-
-  Player(float startX, float startY, float w, float h, float s)
-      : x(startX), y(startY), width(w), height(h), speed(s) {}
-
-  Rectangle GetRect() const { return Rectangle{x, y, width, height}; }
+  int x; // Player's x position in maze coordinates
+  int y; // Player's y position in maze coordinates
 };
 
-class Maze {
-public:
-  int width, height;
-  std::vector<std::vector<int>> mazeData;
+void generateMaze(int x, int y) {
+  int dx[] = {2, -2, 0, 0};
+  int dy[] = {0, 0, 2, -2};
 
-  Maze(int w, int h) : width(w), height(h) {
-    mazeData.resize(height, std::vector<int>(width, 1)); // Initialize all walls
+  // Shuffle directions
+  for (int i = 0; i < 4; ++i) {
+    int j = rand() % 4;
+    std::swap(dx[i], dx[j]);
+    std::swap(dy[i], dy[j]);
   }
 
-  void GenerateMaze() {
-    // Randomly generate a maze here; 0 = path, 1 = wall
-    for (int y = 1; y < height - 1; y++) {
-      for (int x = 1; x < width - 1; x++) {
-        mazeData[y][x] = (x % 2 == 1 && y % 2 == 1) ? 0 : 1;
-      }
+  maze[y][x] = 0; // Mark current cell as path
+
+  for (int i = 0; i < 4; ++i) {
+    int nx = x + dx[i];
+    int ny = y + dy[i];
+
+    // Ensure we are within the bounds of the maze
+    if (nx > 0 && nx < WIDTH + 1 && ny > 0 && ny < HEIGHT + 1 &&
+        maze[ny][nx] == 1) {
+      maze[y + dy[i] / 2][x + dx[i] / 2] = 0; // Remove wall between the cells
+      generateMaze(nx, ny);                   // Recursive call
     }
   }
-
-  void DrawMaze() const {
-    for (int y = 0; y < height; ++y) {
-      for (int x = 0; x < width; ++x) {
-        if (mazeData[y][x] == 1) {
-          DrawRectangle(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE,
-                        DARKGRAY);
-        }
-      }
-    }
-  }
-};
-
-bool CheckCollisionWithDirection(const Player &player, const Maze &maze,
-                                 float newX, float newY) {
-  Rectangle playerRect = {newX, newY, player.width, player.height};
-
-  int leftTile = std::max(0, static_cast<int>(newX) / TILE_SIZE);
-  int rightTile = std::min(maze.width - 1,
-                           static_cast<int>(newX + player.width) / TILE_SIZE);
-  int topTile = std::max(0, static_cast<int>(newY) / TILE_SIZE);
-  int bottomTile = std::min(maze.height - 1,
-                            static_cast<int>(newY + player.height) / TILE_SIZE);
-
-  for (int y = topTile; y <= bottomTile; ++y) {
-    for (int x = leftTile; x <= rightTile; ++x) {
-      if (maze.mazeData[y][x] == 1) { // Wall tile
-        Rectangle wallRect = {x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE,
-                              TILE_SIZE};
-        if (CheckCollisionRecs(playerRect, wallRect)) {
-          return true; // Collision detected
-        }
-      }
-    }
-  }
-
-  return false; // No collision
 }
 
-void MovePlayer(Player &player, const Maze &maze) {
-  float newX = player.x;
-  float newY = player.y;
-
-  // Check each direction separately
-  if (IsKeyDown(KEY_W)) { // Up
-    float nextY = player.y - player.speed;
-    if (!CheckCollisionWithDirection(player, maze, player.x, nextY)) {
-      player.y = nextY;
-    }
-  }
-
-  if (IsKeyDown(KEY_S)) { // Down
-    float nextY = player.y + player.speed;
-    if (!CheckCollisionWithDirection(player, maze, player.x, nextY)) {
-      player.y = nextY;
-    }
-  }
-
-  if (IsKeyDown(KEY_A)) { // Left
-    float nextX = player.x - player.speed;
-    if (!CheckCollisionWithDirection(player, maze, nextX, player.y)) {
-      player.x = nextX;
-    }
-  }
-
-  if (IsKeyDown(KEY_D)) { // Right
-    float nextX = player.x + player.speed;
-    if (!CheckCollisionWithDirection(player, maze, nextX, player.y)) {
-      player.x = nextX;
-    }
-  }
+bool canMove(int newX, int newY) {
+  // Check if the new position is within maze bounds and not a wall
+  return maze[newY][newX] == 0;
 }
 
 int main() {
-  InitWindow(800, 600, "Maze Game with Directional Collision System");
+  // Initialization
+  InitWindow(0, 0, "Maze Game");
+  SetTargetFPS(60); // Set the target frames per second
 
-  Maze maze(20, 15); // Create a 20x15 maze
-  maze.GenerateMaze();
+  srand(static_cast<unsigned int>(time(0))); // Seed random number generator
+  generateMaze(1, 1);                        // Start generating from (1, 1)
 
-  Player player(60, 60, TILE_SIZE - 10, TILE_SIZE - 10, 4.0f); // Create player
+  // Initialize player position
+  Player player = {1, 1}; // Start the player in the maze
 
-  SetTargetFPS(60);
+  while (!WindowShouldClose()) { // Main game loop
+    // Player movement input
+    if (IsKeyDown(KEY_UP) && canMove(player.x, player.y - 1)) {
+      player.y--; // Move up
+    }
+    if (IsKeyDown(KEY_DOWN) && canMove(player.x, player.y + 1)) {
+      player.y++; // Move down
+    }
+    if (IsKeyDown(KEY_LEFT) && canMove(player.x - 1, player.y)) {
+      player.x--; // Move left
+    }
+    if (IsKeyDown(KEY_RIGHT) && canMove(player.x + 1, player.y)) {
+      player.x++; // Move right
+    }
 
-  while (!WindowShouldClose()) {
-    MovePlayer(player, maze); // Update player movement based on collisions
-
+    // Drawing
     BeginDrawing();
     ClearBackground(RAYWHITE);
 
-    maze.DrawMaze();                          // Draw the maze
-    DrawRectangleRec(player.GetRect(), BLUE); // Draw the player
+    // Draw the maze
+    for (int y = 0; y < HEIGHT + 2; ++y) {
+      for (int x = 0; x < WIDTH + 2; ++x) {
+        if (maze[y][x] == 1) {
+          DrawRectangle(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE,
+                        BLACK); // Draw wall
+        }
+      }
+    }
+
+    // Draw the player
+    DrawRectangle(player.x * CELL_SIZE, player.y * CELL_SIZE, CELL_SIZE,
+                  CELL_SIZE, BLUE); // Draw player
 
     EndDrawing();
   }
 
-  CloseWindow();
+  // De-Initialization
+  CloseWindow(); // Close window and OpenGL context
 
   return 0;
 }

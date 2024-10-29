@@ -1,5 +1,12 @@
 #pragma once
+#include "Maze/Maze.h"
 #include <raylib.h>
+
+#define STATE_IDLE 00001
+#define STATE_MOVING_UP 00010
+#define STATE_MOVING_DOWN 00100
+#define STATE_MOVING_RIGHT 01000
+#define STATE_MOVING_LEFT 10000
 
 class Player {
 public:
@@ -10,7 +17,9 @@ public:
   Texture2D playerIdle;
   Texture2D playerMovingDown;
   Texture2D playerMovingUp;
-  Texture2D playerMovingSide;
+  Texture2D playerMovingRight;
+  Texture2D playerMovingLeft;
+
   // Movement
   void moveDown();
   void moveUp();
@@ -18,15 +27,20 @@ public:
   void moveRight();
   //
 
-  int getPosX();
-  int getPosY();
-  // Texture Ended
-  // void renderPlayer(Rectangle frameRec);
+  float getPosX();
+  float getPosY();
+  int getCellX();
+  int getCellY();
+
   void renderPlayer(Rectangle frameRec);
-  float scale;
+  void updatePlayer(Maze &maze);
+  void setScale(float scale);
+  void setState(int state);
 
 private:
   float posX;
   float posY;
+  int state = STATE_IDLE;
   float speed;
+  float scale;
 };

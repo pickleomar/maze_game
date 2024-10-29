@@ -21,12 +21,14 @@ file(GLOB include_files
 					"src/include/Window/*.cpp"
 					"src/include/Game/*.h"
 					"src/include/Game/*.cpp"
-					"src/include/Map/*.h"
-					"src/include/Map/*.cpp"
+					"src/include/Camera/*.h"
+					"src/include/Camera/*.cpp"
 					"src/include/Gui/*.h"
 					"src/include/Gui/*.cpp"
 					"src/include/Player/*.h"
 					"src/include/Player/*.cpp"
+					"src/include/Timer/*.h"
+					"src/include/Timer/*.cpp"
 )
 
 add_executable(game src/main.cpp ${include_files})

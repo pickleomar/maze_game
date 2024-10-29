@@ -1,17 +1,20 @@
 #include "Game.h"
 #include "Player/Player.h"
+#include "Timer/Timer.h"
 #include "Window/Window.h"
 #include <Maze/Maze.h>
-#include <iostream>
+
+#include <cstddef>
 #include <raylib.h>
 
-Game::Game(Window &win, Maze &maze, Player &player)
-    : __window(win), __maze(maze), __player(player) {}
+Game::Game(Window &win, Maze &maze, Player &player, float scale)
+    : __window(win), __maze(maze), __player(player), scale(scale) {}
 
 Game::~Game() {
   UnloadTexture(this->__player.playerIdle);
   UnloadTexture(this->__player.playerMovingUp);
-  UnloadTexture(this->__player.playerMovingSide);
+  UnloadTexture(this->__player.playerMovingRight);
+  UnloadTexture(this->__player.playerMovingLeft);
   UnloadTexture(this->__player.playerMovingDown);
   CloseWindow();
 };
@@ -19,13 +22,22 @@ Game::~Game() {
 void Game::Loop(Texture2D wallTexture, Texture2D floorTexture,
                 Texture2D playerIdle) {
 
+  this->init();
   int currentFrame = 0;
 
   int framesCounter = 0;
-  int framesSpeed = 4;
-  Rectangle frameRec = {0.0f, 0.0f, (float)playerIdle.width / 2,
+  int framesSpeed = 8;
+  Rectangle frameRec = {0.0f, 0.0f, (float)playerIdle.width / 4,
                         (float)playerIdle.height};
 
+  Timer inputTimer;
+  inputTimer.startTimer(0.12);
+
+  // Camera2D camera = {0};
+  // camera.target = (Vector2){__player.getPosX() + (16 * scale),
+  //                           __player.getPosy() + (16 * scale)};
+  // camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenWidth()
+  // / 2.0f}; camera.rotation = 0.0f; camera.zoom = 1.0f;
   while (!WindowShouldClose()) {
 
     framesCounter++;
@@ -36,29 +48,17 @@ void Game::Loop(Texture2D wallTexture, Texture2D floorTexture,
       if (currentFrame > 5)
         currentFrame = 0;
 
-      frameRec.x = (float)currentFrame * (float)playerIdle.width / 2;
+      frameRec.x = (float)currentFrame * (float)playerIdle.width / 4;
     }
 
-    int leftX = static_cast<int>(__player.getPosX()) / 16;
-    int rightX = static_cast<int>(__player.getPosX() + 16) / 16;
-    int topY = static_cast<int>(__player.getPosY()) / 16;
-    int bottomY = static_cast<int>(__player.getPosY() + 16) / 16;
-
-    if (IsKeyDown(KEY_DOWN) && (__maze.maze[bottomY][leftX] != 1)) {
-      __player.moveDown();
-    }
-    if (IsKeyDown(KEY_UP) && (__maze.maze[topY][leftX] != 1)) {
-      __player.moveUp();
-    }
-    if (IsKeyDown(KEY_RIGHT) && (__maze.maze[topY][rightX] != 1)) {
-      __player.moveRight();
-    }
-    if (IsKeyDown(KEY_LEFT) && (__maze.maze[topY][leftX] != 1)) {
-      __player.moveLeft();
+    inputTimer.UpdateTimer();
+    if (inputTimer.timerDone()) {
+      __player.updatePlayer(__maze);
+      inputTimer.startTimer(0.12);
     }
 
     BeginDrawing();
-    ClearBackground(RAYWHITE);
+    ClearBackground(BLACK);
 
     __maze.renderMaze(wallTexture, floorTexture);
 
@@ -68,4 +68,8 @@ void Game::Loop(Texture2D wallTexture, Texture2D floorTexture,
   }
 }
 
-void Game::init() { __maze.generateMaze(); }
+void Game::init() {
+  __maze.generateMaze();
+  __player.setScale(scale);
+  __maze.setScale(scale);
+}

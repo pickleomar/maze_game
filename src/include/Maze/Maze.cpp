@@ -11,10 +11,6 @@
 int dx[4] = {0, 1, 0, -1}; // Directions: Up, Right, Down, Left
 int dy[4] = {-1, 0, 1, 0};
 
-int Maze::getWidth() { return __width; }
-
-int Maze::getHeight() { return __height; }
-
 Maze::Maze(int width, int height) {
   if (width % 2 == 0)
     width++; // Ensure maze width is odd for proper path generation
@@ -26,8 +22,6 @@ Maze::Maze(int width, int height) {
   maze.resize(height,
               vector<int>(width, 1)); // Initialize all cells as walls (1)
 }
-
-bool Maze::isWall(int x, int y) { return this->maze[x][y] == 1; }
 
 void Maze::generateMaze() {
   std::stack<std::pair<int, int>> stack;
@@ -83,24 +77,16 @@ void Maze::generateMaze() {
 
     // If no unvisited neighbors, we will automatically backtrack via stack
   }
-};
 
-void Maze::printMaze() {
-  for (int y = 0; y < maze.size(); ++y) {
-    for (int x = 0; x < maze[0].size(); ++x) {
-      if (maze[y][x] == 1)
-        std::cout << "#"; // Wall
-      else
-        std::cout << " "; // Path
-    }
-    std::cout << std::endl;
-  }
-}
+  // Set an Entrence for the player
+  this->maze[1][0] = 0;
+  // Set an Exit for the player
+  this->maze[__height - 2][__width - 1] = 0;
+};
 
 void Maze::renderMaze(Texture2D wallTexture, Texture2D floorTexture) {
   int originX = 0;
   int originY = 0;
-  float scale = 2;
 
   for (int y = 0; y < maze.size(); ++y) {
     for (int x = 0; x < maze[0].size(); ++x) {
@@ -109,10 +95,7 @@ void Maze::renderMaze(Texture2D wallTexture, Texture2D floorTexture) {
                       {(float)(originX + (x * 16 * scale)),
                        (float)(originY + (y * 16 * scale))},
                       0, scale, RAYWHITE);
-        DrawRectangleLinesEx({(float)(originX + (x * 16 * scale)),
-                              (float)(originY + (y * 16 * scale)), 16 * scale,
-                              16 * scale},
-                             2, BLACK);
+
       } else {
         DrawTextureEx(floorTexture,
                       {(float)(originX + (x * 16 * scale)),
@@ -124,3 +107,25 @@ void Maze::renderMaze(Texture2D wallTexture, Texture2D floorTexture) {
     // std::cout << std::endl;
   }
 }
+
+void Maze::printMazeToConsole() {
+  for (int y = 0; y < maze.size(); ++y) {
+    for (int x = 0; x < maze[0].size(); ++x) {
+      if (maze[y][x] == 1)
+        std::cout << "#"; // Wall
+      else
+        std::cout << " "; // Path
+    }
+    std::cout << std::endl;
+  }
+}
+
+int Maze::getWidth() { return __width; }
+
+int Maze::getHeight() { return __height; }
+
+vector<vector<int>> Maze::getMaze() { return maze; }
+
+void Maze::setScale(float scale) { this->scale = scale; }
+
+bool Maze::isWall(int x, int y) { return this->maze[x][y] == 1; }
