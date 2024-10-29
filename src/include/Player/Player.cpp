@@ -40,13 +40,15 @@ void Player::renderPlayer(Rectangle frameRec) {
   DrawTexturePro(playerTexture, frameRec, playerRec, {0, 0}, 0, WHITE);
 }
 
-void Player::updatePlayer(Maze &maze) {
+void Player::updatePlayer(Maze &maze, Camera2D &camera) {
 
   if ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) &&
       (maze.getMaze()[getCellY() + 1][getCellX()] != 1)) {
 
     setState(STATE_MOVING_DOWN);
     moveDown();
+    // camera.target = (Vector2){posX + (16 * scale), posY + (16 * scale)};
+    camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
   }
 
   if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) &&
@@ -54,6 +56,8 @@ void Player::updatePlayer(Maze &maze) {
 
     setState(STATE_MOVING_UP);
     moveUp();
+    // camera.target = (Vector2){posX + (16 * scale), posY + (16 * scale)};
+    camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
   }
 
   if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) &&
@@ -61,6 +65,7 @@ void Player::updatePlayer(Maze &maze) {
 
     setState(STATE_MOVING_RIGHT);
     moveRight();
+    camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
   }
 
   if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) &&
@@ -68,6 +73,7 @@ void Player::updatePlayer(Maze &maze) {
 
     setState(STATE_MOVING_LEFT);
     moveLeft();
+    camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
   }
 }
 

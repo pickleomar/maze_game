@@ -33,12 +33,22 @@ void Game::Loop(Texture2D wallTexture, Texture2D floorTexture,
   Timer inputTimer;
   inputTimer.startTimer(0.12);
 
-  // Camera2D camera = {0};
-  // camera.target = (Vector2){__player.getPosX() + (16 * scale),
-  //                           __player.getPosy() + (16 * scale)};
-  // camera.offset = (Vector2){GetScreenWidth() / 2.0f, GetScreenWidth()
-  // / 2.0f}; camera.rotation = 0.0f; camera.zoom = 1.0f;
+  Camera2D camera = {0};
+  camera.target = (Vector2){(__player.getPosX() + 16) * scale,
+                            (__player.getPosY() + 16) * scale};
+  camera.offset = (Vector2){__window.getWindowWidth() / (2.0f),
+                            __window.getWindowHeight() / (2.0f)};
+  camera.rotation = 0;
+  camera.zoom = 2.0f;
+
   while (!WindowShouldClose()) {
+    // if (IsKeyPressedRepeat(KEY_SPACE)) {
+    //   camera.zoom = 0.8;
+    // }
+
+    // if (IsKeyPressed(KEY_L)) {
+    //   camera.zoom = 2;
+    // }
 
     framesCounter++;
     if (framesCounter >= (60 / framesSpeed)) {
@@ -51,19 +61,22 @@ void Game::Loop(Texture2D wallTexture, Texture2D floorTexture,
       frameRec.x = (float)currentFrame * (float)playerIdle.width / 4;
     }
 
+    camera.zoom += ((float)GetMouseWheelMove() * 0.1f);
+
     inputTimer.UpdateTimer();
     if (inputTimer.timerDone()) {
-      __player.updatePlayer(__maze);
+      __player.updatePlayer(__maze, camera);
       inputTimer.startTimer(0.12);
     }
 
     BeginDrawing();
     ClearBackground(BLACK);
+    BeginMode2D(camera);
 
     __maze.renderMaze(wallTexture, floorTexture);
 
     __player.renderPlayer(frameRec);
-
+    EndMode2D();
     EndDrawing();
   }
 }

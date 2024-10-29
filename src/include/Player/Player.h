@@ -33,7 +33,7 @@ public:
   int getCellY();
 
   void renderPlayer(Rectangle frameRec);
-  void updatePlayer(Maze &maze);
+  void updatePlayer(Maze &maze, Camera2D &camera);
   void setScale(float scale);
   void setState(int state);
 
