@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Maze/Maze.h"
+#include "Timer/Timer.h"
 #include <raylib.h>
 //
 Player::Player() : posX(16), posY(16), speed(16), scale(3) {
@@ -40,43 +41,57 @@ void Player::renderPlayer(Rectangle frameRec) {
   DrawTexturePro(playerTexture, frameRec, playerRec, {0, 0}, 0, WHITE);
 }
 
-void Player::updatePlayer(Maze &maze, Camera2D &camera) {
+void Player::updatePlayer(Maze &maze, Camera2D &camera, Timer &inputTimer) {
 
-  if ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) &&
-      (maze.getMaze()[getCellY() + 1][getCellX()] != 1)) {
+  resetState();
+  inputTimer.UpdateTimer();
+  if (inputTimer.timerDone()) {
 
-    setState(STATE_MOVING_DOWN);
-    moveDown();
-    // camer300a.target = (Vector2){posX + (16 * scale), posY + (16 * scale)};
-    camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
-  }
+    if ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) &&
+        (maze.getMaze()[getCellY() + 1][getCellX()] != 1)) {
 
-  if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) &&
-      (maze.getMaze()[getCellY() - 1][getCellX()] != 1)) {
+      setState(STATE_MOVING_DOWN);
+      moveDown();
+      // camer300a.target = (Vector2){posX + (16 * scale), posY + (16 * scale)};
+      camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
+    }
 
-    setState(STATE_MOVING_UP);
-    moveUp();
-    // camera.target = (Vector2){posX + (16 * scale), posY + (16 * scale)};
-    camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
-  }
+    if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) &&
+        (maze.getMaze()[getCellY() - 1][getCellX()] != 1)) {
 
-  if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) &&
-      (maze.getMaze()[getCellY()][getCellX() + 1] != 1)) {
+      setState(STATE_MOVING_UP);
+      moveUp();
+      // camera.target = (Vector2){posX + (16 * scale), posY + (16 * scale)};
+      camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
+    }
 
-    setState(STATE_MOVING_RIGHT);
-    moveRight();
-    camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
-  }
+    if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) &&
+        (maze.getMaze()[getCellY()][getCellX() + 1] != 1)) {
 
-  if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) &&
-      (maze.getMaze()[getCellY()][getCellX() - 1] != 1)) {
+      setState(STATE_MOVING_RIGHT);
+      moveRight();
+      camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
+    }
 
-    setState(STATE_MOVING_LEFT);
-    moveLeft();
-    camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
+    if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) &&
+        (maze.getMaze()[getCellY()][getCellX() - 1] != 1)) {
+
+      setState(STATE_MOVING_LEFT);
+      moveLeft();
+      camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
+    }
+    inputTimer.startTimer(0.12);
   }
 }
 
+void Player::resetState() {
+  if (IsKeyReleased(KEY_DOWN) || IsKeyReleased(KEY_S) ||
+      IsKeyReleased(KEY_UP) || IsKeyReleased(KEY_W) ||
+      IsKeyReleased(KEY_RIGHT) || IsKeyReleased(KEY_D) ||
+      IsKeyReleased(KEY_LEFT) || IsKeyReleased(KEY_A)) {
+    setState(STATE_IDLE);
+  }
+}
 void Player::setState(int state) { this->state = state; }
 
 void Player::moveDown() { posY += speed; }

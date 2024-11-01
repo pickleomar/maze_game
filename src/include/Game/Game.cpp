@@ -61,11 +61,7 @@ void Game::Loop(Texture2D wallTexture, Texture2D floorTexture,
 
     camera.zoom += ((float)GetMouseWheelMove() * 0.1f);
 
-    inputTimer.UpdateTimer();
-    if (inputTimer.timerDone()) {
-      __player.updatePlayer(__maze, camera);
-      inputTimer.startTimer(0.12);
-    }
+    __player.updatePlayer(__maze, camera, inputTimer);
 
     BeginDrawing();
     ClearBackground(BLACK);

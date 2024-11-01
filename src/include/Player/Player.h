@@ -1,5 +1,6 @@
 #pragma once
 #include "Maze/Maze.h"
+#include "Timer/Timer.h"
 #include <raylib.h>
 
 #define STATE_IDLE 00001
@@ -33,7 +34,8 @@ public:
   int getCellY();
 
   void renderPlayer(Rectangle frameRec);
-  void updatePlayer(Maze &maze, Camera2D &camera);
+  void updatePlayer(Maze &maze, Camera2D &camera, Timer &inputTimer);
+  void resetState();
   void setScale(float scale);
   void setState(int state);
 
