@@ -15,7 +15,7 @@ int main() {
 
   std::srand(std::time(0));
   Window window(1270, 720, "Hello World");
-  Maze maze(40, 40);
+  Maze maze(10, 10);
 
   Player player;
   floor_texture = LoadTexture("../Resources/texture/floor_texture.png");

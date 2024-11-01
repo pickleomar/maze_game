@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Maze/Maze.h"
 #include <raylib.h>
-
+//
 Player::Player() : posX(16), posY(16), speed(16), scale(3) {
   this->playerIdle = LoadTexture("../Resources/player/player_idle.png");
   this->playerMovingDown =
@@ -47,7 +47,7 @@ void Player::updatePlayer(Maze &maze, Camera2D &camera) {
 
     setState(STATE_MOVING_DOWN);
     moveDown();
-    // camera.target = (Vector2){posX + (16 * scale), posY + (16 * scale)};
+    // camer300a.target = (Vector2){posX + (16 * scale), posY + (16 * scale)};
     camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
   }
 

@@ -3,8 +3,6 @@
 #include "Timer/Timer.h"
 #include "Window/Window.h"
 #include <Maze/Maze.h>
-
-#include <cstddef>
 #include <raylib.h>
 
 Game::Game(Window &win, Maze &maze, Player &player, float scale)
