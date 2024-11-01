@@ -12,7 +12,7 @@ project(game LANGUAGES CXX)
 # include_directories(engine)
 # add_subdirectory(engine)
 
-add_subdirectory(raylib)
+add_subdirectory(libs/raylib)
 
 file(GLOB include_files
 					"src/include/*.h"
