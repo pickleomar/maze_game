@@ -80,8 +80,20 @@ void Maze::generateMaze() {
 
   // Set an Entrence for the player
   this->maze[1][0] = 0;
+
+  int exit = rand() % 3;
+
+  if (exit == 0) {
+    this->maze[__height - 2][__width - 1] = 0;
+
+  } else if (exit == 1) {
+    this->maze[1][__width - 1] = 0;
+
+  } else {
+    this->maze[__height - 2][0] = 0;
+  }
   // Set an Exit for the player
-  this->maze[__height - 2][__width - 1] = 0;
+  // this->maze[__height - 2][__width - 1] = 0;
 };
 
 void Maze::renderMaze(Texture2D wallTexture, Texture2D floorTexture) {
@@ -91,6 +103,7 @@ void Maze::renderMaze(Texture2D wallTexture, Texture2D floorTexture) {
   for (int y = 0; y < maze.size(); ++y) {
     for (int x = 0; x < maze[0].size(); ++x) {
       if (maze[y][x] == 1) {
+
         DrawTextureEx(wallTexture,
                       {(float)(originX + (x * 16 * scale)),
                        (float)(originY + (y * 16 * scale))},

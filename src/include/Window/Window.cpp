@@ -41,6 +41,18 @@ int Window::windowHeight() { return GetScreenHeight(); }
 // Return the Window Width
 int Window::windowWidth() { return GetScreenHeight(); }
 
-int Window::getWindowWidth() { return this->__win_width; }
+int Window::getWindowWidth() {
+  if (__win_width == 0) {
+    return GetScreenWidth();
+  } else {
+    return this->__win_width;
+  }
+}
 
-int Window::getWindowHeight() { return this->__win_height; }
+int Window::getWindowHeight() {
+  if (__win_height == 0) {
+    return GetScreenHeight();
+  } else {
+    return this->__win_height;
+  }
+}

@@ -12,8 +12,8 @@
 int main() {
 
   std::srand(std::time(0));
-  Window window(1270, 720, "Hello World");
-  Maze maze(20, 20);
+  Window window(0, 0, "Hello World");
+  Maze maze(50, 50);
 
   Player player;
 
