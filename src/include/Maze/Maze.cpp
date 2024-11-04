@@ -102,9 +102,7 @@ void Maze::renderMaze(Texture2D wallTexture, Texture2D floorTexture) {
                        (float)(originY + (y * 16 * scale))},
                       0, scale, RAYWHITE);
       }
-      // std::cout << " "; // Path
     }
-    // std::cout << std::endl;
   }
 }
 

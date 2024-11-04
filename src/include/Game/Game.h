@@ -12,11 +12,12 @@ public:
   ~Game();
 
   void init();
-  void Loop(Texture2D wallTexture, Texture2D floorTexture,
-            Texture2D playerIdle);
+  void Loop();
   void setScale(float scale);
 
 private:
+  Texture2D wallTexture;
+  Texture2D floorTexture;
   float scale = 1;
   Window __window;
   Maze __maze;

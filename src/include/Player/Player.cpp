@@ -52,7 +52,7 @@ void Player::updatePlayer(Maze &maze, Camera2D &camera, Timer &inputTimer) {
 
       setState(STATE_MOVING_DOWN);
       moveDown();
-      // camer300a.target = (Vector2){posX + (16 * scale), posY + (16 * scale)};
+
       camera.target = (Vector2){(posX + 16) * scale, (posY + 16) * scale};
     }
 
