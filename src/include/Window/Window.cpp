@@ -1,11 +1,6 @@
-/*
-
-
-*/
-
 #include "Window.h"
 #include "raylib.h"
-using string = std::string;
+using std::string;
 
 // Constructor definition
 Window::Window(int window_width, int window_height, string window_title)
@@ -13,6 +8,8 @@ Window::Window(int window_width, int window_height, string window_title)
       __win_height(window_height) {
   this->init();
 };
+
+Window::~Window() {}
 
 Window::Window(string window_title)
     : __win_title(window_title), __win_width(0), __win_height(0) {

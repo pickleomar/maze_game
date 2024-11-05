@@ -1,3 +1,9 @@
+/*
+The Game Class is responsible of instansiating the game and handling the game
+loop, the variables updates , and camera movements
+
+*/
+
 #include "Game.h"
 #include "Player/Player.h"
 #include "Timer/Timer.h"
@@ -5,6 +11,10 @@
 #include <Maze/Maze.h>
 #include <raylib.h>
 
+/*
+Game Class Constructor.
+instantiate and Load the Texture from a file to the GPU VRAM
+*/
 Game::Game(Window &win, Maze &maze, Player &player, float scale)
     : __window(win), __maze(maze), __player(player), scale(scale) {
 
@@ -12,6 +22,11 @@ Game::Game(Window &win, Maze &maze, Player &player, float scale)
   floorTexture = LoadTexture("../Resources/texture/floor_texture.png");
 }
 
+/*
+Game Class destructor.
+Unload the Textures from the GPU VRAM.
+close the window Context.
+*/
 Game::~Game() {
   UnloadTexture(this->__player.playerIdle);
   UnloadTexture(this->__player.playerMovingUp);
@@ -23,6 +38,12 @@ Game::~Game() {
   CloseWindow();
 };
 
+/*
+Game Lopp.
+This function is the core of the game,it handle the input for the player using
+the update function
+
+*/
 void Game::Loop() {
 
   this->init();
@@ -46,8 +67,12 @@ void Game::Loop() {
   camera.rotation = 0;
   camera.zoom = 2.0f;
 
-  while (!WindowShouldClose()) {
+  Music music = LoadMusicStream("../Resources/audio/ambient.mp3");
 
+  PlayMusicStream(music);
+
+  while (!WindowShouldClose()) {
+    UpdateMusicStream(music);
     framesCounter++;
     if (framesCounter >= (60 / framesSpeed)) {
       framesCounter = 0;
@@ -82,6 +107,7 @@ void Game::Loop() {
   }
 }
 
+// Function that runs in the start of the Game loop.
 void Game::init() {
   __maze.generateMaze();
   __player.setScale(scale);

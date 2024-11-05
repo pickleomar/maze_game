@@ -9,6 +9,7 @@ public:
   Window(string window_title);
   // Init window with all params
   Window(int window_width, int window_height, string window_title);
+  ~Window();
   int getWindowHeight();
   int getWindowWidth();
   bool windowCloseConfirmation = false;
