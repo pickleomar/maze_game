@@ -3,7 +3,7 @@
 #include "Timer/Timer.h"
 #include <raylib.h>
 //
-Player::Player() : posX(16), posY(16), speed(16), scale(3) {
+Player::Player() : posX(16), posY(16), speed(2), scale(3) {
   this->playerIdle = LoadTexture("../Resources/player/player_idle.png");
   this->playerMovingDown =
       LoadTexture("../Resources/player/player_moving_down.png");
@@ -48,7 +48,7 @@ void Player::updatePlayer(Maze &maze, Camera2D &camera, Timer &inputTimer) {
   if (inputTimer.timerDone()) {
 
     if ((IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)) &&
-        (maze.getMaze()[getCellY() + 1][getCellX()] != 1)) {
+        (maze.getMaze()[getCellY() + 1][getCellX()] == 0)) {
 
       setState(STATE_MOVING_DOWN);
       moveDown();
@@ -57,7 +57,7 @@ void Player::updatePlayer(Maze &maze, Camera2D &camera, Timer &inputTimer) {
     }
 
     if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W)) &&
-        (maze.getMaze()[getCellY() - 1][getCellX()] != 1)) {
+        (maze.getMaze()[getCellY() - 1][getCellX()] == 0)) {
 
       setState(STATE_MOVING_UP);
       moveUp();
@@ -66,7 +66,7 @@ void Player::updatePlayer(Maze &maze, Camera2D &camera, Timer &inputTimer) {
     }
 
     if ((IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) &&
-        (maze.getMaze()[getCellY()][getCellX() + 1] != 1)) {
+        (maze.getMaze()[getCellY()][getCellX() + 1] == 0)) {
 
       setState(STATE_MOVING_RIGHT);
       moveRight();
@@ -74,7 +74,7 @@ void Player::updatePlayer(Maze &maze, Camera2D &camera, Timer &inputTimer) {
     }
 
     if ((IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) &&
-        (maze.getMaze()[getCellY()][getCellX() - 1] != 1)) {
+        (maze.getMaze()[getCellY()][getCellX() - 1] == 0)) {
 
       setState(STATE_MOVING_LEFT);
       moveLeft();

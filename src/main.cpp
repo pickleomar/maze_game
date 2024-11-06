@@ -12,8 +12,8 @@
 int main() {
 
   std::srand(std::time(0));
-  Window window(0, 0, "Hello World");
-  Maze maze(50, 50);
+  Window window(1270, 720, "Hello World");
+  Maze maze(30, 20);
 
   InitAudioDevice(); // Initialize audio device
 
@@ -22,6 +22,7 @@ int main() {
   Game game(window, maze, player, 1);
 
   game.Loop();
+
   // UnloadMusicStream(music); // Unload music stream buffers from RAM
 
   // CloseAudioDevice();
