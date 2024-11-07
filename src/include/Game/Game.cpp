@@ -5,6 +5,7 @@ loop, the variables updates , and camera movements
 */
 
 #include "Game.h"
+#include "Gui/Gui.h"
 #include "Player/Player.h"
 #include "Timer/Timer.h"
 #include "Window/Window.h"
@@ -55,7 +56,7 @@ void Game::Loop() {
                         (float)__player.playerIdle.height};
 
   Timer inputTimer;
-  inputTimer.startTimer(0.12);
+  inputTimer.startTimer(0.2);
 
   Camera2D camera = {0};
   camera.target = (Vector2){(__player.getPosX() + 16) * scale,
@@ -70,8 +71,8 @@ void Game::Loop() {
   Music music = LoadMusicStream("../Resources/audio/ambient.mp3");
 
   PlayMusicStream(music);
-
   while (!WindowShouldClose()) {
+
     UpdateMusicStream(music);
     framesCounter++;
     if (framesCounter >= (60 / framesSpeed)) {
@@ -90,6 +91,7 @@ void Game::Loop() {
 
     BeginDrawing();
     ClearBackground(BLACK);
+
     BeginMode2D(camera);
 
     __maze.renderMaze(wallTexture, floorTexture);
@@ -103,6 +105,7 @@ void Game::Loop() {
       DrawText("You Win", __window.getWindowWidth() / 2,
                __window.getWindowHeight() / 2, 50, GREEN);
     }
+
     EndDrawing();
   }
 }

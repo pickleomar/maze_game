@@ -1,32 +1,59 @@
-#include "Window/Window.h"
-#include <Gui/Gui.h>
-#include <iostream>
-#include <raylib.h>
+#include "Gui/Gui.h"
+#include "raylib.h"
 
-int main() {
+#define NUM_FRAMES                                                             \
+  3 // Number of frames (rectangles) for the button sprite texture
 
-  Window win(1270, 720, "Hello World");
-  Button startBtn{"../Resources/gui/start_button.png", {100, 100}, 6};
-  Button optionsBtn{"../Resources/gui/option_button.png", {100, 200}, 6};
-  Button exitBtn{"../Resources/gui/exit_button.png", {100, 300}, 6};
+int main(void) {
+  // Initialization
+  //--------------------------------------------------------------------------------------
+  const int screenWidth = 800;
+  const int screenHeight = 450;
 
-  while (!win.ShouldClose()) {
+  InitWindow(screenWidth, screenHeight,
+             "raylib [textures] example - sprite button");
 
-    Vector2 mousePos = GetMousePosition();
-    if (startBtn.isPressed(mousePos, IsMouseButtonPressed(MOUSE_BUTTON_LEFT))) {
-      std::cout << "Start Button Clicked" << "\n";
+  Button btnStart("../Resources/button_start.png", 6, {100, 100});
+  Button btnOptions("../Resources/button_options.png", 6, {100, 200});
+  Button btnExit("../Resources/button_exit.png", 6, {100, 300});
+  Vector2 mousePoint = {0.0f, 0.0f};
+
+  SetTargetFPS(60);
+  //--------------------------------------------------------------------------------------
+
+  // Main game loop
+  while (!WindowShouldClose()) // Detect window close button or ESC key
+  {
+
+    mousePoint = GetMousePosition();
+
+    btnStart.checkState(mousePoint);
+    btnOptions.checkState(mousePoint);
+    btnExit.checkState(mousePoint);
+
+    if (btnStart.isPressed()) {
+      TraceLog(LOG_INFO, "Start Button Clicked");
+    }
+
+    if (btnOptions.isPressed()) {
+      TraceLog(LOG_INFO, "Options Button Clicked");
+    }
+    if (btnExit.isPressed()) {
+      TraceLog(LOG_INFO, "Exit Button Clicked");
     }
 
     BeginDrawing();
-    ClearBackground(WHITE);
 
-    startBtn.Draw();
-    optionsBtn.Draw();
-    exitBtn.Draw();
+    ClearBackground(RAYWHITE);
+
+    btnStart.drawbutton();
+    btnOptions.drawbutton();
+    btnExit.drawbutton();
+
     EndDrawing();
+    //----------------------------------------------------------------------------------
   }
-
-  CloseWindow();
+  CloseWindow(); // Close window and OpenGL context
 
   return 0;
 }

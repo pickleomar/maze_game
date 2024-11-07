@@ -2,26 +2,45 @@
 #include "raylib.h"
 #include <stdbool.h>
 
-Button::Button(const char *imag, Vector2 position, float scale) {
-  texture = LoadTexture(imag);
-  this->position = position;
-  this->scale = scale;
+Button::Button(const char *filename, float scale, Vector2 position)
+    : scale(scale), position(position) {
+  texture = LoadTexture(filename);
+  this->buttonBouds = {position.x, position.y, (float)texture.width * scale,
+                       texture.height * scale / NUM_FRAMES};
 }
 
-Button::~Button() { UnloadTexture(texture); }
+// Button::~Button() { UnloadTexture(texture); }
 
-void Button::Draw() { DrawTextureEx(texture, position, 0, scale, RAYWHITE); }
+void Button::setState(int state) { this->state = state; }
 
-bool Button::isPressed(Vector2 mousePos, bool mousePressed) {
+void Button::drawbutton() {
+  Rectangle sourceRec = {0, 0, (float)texture.width,
+                         (float)texture.height / NUM_FRAMES};
 
-  Rectangle rec = {position.x, position.y, float(texture.width),
-                   float(texture.height)};
+  sourceRec.y = state * (float)texture.height / NUM_FRAMES;
 
-  if (CheckCollisionPointRec(mousePos, rec) && mousePressed) {
-    return true;
+  DrawTexturePro(texture, sourceRec,
+                 {buttonBouds.x, buttonBouds.y, (float)texture.width * scale,
+                  (float)texture.height / NUM_FRAMES * scale},
+                 {0, 0}, 0, WHITE);
+}
+
+Rectangle Button::getBounds() { return buttonBouds; }
+
+bool Button::isPressed() { return buttonAction; }
+
+void Button::checkState(Vector2 mousePos) {
+  buttonAction = false;
+  if (CheckCollisionPointRec(mousePos, buttonBouds)) {
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+      setState(BTN_PRESSED);
+    } else {
+      setState(BTN_HOVERED);
+    }
+    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+      buttonAction = true;
+    }
   } else {
-    return false;
-  };
-
-  return 0;
+    setState(BTN_NORMAL);
+  }
 }
