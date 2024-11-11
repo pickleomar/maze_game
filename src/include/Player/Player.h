@@ -35,6 +35,13 @@ public:
 
   void renderPlayer(Rectangle frameRec);
   void updatePlayer(Maze &maze, Camera2D &camera, Timer &inputTimer);
+  bool isCollidingWithWall(float x, float y, float width, float height,
+                           Maze &maze);
+
+  bool isCollidingTop(float x, float y, float size, Maze &maze);
+  bool isCollidingBottom(float x, float y, float size, Maze &maze);
+  bool isCollidingLeft(float x, float y, float size, Maze &maze);
+  bool isCollidingRight(float x, float y, float size, Maze &maze);
   void resetState();
   void setScale(float scale);
   void setState(int state);

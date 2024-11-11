@@ -7,10 +7,22 @@ class Maze {
 public:
   Maze(int height, int width);
 
+  Texture2D wallTexture;
+  Texture2D topWallTexture;
+  Texture2D bottomWallTexture;
+  Texture2D leftWallTexture;
+  Texture2D rightWallTexture;
+  Texture2D floorTexture;
+  Texture2D leftTopCornerTexture;
+  Texture2D rightTopCornerTexture;
+  Texture2D rightBottomCornerTexture;
+  Texture2D leftBottomCornerTexture;
+  Texture2D wallLatteraleTexture;
+
   void generateMaze();
   bool isWall(int x, int y);
   void printMazeToConsole();
-  void renderMaze(Texture2D wallTexture, Texture2D floorTexture);
+  void renderMaze();
   int getWidth();
   int getHeight();
   vector<vector<int>> getMaze();
