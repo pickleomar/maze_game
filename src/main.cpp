@@ -1,4 +1,5 @@
 #include "Game/Game.h"
+#include "Game/Manager.h"
 #include "Player/Player.h"
 #include "Window/Window.h"
 #include <Maze/Maze.h>
@@ -15,19 +16,15 @@ int main() {
   std::srand(std::time(0));
   Window window(1270, 720, "Hello World");
   Maze maze(30, 20);
+  Manager manager;
 
   InitAudioDevice(); // Initialize audio device
 
   Player player;
 
-  Game game(window, maze, player, 1);
+  Game game(window, maze, player, manager, 1);
 
   game.Loop();
 
-  // UnloadMusicStream(music); // Unload music stream buffers from RAM
-
-  // CloseAudioDevice();
-
-  // CloseWindow();
   return 0;
 }

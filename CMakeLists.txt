@@ -10,14 +10,11 @@ set(BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BINARY_DIR})
 
 
-# set(raylib_USE_STATIC_LIBS ON)
 # find_package(raylib REQUIRED)
 
 
 project(game LANGUAGES CXX)
 
-# include_directories(engine)
-# add_subdirectory(engine)
 
 add_subdirectory(libs/raylib)
 
@@ -40,7 +37,8 @@ file(GLOB include_files
 					"src/include/Timer/*.cpp"
 )
 
-add_executable(game src/main0.cpp ${include_files})
+add_executable(game src/main.cpp ${include_files})
+
 
 target_include_directories(game PUBLIC  ${CMAKE_CURRENT_LIST_DIR}/src/include )
 
@@ -53,7 +51,6 @@ add_custom_target(copy_resources ALL
 
 add_dependencies(game copy_resources)
 
-# target_link_libraries(game Engine ${raylib_LIBRARIES})
 target_link_libraries(game  PRIVATE raylib)
 
 if (EMSCRIPTEN)
@@ -63,5 +60,4 @@ endif ()
 
 
 
-# target_link_libraries(game Engine ${raylib_LIBRARIES})
 target_link_libraries(game  PRIVATE raylib)

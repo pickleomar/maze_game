@@ -5,6 +5,9 @@ loop, the variables updates , and camera movements
 */
 
 #include "Game.h"
+#include "Game/Manager.h"
+#include "Gui/Button.h"
+#include "Gui/Gui.h"
 #include "Player/Player.h"
 #include "Timer/Timer.h"
 #include "Window/Window.h"
@@ -19,9 +22,10 @@ loop, the variables updates , and camera movements
 Game Class Constructor.
 instantiate and Load the Texture from a file to the GPU VRAM
 */
-Game::Game(Window &win, Maze &maze, Player &player, float scale)
-    : __window(win), __maze(maze), __player(player), scale(scale) {
-
+Game::Game(Window &win, Maze &maze, Player &player, Manager &manager,
+           float scale)
+    : __window(win), __maze(maze), __player(player), __manager(manager),
+      scale(scale) {
   darknessTexture = LoadTexture("Resources/texture/darkness.png");
 }
 
@@ -49,9 +53,9 @@ Game::~Game() {
   CloseWindow();
 };
 
-void Game::DrawFrame(int framesCounter, int framesSpeed, int currentFrame,
-                     Rectangle frameRec, Camera2D camera, Timer inputTimer,
-                     Music music) {
+void Game::DrawGame(int &framesCounter, int &framesSpeed, int &currentFrame,
+                    Rectangle &frameRec, Camera2D &camera, Timer &inputTimer,
+                    Music &music) {
 
   UpdateMusicStream(music);
   framesCounter++;
@@ -124,52 +128,20 @@ void Game::Loop() {
   camera.rotation = 0;
   camera.zoom = 2.0f;
 
-  Music music = LoadMusicStream("../Resources/audio/ambient.mp3");
+  Music music = LoadMusicStream("Resources/audio/ambient.mp3");
 
   PlayMusicStream(music);
 
-  while (!WindowShouldClose()) {
+  Menu menu;
 
-    UpdateMusicStream(music);
-    framesCounter++;
-    if (framesCounter >= (60 / framesSpeed)) {
-      framesCounter = 0;
-      currentFrame++;
+  while (!WindowShouldClose() && !__manager.exitGame) {
+    mousePosition = GetMousePosition();
 
-      if (currentFrame > 5)
-        currentFrame = 0;
-
-      frameRec.x = (float)currentFrame * (float)__player.playerIdle.width / 4;
-    }
-
-    camera.zoom += ((float)GetMouseWheelMove() * 0.1f);
-
-    __player.updatePlayer(__maze, camera, inputTimer);
-
-    BeginDrawing();
-    ClearBackground(BLACK);
-
-    for (int j = 0; j <= 25; j++) {
-      for (int i = 0; i <= 40; i++) {
-        DrawTexture(darknessTexture, i * 64, j * 64, RAYWHITE);
-      }
-    }
-
-    BeginMode2D(camera);
-
-    __maze.renderMaze();
-
-    __player.renderPlayer(frameRec);
-
-    EndMode2D();
-
-    if (__player.getCellX() == __maze.getWidth() - 1 &&
-        __player.getCellY() == __maze.getHeight() - 2) {
-      DrawText("You Win", __window.getWindowWidth() / 2,
-               __window.getWindowHeight() / 2, 50, GREEN);
-    }
-
-    EndDrawing();
+    if (__manager.getScreen() == MAIN_MENU_SCREEN)
+      menu.DrawMenu(__manager);
+    else
+      DrawGame(framesCounter, framesSpeed, currentFrame, frameRec, camera,
+               inputTimer, music);
   }
 }
 

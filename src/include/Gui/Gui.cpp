@@ -1,46 +1,48 @@
 #include "Gui.h"
+#include "Button.h"
+#include "Game/Manager.h"
 #include "raylib.h"
-#include <stdbool.h>
 
-Button::Button(const char *filename, float scale, Vector2 position)
-    : scale(scale), position(position) {
-  texture = LoadTexture(filename);
-  this->buttonBouds = {position.x, position.y, (float)texture.width * scale,
-                       texture.height * scale / NUM_FRAMES};
+Menu::Menu() {
+  btnStart = {"Resources/gui/button_start.png", 8};
+  btnOptions = {"Resources/gui/button_options.png", 8};
+  btnExit = {"Resources/gui/button_exit.png", 8};
+  clickSound = LoadSound("Resources/audio/button_clicked.mp3");
 }
 
-// Button::~Button() { UnloadTexture(texture); }
+Menu::~Menu() { UnloadSound(clickSound); }
 
-void Button::setState(int state) { this->state = state; }
+void Menu::DrawMenu(Manager &manager) {
+  // Update Functions
+  btnStart.update(GetMousePosition());
+  btnOptions.update(GetMousePosition());
+  btnExit.update(GetMousePosition());
 
-void Button::drawbutton() {
-  Rectangle sourceRec = {0, 0, (float)texture.width,
-                         (float)texture.height / NUM_FRAMES};
+  // Positions Settings
+  btnStart.SetPosition(mainMenuPosition);
+  btnOptions.SetPosition({mainMenuPosition.x, mainMenuPosition.y + 140});
+  btnExit.SetPosition({mainMenuPosition.x, mainMenuPosition.y + 280});
 
-  sourceRec.y = state * (float)texture.height / NUM_FRAMES;
-
-  DrawTexturePro(texture, sourceRec,
-                 {buttonBouds.x, buttonBouds.y, (float)texture.width * scale,
-                  (float)texture.height / NUM_FRAMES * scale},
-                 {0, 0}, 0, WHITE);
-}
-
-Rectangle Button::getBounds() { return buttonBouds; }
-
-bool Button::isPressed() { return buttonAction; }
-
-void Button::checkState(Vector2 mousePos) {
-  buttonAction = false;
-  if (CheckCollisionPointRec(mousePos, buttonBouds)) {
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-      setState(BTN_PRESSED);
-    } else {
-      setState(BTN_HOVERED);
-    }
-    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-      buttonAction = true;
-    }
-  } else {
-    setState(BTN_NORMAL);
+  if (btnStart.isPressed()) {
+    manager.setScreen(GAME_SCREEN);
+    PlaySound(clickSound);
   }
+
+  if (btnOptions.isPressed()) {
+    PlaySound(clickSound);
+  }
+
+  if (btnExit.isPressed()) {
+    manager.exitGame = 1;
+    PlaySound(clickSound);
+  }
+
+  BeginDrawing();
+  ClearBackground(GRAY);
+
+  btnStart.drawbutton();
+  btnOptions.drawbutton();
+  btnExit.drawbutton();
+
+  EndDrawing();
 }

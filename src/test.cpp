@@ -1,34 +1,29 @@
-#include "raylib.h"
+// #include "Gui/Button.h"
+// #include "raylib.h"
 
-#include "raygui.h"
+// int main() {
+//   InitWindow(800, 600, "Button Example");
+//   Texture2D buttonTexture = LoadTexture("Resources/gui/button_exit.png");
 
-int main() {
-  InitWindow(400, 200, "raygui - controls test suite");
-  SetTargetFPS(60);
+//   Button myButton(200, 200, buttonTexture.width, buttonTexture.height,
+//                   buttonTexture);
 
-  bool showMessageBox = false;
+//   while (!WindowShouldClose()) {
+//     BeginDrawing();
+//     ClearBackground(RAYWHITE);
 
-  while (!WindowShouldClose()) {
-    // Draw
-    //----------------------------------------------------------------------------------
-    BeginDrawing();
-    ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
+//     myButton.Update();
+//     myButton.Draw();
 
-    if (GuiButton((Rectangle){24, 24, 120, 30}, "#191#Show Message"))
-      showMessageBox = true;
+//     if (myButton.IsClicked()) {
+//       DrawText("Button Clicked!", 350, 300, 20, RED);
+//     }
 
-    if (showMessageBox) {
-      int result =
-          GuiMessageBox((Rectangle){85, 70, 250, 100}, "#191#Message Box",
-                        "Hi! This is a message!", "Nice;Cool");
+//     EndDrawing();
+//   }
 
-      if (result >= 0)
-        showMessageBox = false;
-    }
+//   UnloadTexture(buttonTexture);
+//   CloseWindow();
 
-    EndDrawing();
-  }
-
-  CloseWindow();
-  return 0;
-}
+//   return 0;
+// }

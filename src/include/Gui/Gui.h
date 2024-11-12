@@ -1,27 +1,19 @@
 #pragma once
-#include <raylib.h>
 
-#define NUM_FRAMES 3
-
-#define BTN_NORMAL 0
-#define BTN_HOVERED 1
-#define BTN_PRESSED 2
-
-class Button {
+#include "Button.h"
+#include "Game/Manager.h"
+#include "raylib.h"
+class Menu {
 public:
-  Button(const char *filename, float scale, Vector2 position);
-  // ~Button();
-  void drawbutton();
-  void setState(int state);
-  Rectangle getBounds();
-  bool isPressed();
-  void checkState(Vector2 mousePos);
-  Texture2D texture;
+  Menu();
+  ~Menu();
+  void DrawMenu(Manager &manager);
 
 private:
-  Rectangle buttonBouds;
-  Vector2 position;
-  float scale;
-  int state = BTN_NORMAL;
-  bool buttonAction = false;
+  Button btnStart;
+  Button btnExit;
+  Button btnOptions;
+  Vector2 mainMenuPosition = {800, 160};
+
+  Sound clickSound;
 };
