@@ -23,6 +23,7 @@ public:
   bool isWall(int x, int y);
   void printMazeToConsole();
   void renderMaze();
+  void renderMaze02();
   int getWidth();
   int getHeight();
   vector<vector<int>> getMaze();

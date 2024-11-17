@@ -28,6 +28,10 @@ void Menu::DrawMenu(Manager &manager) {
     PlaySound(clickSound);
   }
 
+  if (IsKeyPressed(KEY_ENTER)) {
+    manager.setScreen(GAME_SCREEN);
+  }
+
   if (btnOptions.isPressed()) {
     PlaySound(clickSound);
   }

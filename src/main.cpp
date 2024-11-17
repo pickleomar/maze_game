@@ -15,14 +15,13 @@ int main() {
 
   std::srand(std::time(0));
   Window window(1270, 720, "Hello World");
-  Maze maze(30, 20);
-  Manager manager;
+  Maze maze(60, 40);
 
   InitAudioDevice(); // Initialize audio device
 
   Player player;
 
-  Game game(window, maze, player, manager, 1);
+  Game game(window, maze, player, 1);
 
   game.Loop();
 

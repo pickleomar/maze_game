@@ -1,5 +1,6 @@
 #pragma once
 #include "Game/Manager.h"
+#include "Maze/Map.h"
 #include "Maze/Maze.h"
 #include "Player/Player.h"
 #include "Window/Window.h"
@@ -8,14 +9,13 @@
 class Game {
 
 public:
-  Game(Window &win, Maze &maze, Player &player, Manager &manager, float scale);
+  Game(Window &win, Maze &maze, Player &player, float scale);
   ~Game();
 
   void init();
   void Loop();
   void DrawGame(int &framesCounter, int &framesSpeed, int &currentFrame,
-                Rectangle &frameRec, Camera2D &camera, Timer &inputTimer,
-                Music &music);
+                Rectangle &frameRec, Timer &inputTimer, Music &music);
   void setScale(float scale);
 
 private:
@@ -26,4 +26,6 @@ private:
   Maze __maze;
   Player __player;
   Manager __manager;
+  Camera2D camera = {0};
+  Map __map;
 };

@@ -8,7 +8,9 @@
 #include <raylib.h>
 
 // There is a BUG if the speed is setted to a odd number
-Player::Player() : posX(16), posY(16), speed(2), scale(3), state(STATE_IDLE) {
+Player::Player()
+    : posX(PLAYER_SIZE), posY(PLAYER_SIZE), speed(2), scale(3),
+      state(STATE_IDLE) {
   playerIdle = LoadTexture("Resources/player/player_idle.png");
   playerMovingDown = LoadTexture("Resources/player/player_moving_down.png");
   playerMovingUp = LoadTexture("Resources/player/player_moving_up.png");

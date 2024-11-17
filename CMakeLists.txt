@@ -27,8 +27,6 @@ file(GLOB include_files
 					"src/include/Window/*.cpp"
 					"src/include/Game/*.h"
 					"src/include/Game/*.cpp"
-					"src/include/Camera/*.h"
-					"src/include/Camera/*.cpp"
 					"src/include/Gui/*.h"
 					"src/include/Gui/*.cpp"
 					"src/include/Player/*.h"

@@ -8,6 +8,7 @@ loop, the variables updates , and camera movements
 #include "Game/Manager.h"
 #include "Gui/Button.h"
 #include "Gui/Gui.h"
+#include "Maze/Map.h"
 #include "Player/Player.h"
 #include "Timer/Timer.h"
 #include "Window/Window.h"
@@ -22,10 +23,10 @@ loop, the variables updates , and camera movements
 Game Class Constructor.
 instantiate and Load the Texture from a file to the GPU VRAM
 */
-Game::Game(Window &win, Maze &maze, Player &player, Manager &manager,
-           float scale)
-    : __window(win), __maze(maze), __player(player), __manager(manager),
-      scale(scale) {
+Game::Game(Window &win, Maze &maze, Player &player, float scale)
+    : __window(win), __maze(maze), __player(player), scale(scale) {
+  __manager = Manager();
+  __map = Map();
   darknessTexture = LoadTexture("Resources/texture/darkness.png");
 }
 
@@ -54,10 +55,10 @@ Game::~Game() {
 };
 
 void Game::DrawGame(int &framesCounter, int &framesSpeed, int &currentFrame,
-                    Rectangle &frameRec, Camera2D &camera, Timer &inputTimer,
-                    Music &music) {
+                    Rectangle &frameRec, Timer &inputTimer, Music &music) {
 
   UpdateMusicStream(music);
+
   framesCounter++;
   if (framesCounter >= (60 / framesSpeed)) {
     framesCounter = 0;
@@ -72,6 +73,7 @@ void Game::DrawGame(int &framesCounter, int &framesSpeed, int &currentFrame,
   camera.zoom += ((float)GetMouseWheelMove() * 0.1f);
 
   __player.updatePlayer(__maze, camera, inputTimer);
+  __map.update();
 
   BeginDrawing();
   ClearBackground(BLACK);
@@ -96,6 +98,8 @@ void Game::DrawGame(int &framesCounter, int &framesSpeed, int &currentFrame,
              __window.getWindowHeight() / 2, 50, GREEN);
   }
 
+  __map.renderMap(__maze, __player);
+
   EndDrawing();
 }
 
@@ -118,7 +122,6 @@ void Game::Loop() {
   Timer inputTimer;
   inputTimer.startTimer(0.2);
 
-  Camera2D camera = {0};
   camera.target = (Vector2){(__player.getPosX() + 16) * scale,
                             (__player.getPosY() + 16) * scale};
   // camera.offset = (Vector2){400, 400};
@@ -126,7 +129,7 @@ void Game::Loop() {
   camera.offset = (Vector2){__window.getWindowWidth() / (3.0f),
                             __window.getWindowHeight() / (3.0f)};
   camera.rotation = 0;
-  camera.zoom = 2.0f;
+  camera.zoom = 3.0f;
 
   Music music = LoadMusicStream("Resources/audio/ambient.mp3");
 
@@ -134,14 +137,19 @@ void Game::Loop() {
 
   Menu menu;
 
-  while (!WindowShouldClose() && !__manager.exitGame) {
-    mousePosition = GetMousePosition();
+  bool showMap = false;
 
+  while (!WindowShouldClose() && !__manager.exitGame) {
+    // Updates
+
+    // Ends Updates
     if (__manager.getScreen() == MAIN_MENU_SCREEN)
       menu.DrawMenu(__manager);
-    else
-      DrawGame(framesCounter, framesSpeed, currentFrame, frameRec, camera,
-               inputTimer, music);
+    else {
+      // HideCursor();
+      DrawGame(framesCounter, framesSpeed, currentFrame, frameRec, inputTimer,
+               music);
+    }
   }
 }
 

@@ -8,6 +8,8 @@
 #include <stack>
 #include <vector>
 
+#define TILE_SIZE 16
+
 int dx[4] = {0, 1, 0, -1}; // Directions: Up, Right, Down, Left
 int dy[4] = {-1, 0, 1, 0};
 
@@ -121,70 +123,70 @@ void Maze::renderMaze() {
         // Handle Drawing sides wall
         if (x == 0) {
           DrawTextureEx(leftWallTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         } else if (x == __width - 1) {
           DrawTextureEx(rightWallTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         } else {
           DrawTextureEx(wallTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         }
 
         // Handle Drawing top and bottom walls
         if (y == 0) {
           DrawTextureEx(topWallTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         } else if (y == __height - 1) {
           DrawTextureEx(bottomWallTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         }
 
         // Handle Drawing Corners
         if (x == 0 && y == 0) {
           DrawTextureEx(leftTopCornerTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         } else if (x == 0 && y == __height - 1) {
           DrawTextureEx(leftBottomCornerTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         } else if (x == __width - 1 && y == 0) {
           DrawTextureEx(rightTopCornerTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         } else if (x == __width - 1 && y == __height - 1) {
           DrawTextureEx(rightBottomCornerTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         }
 
         if (x != 0 && x != __width - 1 && maze[y][x - 1] == 0 &&
             maze[y][x + 1] == 0) {
           DrawTextureEx(wallLatteraleTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         }
 
         if (x != 0 && x != __width - 1 && maze[y][x - 1] == 0 &&
             maze[y][x + 1] == 0 && maze[y + 1][x] == 0) {
           DrawTextureEx(wallTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         }
 
@@ -194,15 +196,55 @@ void Maze::renderMaze() {
              maze[y][x] == 1 && maze[y][x - 1] == 0 && maze[y + 1][x] == 1 &&
                  maze[y - 1][x] == 1)) {
           DrawTextureEx(wallLatteraleTexture,
-                        {(float)(originX + (x * 16 * scale)),
-                         (float)(originY + (y * 16 * scale))},
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
                         0, scale, RAYWHITE);
         }
 
       } else {
         DrawTextureEx(floorTexture,
-                      {(float)(originX + (x * 16 * scale)),
-                       (float)(originY + (y * 16 * scale))},
+                      {(float)(originX + (x * TILE_SIZE * scale)),
+                       (float)(originY + (y * TILE_SIZE * scale))},
+                      0, scale, RAYWHITE);
+      }
+    }
+  }
+}
+
+void Maze::renderMaze02() {
+  int originX = 0;
+  int originY = 0;
+
+  for (int y = 0; y < maze.size(); ++y) {
+    for (int x = 0; x < maze[0].size(); ++x) {
+      if (maze[y][x] == 1) {
+
+        if (x != 0 && x != __width - 1 && maze[y][x - 1] == 0 &&
+            maze[y][x + 1] == 0) {
+          if (maze[y + 1][x] == 1) {
+
+            DrawTextureEx(wallLatteraleTexture,
+                          {(float)(originX + 8 + (x * TILE_SIZE * scale)),
+                           (float)(originY + (y * TILE_SIZE * scale))},
+                          0, scale, RAYWHITE);
+          } else {
+            DrawTextureEx(bottomWallTexture,
+                          {(float)(originX + 8 + (x * TILE_SIZE * scale)),
+                           (float)(originY + (y * TILE_SIZE * scale))},
+                          0, scale, RAYWHITE);
+          }
+        } else {
+
+          DrawTextureEx(wallTexture,
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
+                        0, scale, RAYWHITE);
+        }
+
+      } else {
+        DrawTextureEx(floorTexture,
+                      {(float)(originX + (x * TILE_SIZE * scale)),
+                       (float)(originY + (y * TILE_SIZE * scale))},
                       0, scale, RAYWHITE);
       }
     }
@@ -210,12 +252,13 @@ void Maze::renderMaze() {
 }
 
 void Maze::printMazeToConsole() {
+  generateMaze();
   for (int y = 0; y < maze.size(); ++y) {
     for (int x = 0; x < maze[0].size(); ++x) {
       if (maze[y][x] == 1)
-        std::cout << "#"; // Wall
+        std::cout << "1 "; // Wall
       else
-        std::cout << " "; // Path
+        std::cout << "0 "; // Path
     }
     std::cout << std::endl;
   }
