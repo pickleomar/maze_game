@@ -14,8 +14,7 @@ public:
 
   void init();
   void Loop();
-  void DrawGame(int &framesCounter, int &framesSpeed, int &currentFrame,
-                Rectangle &frameRec, Timer &inputTimer, Music &music);
+  void DrawGame(Rectangle &frameRec);
   void setScale(float scale);
 
 private:

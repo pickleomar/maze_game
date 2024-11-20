@@ -54,26 +54,7 @@ Game::~Game() {
   CloseWindow();
 };
 
-void Game::DrawGame(int &framesCounter, int &framesSpeed, int &currentFrame,
-                    Rectangle &frameRec, Timer &inputTimer, Music &music) {
-
-  UpdateMusicStream(music);
-
-  framesCounter++;
-  if (framesCounter >= (60 / framesSpeed)) {
-    framesCounter = 0;
-    currentFrame++;
-
-    if (currentFrame > 5)
-      currentFrame = 0;
-
-    frameRec.x = (float)currentFrame * (float)__player.playerIdle.width / 4;
-  }
-
-  camera.zoom += ((float)GetMouseWheelMove() * 0.1f);
-
-  __player.updatePlayer(__maze, camera, inputTimer);
-  __map.update();
+void Game::DrawGame(Rectangle &frameRec) {
 
   BeginDrawing();
   ClearBackground(BLACK);
@@ -91,6 +72,10 @@ void Game::DrawGame(int &framesCounter, int &framesSpeed, int &currentFrame,
   __player.renderPlayer(frameRec);
 
   EndMode2D();
+
+  if (__manager.isPaused) {
+    DrawText("The Game is Paused", 450, 320, 40, GREEN);
+  }
 
   if (__player.getCellX() == __maze.getWidth() - 1 &&
       __player.getCellY() == __maze.getHeight() - 2) {
@@ -134,21 +119,48 @@ void Game::Loop() {
   Music music = LoadMusicStream("Resources/audio/ambient.mp3");
 
   PlayMusicStream(music);
-
   Menu menu;
 
   bool showMap = false;
 
   while (!WindowShouldClose() && !__manager.exitGame) {
     // Updates
+    if (!__manager.isPaused) {
+
+      framesCounter++;
+      if (framesCounter >= (60 / framesSpeed)) {
+        framesCounter = 0;
+        currentFrame++;
+
+        if (currentFrame > 5)
+          currentFrame = 0;
+
+        frameRec.x = (float)currentFrame * (float)__player.playerIdle.width / 4;
+      }
+
+      camera.zoom += ((float)GetMouseWheelMove() * 0.1f);
+
+      __player.updatePlayer(__maze, camera, inputTimer);
+      __map.update();
+    }
+
+    if (IsKeyPressed(KEY_SPACE)) {
+      __manager.isPaused = !__manager.isPaused;
+    }
+
+    if (__manager.isPaused) {
+      PauseMusicStream(music);
+    } else {
+      ResumeMusicStream(music);
+    }
 
     // Ends Updates
     if (__manager.getScreen() == MAIN_MENU_SCREEN)
       menu.DrawMenu(__manager);
     else {
+      UpdateMusicStream(music);
       // HideCursor();
-      DrawGame(framesCounter, framesSpeed, currentFrame, frameRec, inputTimer,
-               music);
+      DrawGame(frameRec);
     }
   }
 }
