@@ -7,12 +7,15 @@ class Menu {
 public:
   Menu();
   ~Menu();
-  void DrawMenu(Manager &manager);
+  void DrawMainMenu(Manager &manager);
+  void DrawGameBar(Manager &manager);
 
 private:
   Button btnStart;
   Button btnExit;
   Button btnOptions;
+  Button btnPause;
+  Button btnHome;
   Vector2 mainMenuPosition = {800, 160};
 
   Sound clickSound;

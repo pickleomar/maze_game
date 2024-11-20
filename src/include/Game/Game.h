@@ -1,5 +1,6 @@
 #pragma once
 #include "Game/Manager.h"
+#include "Gui/Gui.h"
 #include "Maze/Map.h"
 #include "Maze/Maze.h"
 #include "Player/Player.h"
@@ -27,4 +28,5 @@ private:
   Manager __manager;
   Camera2D camera = {0};
   Map __map;
+  Menu __menu;
 };

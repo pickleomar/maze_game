@@ -85,6 +85,8 @@ void Game::DrawGame(Rectangle &frameRec) {
 
   __map.renderMap(__maze, __player);
 
+  __menu.DrawGameBar(__manager);
+
   EndDrawing();
 }
 
@@ -119,7 +121,6 @@ void Game::Loop() {
   Music music = LoadMusicStream("Resources/audio/ambient.mp3");
 
   PlayMusicStream(music);
-  Menu menu;
 
   bool showMap = false;
 
@@ -156,7 +157,7 @@ void Game::Loop() {
 
     // Ends Updates
     if (__manager.getScreen() == MAIN_MENU_SCREEN)
-      menu.DrawMenu(__manager);
+      __menu.DrawMainMenu(__manager);
     else {
       UpdateMusicStream(music);
       // HideCursor();
