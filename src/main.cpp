@@ -14,7 +14,7 @@
 int main() {
 
   std::srand(std::time(0));
-  Window window(1270, 720, "Hello World");
+  Window *window = new Window(1270, 720, "Hello World");
   Maze maze(60, 40);
 
   InitAudioDevice(); // Initialize audio device

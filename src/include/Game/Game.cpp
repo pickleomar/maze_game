@@ -23,7 +23,7 @@ loop, the variables updates , and camera movements
 Game Class Constructor.
 instantiate and Load the Texture from a file to the GPU VRAM
 */
-Game::Game(Window &win, Maze &maze, float scale)
+Game::Game(Window *win, Maze &maze, float scale)
     : __window(win), __maze(maze), scale(scale) {
 
   __player = new Player();
@@ -63,9 +63,10 @@ Game::~Game() {
   delete __menu;
   delete __map;
   delete __manager;
+  delete __window;
 
   // Close Window
-  CloseWindow();
+  // CloseWindow();
 };
 
 void Game::DrawGame(Rectangle &frameRec) {
@@ -93,8 +94,8 @@ void Game::DrawGame(Rectangle &frameRec) {
 
   if (__player->getCellX() == __maze.getWidth() - 1 &&
       __player->getCellY() == __maze.getHeight() - 2) {
-    DrawText("You Win", __window.getWindowWidth() / 2,
-             __window.getWindowHeight() / 2, 50, GREEN);
+    DrawText("You Win", __window->getWindowWidth() / 2,
+             __window->getWindowHeight() / 2, 50, GREEN);
   }
 
   __map->renderMap(__maze, *__player);
@@ -127,8 +128,8 @@ void Game::Loop() {
                             (__player->getPosY() + 16) * scale};
   // camera.offset = (Vector2){400, 400};
 
-  camera.offset = (Vector2){__window.getWindowWidth() / (3.0f),
-                            __window.getWindowHeight() / (3.0f)};
+  camera.offset = (Vector2){__window->getWindowWidth() / (3.0f),
+                            __window->getWindowHeight() / (3.0f)};
   camera.rotation = 0;
   camera.zoom = 3.0f;
 

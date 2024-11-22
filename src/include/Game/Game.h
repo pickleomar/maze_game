@@ -10,7 +10,7 @@
 class Game {
 
 public:
-  Game(Window &win, Maze &maze, float scale);
+  Game(Window *win, Maze &maze, float scale);
   ~Game();
 
   void init();
@@ -22,7 +22,7 @@ private:
   Texture2D darknessTexture;
   Vector2 mousePosition = {0.0f, 0.0f};
   float scale = 1;
-  Window __window;
+  Window *__window;
   Maze __maze;
   Player *__player;
   Manager *__manager;
