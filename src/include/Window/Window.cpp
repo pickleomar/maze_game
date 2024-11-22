@@ -9,7 +9,7 @@ Window::Window(int window_width, int window_height, string window_title)
   this->init();
 };
 
-Window::~Window() {}
+Window::~Window() { CloseWindow(); }
 
 Window::Window(string window_title)
     : __win_title(window_title), __win_width(0), __win_height(0) {

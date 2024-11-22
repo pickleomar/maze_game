@@ -10,7 +10,7 @@
 class Game {
 
 public:
-  Game(Window &win, Maze &maze, Player &player, float scale);
+  Game(Window *win, Maze &maze, float scale);
   ~Game();
 
   void init();
@@ -22,11 +22,15 @@ private:
   Texture2D darknessTexture;
   Vector2 mousePosition = {0.0f, 0.0f};
   float scale = 1;
-  Window __window;
+  Window *__window;
+  // The Maze class need reworking due to conflict in adding level and endless
+  // mode.
   Maze __maze;
-  Player __player;
-  Manager __manager;
+  // TODO Later.
+
+  Player *__player;
+  Manager *__manager;
   Camera2D camera = {0};
-  Map __map;
-  Menu __menu;
+  Map *__map;
+  Menu *__menu;
 };
