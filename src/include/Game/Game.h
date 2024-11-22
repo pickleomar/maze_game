@@ -7,7 +7,8 @@
 #include "Window/Window.h"
 #include "raylib.h"
 
-class Game {
+class Game
+{
 
 public:
   Game(Window &win, Maze &maze, Player &player, float scale);
@@ -25,8 +26,8 @@ private:
   Window __window;
   Maze __maze;
   Player __player;
-  Manager __manager;
+  Manager *__manager;
   Camera2D camera = {0};
-  Map __map;
-  Menu __menu;
+  Map *__map;
+  Menu *__menu;
 };

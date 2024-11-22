@@ -25,8 +25,9 @@ instantiate and Load the Texture from a file to the GPU VRAM
 */
 Game::Game(Window &win, Maze &maze, Player &player, float scale)
     : __window(win), __maze(maze), __player(player), scale(scale) {
-  __manager = Manager();
-  __map = Map();
+  __menu = new Menu();
+  __manager = new Manager();
+  __map = new Map();
   darknessTexture = LoadTexture("Resources/texture/darkness.png");
 }
 
@@ -36,6 +37,8 @@ Unload the Textures from the GPU VRAM.
 close the window Context.
 */
 Game::~Game() {
+
+  // Unload All loaded file from VRAM and RAM
   UnloadTexture(this->__player.playerIdle);
   UnloadTexture(this->__player.playerMovingUp);
   UnloadTexture(this->__player.playerMovingRight);
@@ -51,6 +54,13 @@ Game::~Game() {
   UnloadTexture(this->__maze.rightBottomCornerTexture);
   UnloadTexture(this->__maze.topWallTexture);
   UnloadTexture(this->__maze.bottomWallTexture);
+  // unload Ends
+
+  delete __menu;
+  delete __map;
+  delete __manager;
+
+  // Close Window
   CloseWindow();
 };
 
@@ -73,7 +83,7 @@ void Game::DrawGame(Rectangle &frameRec) {
 
   EndMode2D();
 
-  if (__manager.isPaused) {
+  if (__manager->isPaused) {
     DrawText("The Game is Paused", 450, 320, 40, GREEN);
   }
 
@@ -83,9 +93,9 @@ void Game::DrawGame(Rectangle &frameRec) {
              __window.getWindowHeight() / 2, 50, GREEN);
   }
 
-  __map.renderMap(__maze, __player);
+  __map->renderMap(__maze, __player);
 
-  __menu.DrawGameBar(__manager);
+  __menu->DrawGameBar(*__manager);
 
   EndDrawing();
 }
@@ -124,9 +134,9 @@ void Game::Loop() {
 
   bool showMap = false;
 
-  while (!WindowShouldClose() && !__manager.exitGame) {
+  while (!WindowShouldClose() && !__manager->exitGame) {
     // Updates
-    if (!__manager.isPaused) {
+    if (!__manager->isPaused) {
 
       framesCounter++;
       if (framesCounter >= (60 / framesSpeed)) {
@@ -142,22 +152,22 @@ void Game::Loop() {
       camera.zoom += ((float)GetMouseWheelMove() * 0.1f);
 
       __player.updatePlayer(__maze, camera, inputTimer);
-      __map.update();
+      __map->update();
     }
 
     if (IsKeyPressed(KEY_SPACE)) {
-      __manager.isPaused = !__manager.isPaused;
+      __manager->isPaused = !__manager->isPaused;
     }
 
-    if (__manager.isPaused) {
+    if (__manager->isPaused) {
       PauseMusicStream(music);
     } else {
       ResumeMusicStream(music);
     }
 
     // Ends Updates
-    if (__manager.getScreen() == MAIN_MENU_SCREEN)
-      __menu.DrawMainMenu(__manager);
+    if (__manager->getScreen() == MAIN_MENU_SCREEN)
+      __menu->DrawMainMenu(*__manager);
     else {
       UpdateMusicStream(music);
       // HideCursor();
