@@ -160,7 +160,7 @@ void Game::Loop() {
       __map->update();
     }
 
-    if (IsKeyPressed(KEY_SPACE)) {
+    if (IsKeyPressed(KEY_SPACE) && __manager->getScreen() == GAME_SCREEN) {
       __manager->isPaused = !__manager->isPaused;
     }
 
