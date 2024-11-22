@@ -19,9 +19,7 @@ int main() {
 
   InitAudioDevice(); // Initialize audio device
 
-  Player player;
-
-  Game game(window, maze, player, 1);
+  Game game(window, maze, 1);
 
   game.Loop();
 
