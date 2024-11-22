@@ -23,7 +23,11 @@ private:
   Vector2 mousePosition = {0.0f, 0.0f};
   float scale = 1;
   Window *__window;
+  // The Maze class need reworking due to conflict in adding level and endless
+  // mode.
   Maze __maze;
+  // TODO Later.
+
   Player *__player;
   Manager *__manager;
   Camera2D camera = {0};
