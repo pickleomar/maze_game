@@ -15,6 +15,8 @@ loop, the variables updates , and camera movements
 #include <Maze/Maze.h>
 #include <raylib.h>
 
+#include "texture/darkness.h"
+
 #if defined(PLATFORM_WEB)
 #include <emscripten/emscripten.h>
 #endif
@@ -31,7 +33,14 @@ Game::Game(Window *win, Maze &maze, float scale)
   __manager = new Manager();
   __map = new Map();
 
-  darknessTexture = LoadTexture("Resources/texture/darkness.png");
+  Image darknessIMG = {0};
+  darknessIMG.data = DARKNESS_DATA;
+  darknessIMG.format = DARKNESS_FORMAT;
+  darknessIMG.height = DARKNESS_HEIGHT;
+  darknessIMG.width = DARKNESS_WIDTH;
+  darknessIMG.mipmaps = 1;
+
+  darknessTexture = LoadTextureFromImage(darknessIMG);
 }
 
 /*
