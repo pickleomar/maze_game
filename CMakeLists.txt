@@ -36,6 +36,7 @@ file(GLOB include_files
 )
 
 add_executable(game src/main.cpp ${include_files})
+# add_executable(game src/extract_as_h.cpp ${include_files})
 
 
 target_include_directories(game PUBLIC  ${CMAKE_CURRENT_LIST_DIR}/src/include )
