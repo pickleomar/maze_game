@@ -8,6 +8,21 @@
 #include <stack>
 #include <vector>
 
+// Resources Files ///////////////////////////
+#include "texture/bottom_wall.h"
+#include "texture/floor_texture.h"
+#include "texture/left_bottom_corner.h"
+#include "texture/left_top_corner.h"
+#include "texture/left_wall.h"
+#include "texture/right_bottom_corner.h"
+#include "texture/right_top_corner.h"
+#include "texture/right_wall.h"
+#include "texture/top_wall.h"
+#include "texture/wall_latterale.h"
+
+#include "texture/wall.h"
+//////////////////////////////////////////////
+
 #define TILE_SIZE 16
 
 int dx[4] = {0, 1, 0, -1}; // Directions: Up, Right, Down, Left
@@ -23,20 +38,101 @@ Maze::Maze(int width, int height) {
 
   maze.resize(height,
               vector<int>(width, 1)); // Initialize all cells as walls (1)
-  wallTexture = LoadTexture("Resources/texture/wall.png");
-  floorTexture = LoadTexture("Resources/texture/floor_texture.png");
-  leftWallTexture = LoadTexture("Resources/texture/left_wall.png");
-  rightWallTexture = LoadTexture("Resources/texture/right_wall.png");
-  leftTopCornerTexture = LoadTexture("Resources/texture/left_top_corner.png");
-  rightTopCornerTexture = LoadTexture("Resources/texture/right_top_corner.png");
-  rightBottomCornerTexture =
-      LoadTexture("Resources/texture/right_bottom_corner.png");
-  leftBottomCornerTexture =
-      LoadTexture("Resources/texture/left_bottom_corner.png");
 
-  topWallTexture = LoadTexture("Resources/texture/top_wall.png");
-  bottomWallTexture = LoadTexture("Resources/texture/bottom_wall.png");
-  wallLatteraleTexture = LoadTexture("Resources/texture/wall_latterale.png");
+  Image wall = {0};
+  wall.format = WALL_FORMAT;
+  wall.height = WALL_HEIGHT;
+  wall.width = WALL_WIDTH;
+  wall.data = WALL_DATA;
+  wall.mipmaps = 1;
+  wallTexture = LoadTextureFromImage(wall);
+
+  Image floor = {0};
+  floor.format = FLOOR_TEXTURE_FORMAT;
+  floor.height = FLOOR_TEXTURE_HEIGHT;
+  floor.width = FLOOR_TEXTURE_WIDTH;
+  floor.data = FLOOR_TEXTURE_DATA;
+  floor.mipmaps = 1;
+  floorTexture = LoadTextureFromImage(floor);
+
+  Image leftWall = {0};
+  leftWall.format = LEFT_WALL_FORMAT;
+  leftWall.height = LEFT_WALL_HEIGHT;
+  leftWall.width = LEFT_WALL_WIDTH;
+  leftWall.data = LEFT_WALL_DATA;
+  leftWall.mipmaps = 1;
+  leftWallTexture = LoadTextureFromImage(leftWall);
+
+  Image rightWall = {0};
+  rightWall.format = RIGHT_WALL_FORMAT;
+  rightWall.height = RIGHT_WALL_HEIGHT;
+  rightWall.width = RIGHT_WALL_WIDTH;
+  rightWall.data = RIGHT_WALL_DATA;
+  rightWall.mipmaps = 1;
+
+  rightWallTexture = LoadTextureFromImage(rightWall);
+
+  Image leftTopCornerWall = {0};
+  leftTopCornerWall.format = LEFT_TOP_CORNER_FORMAT;
+  leftTopCornerWall.height = LEFT_TOP_CORNER_HEIGHT;
+  leftTopCornerWall.width = LEFT_TOP_CORNER_WIDTH;
+  leftTopCornerWall.data = LEFT_TOP_CORNER_DATA;
+  leftTopCornerWall.mipmaps = 1;
+
+  leftTopCornerTexture = LoadTextureFromImage(leftTopCornerWall);
+
+  Image rightTopCornerWall = {0};
+  rightTopCornerWall.format = RIGHT_TOP_CORNER_FORMAT;
+  rightTopCornerWall.height = RIGHT_TOP_CORNER_HEIGHT;
+  rightTopCornerWall.width = RIGHT_TOP_CORNER_WIDTH;
+  rightTopCornerWall.data = RIGHT_TOP_CORNER_DATA;
+  rightTopCornerWall.mipmaps = 1;
+
+  rightTopCornerTexture = LoadTextureFromImage(rightTopCornerWall);
+
+  Image rightBottomCornerWall = {0};
+  rightBottomCornerWall.format = RIGHT_BOTTOM_CORNER_FORMAT;
+  rightBottomCornerWall.height = RIGHT_BOTTOM_CORNER_HEIGHT;
+  rightBottomCornerWall.width = RIGHT_BOTTOM_CORNER_WIDTH;
+  rightBottomCornerWall.data = RIGHT_BOTTOM_CORNER_DATA;
+  rightBottomCornerWall.mipmaps = 1;
+
+  rightBottomCornerTexture = LoadTextureFromImage(rightBottomCornerWall);
+
+  Image leftBottomCornerWall = {0};
+  leftBottomCornerWall.format = LEFT_BOTTOM_CORNER_FORMAT;
+  leftBottomCornerWall.height = LEFT_BOTTOM_CORNER_HEIGHT;
+  leftBottomCornerWall.width = LEFT_BOTTOM_CORNER_WIDTH;
+  leftBottomCornerWall.data = LEFT_BOTTOM_CORNER_DATA;
+  leftBottomCornerWall.mipmaps = 1;
+
+  leftBottomCornerTexture = LoadTextureFromImage(leftBottomCornerWall);
+
+  Image topWall = {0};
+  topWall.format = TOP_WALL_FORMAT;
+  topWall.height = TOP_WALL_HEIGHT;
+  topWall.width = TOP_WALL_WIDTH;
+  topWall.data = TOP_WALL_DATA;
+  topWall.mipmaps = 1;
+
+  topWallTexture = LoadTextureFromImage(topWall);
+
+  Image bottomWall = {0};
+  bottomWall.format = BOTTOM_WALL_FORMAT;
+  bottomWall.height = BOTTOM_WALL_HEIGHT;
+  bottomWall.width = BOTTOM_WALL_WIDTH;
+  bottomWall.data = BOTTOM_WALL_DATA;
+  bottomWall.mipmaps = 1;
+
+  bottomWallTexture = LoadTextureFromImage(bottomWall);
+
+  Image latteraleWall = {0};
+  latteraleWall.format = WALL_LATTERALE_FORMAT;
+  latteraleWall.height = WALL_LATTERALE_HEIGHT;
+  latteraleWall.width = WALL_LATTERALE_WIDTH;
+  latteraleWall.data = WALL_LATTERALE_DATA;
+  latteraleWall.mipmaps = 1;
+  wallLatteraleTexture = LoadTextureFromImage(latteraleWall);
 }
 
 void Maze::generateMaze() {
