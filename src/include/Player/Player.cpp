@@ -7,63 +7,12 @@
 #include "Maze/Maze.h"
 #include <raylib.h>
 
-// Texture Includes ////////////////////////////////////
-#include "player/player_idle.h"
-#include "player/player_moving_down.h"
-#include "player/player_moving_left.h"
-#include "player/player_moving_right.h"
-#include "player/player_moving_up.h"
-////////////////////////////////////////////////////////
-
 // There is a BUG if the speed is setted to a odd number
 Player::Player()
     : posX(PLAYER_SIZE), posY(PLAYER_SIZE), speed(2), scale(3),
       state(STATE_IDLE) {
 
-  Image playerIdleIMG = {0};
-  playerIdleIMG.format = PLAYER_IDLE_FORMAT;
-  playerIdleIMG.height = PLAYER_IDLE_HEIGHT;
-  playerIdleIMG.width = PLAYER_IDLE_WIDTH;
-  playerIdleIMG.data = PLAYER_IDLE_DATA;
-  playerIdleIMG.mipmaps = 1;
-  playerIdle = LoadTextureFromImage(playerIdleIMG);
-
-  // Image playerMovingDownIMG = {0};
-  // playerMovingDownIMG.format = PLAYER_IDLE_FORMAT;
-  // playerMovingDownIMG.height = PLAYER_IDLE_HEIGHT;
-  // playerMovingDownIMG.width = PLAYER_IDLE_WIDTH;
-  // playerMovingDownIMG.data = PLAYER_IDLE_DATA;
-  // playerMovingDownIMG.mipmaps = 1;
-
-  // playerMovingDown = LoadTextureFromImage(playerMovingDownIMG);
-
-  // Image playerMovingUpIMG = {0};
-  // playerMovingUpIMG.format = PLAYER_IDLE_FORMAT;
-  // playerMovingUpIMG.height = PLAYER_IDLE_HEIGHT;
-  // playerMovingUpIMG.width = PLAYER_IDLE_WIDTH;
-  // playerMovingUpIMG.data = PLAYER_IDLE_DATA;
-  // playerMovingUpIMG.mipmaps = 1;
-
-  // playerMovingUp = LoadTextureFromImage(playerMovingUpIMG);
-
-  // Image playerMovingRightIMG = {0};
-  // playerMovingRightIMG.format = PLAYER_IDLE_FORMAT;
-  // playerMovingRightIMG.height = PLAYER_IDLE_HEIGHT;
-  // playerMovingRightIMG.width = PLAYER_IDLE_WIDTH;
-  // playerMovingRightIMG.data = PLAYER_IDLE_DATA;
-  // playerMovingRightIMG.mipmaps = 1;
-
-  // playerMovingRight = LoadTextureFromImage(playerMovingRightIMG);
-
-  // Image playerMovingLeftIMG = {0};
-  // playerMovingLeftIMG.format = PLAYER_IDLE_FORMAT;
-  // playerMovingLeftIMG.height = PLAYER_IDLE_HEIGHT;
-  // playerMovingLeftIMG.width = PLAYER_IDLE_WIDTH;
-  // playerMovingLeftIMG.data = PLAYER_IDLE_DATA;
-  // playerMovingLeftIMG.mipmaps = 1;
-  // playerMovingLeft = LoadTextureFromImage(playerMovingLeftIMG);
-
-  // playerIdle = LoadTexture("Resources/player/player_idle.png");
+  playerIdle = LoadTexture("Resources/player/player_idle.png");
   playerMovingDown = LoadTexture("Resources/player/player_moving_down.png");
   playerMovingUp = LoadTexture("Resources/player/player_moving_up.png");
   playerMovingRight = LoadTexture("Resources/player/player_moving_right.png");
