@@ -1,11 +1,13 @@
 #pragma once
+#include "Game/Manager.h"
 #include "raylib.h"
 #include <vector>
 using std::vector;
 
 class Maze {
 public:
-  Maze(int height, int width);
+  // Maze(int height, int width);
+  Maze(int width, int height);
 
   Texture2D wallTexture;
   Texture2D topWallTexture;
@@ -33,6 +35,6 @@ public:
 private:
   vector<vector<int>> maze;
   float scale = 1;
-  int __width;
-  int __height;
+  int __width = -1;
+  int __height = -1;
 };

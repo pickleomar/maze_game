@@ -25,12 +25,11 @@ loop, the variables updates , and camera movements
 Game Class Constructor.
 instantiate and Load the Texture from a file to the GPU VRAM
 */
-Game::Game(Window *win, Maze &maze, float scale)
-    : __window(win), __maze(maze), scale(scale) {
-
+Game::Game(Window *win, float scale) : __window(win), scale(scale) {
   __player = new Player();
-  __menu = new Menu();
   __manager = new Manager();
+  __maze = new Maze(20, 20);
+  __menu = new Menu();
   __map = new Map();
 
   Image darknessIMG = {0};
@@ -49,23 +48,22 @@ Unload the Textures from the GPU VRAM.
 close the window Context.
 */
 Game::~Game() {
-
   // Unload All loaded file from VRAM and RAM
   UnloadTexture(__player->playerIdle);
   UnloadTexture(__player->playerMovingUp);
   UnloadTexture(__player->playerMovingRight);
   UnloadTexture(__player->playerMovingLeft);
   UnloadTexture(__player->playerMovingDown);
-  UnloadTexture(this->__maze.wallTexture);
-  UnloadTexture(this->__maze.floorTexture);
-  UnloadTexture(this->__maze.leftWallTexture);
-  UnloadTexture(this->__maze.rightWallTexture);
-  UnloadTexture(this->__maze.leftTopCornerTexture);
-  UnloadTexture(this->__maze.leftBottomCornerTexture);
-  UnloadTexture(this->__maze.rightTopCornerTexture);
-  UnloadTexture(this->__maze.rightBottomCornerTexture);
-  UnloadTexture(this->__maze.topWallTexture);
-  UnloadTexture(this->__maze.bottomWallTexture);
+  UnloadTexture(__maze->wallTexture);
+  UnloadTexture(__maze->floorTexture);
+  UnloadTexture(__maze->leftWallTexture);
+  UnloadTexture(__maze->rightWallTexture);
+  UnloadTexture(__maze->leftTopCornerTexture);
+  UnloadTexture(__maze->leftBottomCornerTexture);
+  UnloadTexture(__maze->rightTopCornerTexture);
+  UnloadTexture(__maze->rightBottomCornerTexture);
+  UnloadTexture(__maze->topWallTexture);
+  UnloadTexture(__maze->bottomWallTexture);
   // unload Ends
 
   delete __player;
@@ -79,7 +77,6 @@ Game::~Game() {
 };
 
 void Game::DrawGame(Rectangle &frameRec) {
-
   BeginDrawing();
   ClearBackground(BLACK);
 
@@ -91,7 +88,7 @@ void Game::DrawGame(Rectangle &frameRec) {
 
   BeginMode2D(camera);
 
-  __maze.renderMaze();
+  __maze->renderMaze();
 
   __player->renderPlayer(frameRec);
 
@@ -101,13 +98,13 @@ void Game::DrawGame(Rectangle &frameRec) {
     DrawText("The Game is Paused", 450, 320, 40, GREEN);
   }
 
-  if (__player->getCellX() == __maze.getWidth() - 1 &&
-      __player->getCellY() == __maze.getHeight() - 2) {
+  if (__player->getCellX() == __maze->getWidth() - 1 &&
+      __player->getCellY() == __maze->getHeight() - 2) {
     DrawText("You Win", __window->getWindowWidth() / 2,
              __window->getWindowHeight() / 2, 50, GREEN);
   }
 
-  __map->renderMap(__maze, *__player);
+  __map->renderMap(*__maze, *__player);
 
   __menu->DrawGameBar(*__manager);
 
@@ -121,7 +118,6 @@ the update function
 
 */
 void Game::Loop() {
-
   this->init();
   int currentFrame = 0;
 
@@ -166,7 +162,7 @@ void Game::Loop() {
 
       camera.zoom += ((float)GetMouseWheelMove() * 0.1f);
 
-      __player->updatePlayer(__maze, camera, inputTimer);
+      __player->updatePlayer(*__maze, camera, inputTimer);
       __map->update();
     }
 
@@ -193,7 +189,7 @@ void Game::Loop() {
 
 // Function that runs in the start of the Game loop.
 void Game::init() {
-  __maze.generateMaze();
+  __maze->generateMaze();
   __player->setScale(scale);
-  __maze.setScale(scale);
+  __maze->setScale(scale);
 }

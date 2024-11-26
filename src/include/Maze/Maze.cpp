@@ -136,6 +136,17 @@ Maze::Maze(int width, int height) {
 }
 
 void Maze::generateMaze() {
+  // int width = this->manager->generateMazeWidth();
+  // int height = this->manager->generateMazeHeight();
+  // if (width % 2 == 0)
+  //   width++; // Ensure maze width is odd for proper path generation
+  // if (height % 2 == 0)
+  //   height++; // Ensure maze height is odd for proper path generation
+  // this->__width = width;
+  // this->__height = height;
+
+  // maze.resize(height, vector<int>(width, 1));
+
   std::stack<std::pair<int, int>> stack;
 
   // Step 1: Start with a random cell in the grid (ensure it is an odd cell for

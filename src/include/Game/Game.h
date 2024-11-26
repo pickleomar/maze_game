@@ -10,7 +10,7 @@
 class Game {
 
 public:
-  Game(Window *win, Maze &maze, float scale);
+  Game(Window *win, float scale);
   ~Game();
 
   void init();
@@ -25,7 +25,7 @@ private:
   Window *__window;
   // The Maze class need reworking due to conflict in adding level and endless
   // mode.
-  Maze __maze;
+  Maze *__maze;
   // TODO Later.
 
   Player *__player;

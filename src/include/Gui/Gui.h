@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Button.h"
 #include "Game/Manager.h"
 #include "raylib.h"

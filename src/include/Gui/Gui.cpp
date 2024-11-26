@@ -1,6 +1,7 @@
 #include "Gui.h"
 #include "Button.h"
 #include "Game/Manager.h"
+#include "Maze/Maze.h"
 #include "raylib.h"
 
 Menu::Menu() {
@@ -100,15 +101,24 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
   btnHard.SetPosition({635 - 48 * 5, 460});
 
   if (btnEasy.isPressed()) {
+    manager.setDifficulty(EASY_DIFF);
     PlaySound(clickSound);
+    // maze = nullptr;
+    manager.setScreen(GAME_SCREEN);
   }
 
   if (btnMedium.isPressed()) {
+    manager.setDifficulty(MEDIUM_DIFF);
     PlaySound(clickSound);
+    // maze = nullptr;
+    manager.setScreen(GAME_SCREEN);
   }
 
   if (btnHard.isPressed()) {
+    manager.setDifficulty(HARD_DIFF);
     PlaySound(clickSound);
+    // maze = nullptr;
+    manager.setScreen(GAME_SCREEN);
   }
 
   btnEasy.drawbutton();
