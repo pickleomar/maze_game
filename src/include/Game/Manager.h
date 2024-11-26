@@ -9,6 +9,7 @@ public:
   int getScreen();
   int exitGame = 0;
   int isPaused = 0;
+  int showDifficltty = 0;
 
 private:
   int currentScreen = MAIN_MENU_SCREEN;

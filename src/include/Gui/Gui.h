@@ -9,6 +9,7 @@ public:
   ~Menu();
   void DrawMainMenu(Manager &manager);
   void DrawGameBar(Manager &manager);
+  void DrawDifficultyMenu(Manager &manager);
 
 private:
   Button btnStart;
@@ -16,6 +17,11 @@ private:
   Button btnOptions;
   Button btnPause;
   Button btnHome;
+
+  Button btnEasy;
+  Button btnMedium;
+  Button btnHard;
+
   Vector2 mainMenuPosition = {800, 160};
 
   Sound clickSound;

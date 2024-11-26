@@ -20,11 +20,11 @@ public:
   bool isHovered();
   void update(Vector2 mousePos);
   void SetPosition(Vector2 position);
+  Vector2 position;
   Texture2D texture;
 
 private:
   Rectangle buttonBouds;
-  Vector2 position;
   float scale;
   int state = BTN_NORMAL;
   bool buttonAction = false;
