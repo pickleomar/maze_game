@@ -161,3 +161,8 @@ bool Player::isCollidingRight(float x, float y, float size, Maze &maze) {
   return maze.getMaze()[topY][rightX] == 1 ||
          maze.getMaze()[bottomY][rightX] == 1;
 }
+
+void Player::resetPosition() {
+  posX = PLAYER_SIZE;
+  posY = PLAYER_SIZE;
+}

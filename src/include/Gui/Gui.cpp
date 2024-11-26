@@ -2,9 +2,12 @@
 #include "Button.h"
 #include "Game/Manager.h"
 #include "Maze/Maze.h"
+#include "Player/Player.h"
 #include "raylib.h"
 
-Menu::Menu() {
+Menu::Menu(Maze *maze, Player *player) {
+  this->maze = maze;
+  this->player = player;
   btnStart = {"Resources/gui/button_start.png", 8};
   btnOptions = {"Resources/gui/button_options.png", 8};
   btnExit = {"Resources/gui/button_exit.png", 8};
@@ -15,6 +18,7 @@ Menu::Menu() {
 
   btnPause = {"Resources/gui/button_pause.png", 5};
   btnHome = {"Resources/gui/button_home.png", 5};
+  btnRegenerate = {"Resources/gui/button_regenerate.png", 5};
   clickSound = LoadSound("Resources/audio/button_clicked.mp3");
 }
 
@@ -34,10 +38,13 @@ void Menu::DrawMainMenu(Manager &manager) {
   // Logic
   if (btnStart.isPressed()) {
     manager.setScreen(GAME_SCREEN);
+    maze->generateMaze();
+    maze->printMazeToConsole();
     PlaySound(clickSound);
   }
 
   if (IsKeyPressed(KEY_ENTER)) {
+    maze->generateMaze();
     manager.setScreen(GAME_SCREEN);
   }
 
@@ -70,10 +77,12 @@ void Menu::DrawGameBar(Manager &manager) {
   // Updates
   btnPause.update(GetMousePosition());
   btnHome.update(GetMousePosition());
+  btnRegenerate.update(GetMousePosition());
 
   // Positions
   btnPause.SetPosition({1160, 30});
   btnHome.SetPosition({1060, 30});
+  btnRegenerate.SetPosition({960, 30});
 
   // Actions
   if (btnPause.isPressed()) {
@@ -82,13 +91,19 @@ void Menu::DrawGameBar(Manager &manager) {
   }
   if (btnHome.isPressed()) {
     manager.setScreen(MAIN_MENU_SCREEN);
-    TraceLog(LOG_INFO, "Paused");
+  }
+
+  if (btnRegenerate.isPressed()) {
+    maze->generateMaze();
+    player->resetPosition();
+    TraceLog(LOG_INFO, "Generating New Maze");
   }
 
   // Rendering
   if (!manager.isPaused)
     btnPause.drawbutton();
   btnHome.drawbutton();
+  btnRegenerate.drawbutton();
 }
 
 void Menu::DrawDifficultyMenu(Manager &manager) {

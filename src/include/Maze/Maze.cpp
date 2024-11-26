@@ -136,16 +136,11 @@ Maze::Maze(int width, int height) {
 }
 
 void Maze::generateMaze() {
-  // int width = this->manager->generateMazeWidth();
-  // int height = this->manager->generateMazeHeight();
-  // if (width % 2 == 0)
-  //   width++; // Ensure maze width is odd for proper path generation
-  // if (height % 2 == 0)
-  //   height++; // Ensure maze height is odd for proper path generation
-  // this->__width = width;
-  // this->__height = height;
-
-  // maze.resize(height, vector<int>(width, 1));
+  for (int y = 0; y < __height; ++y) {
+    for (int x = 0; x < __width; ++x) {
+      maze[y][x] = 1; // Reset all cells to walls
+    }
+  }
 
   std::stack<std::pair<int, int>> stack;
 
@@ -363,9 +358,9 @@ void Maze::printMazeToConsole() {
   for (int y = 0; y < maze.size(); ++y) {
     for (int x = 0; x < maze[0].size(); ++x) {
       if (maze[y][x] == 1)
-        std::cout << "1 "; // Wall
+        std::cout << "# "; // Wall
       else
-        std::cout << "0 "; // Path
+        std::cout << "  "; // Path
     }
     std::cout << std::endl;
   }

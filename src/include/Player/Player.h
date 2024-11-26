@@ -43,6 +43,7 @@ public:
   bool isCollidingLeft(float x, float y, float size, Maze &maze);
   bool isCollidingRight(float x, float y, float size, Maze &maze);
   void resetState();
+  void resetPosition();
   void setScale(float scale);
   void setState(int state);
 

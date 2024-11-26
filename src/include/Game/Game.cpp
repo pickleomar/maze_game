@@ -6,7 +6,6 @@ loop, the variables updates , and camera movements
 
 #include "Game.h"
 #include "Game/Manager.h"
-#include "Gui/Button.h"
 #include "Gui/Gui.h"
 #include "Maze/Map.h"
 #include "Player/Player.h"
@@ -29,7 +28,7 @@ Game::Game(Window *win, float scale) : __window(win), scale(scale) {
   __player = new Player();
   __manager = new Manager();
   __maze = new Maze(20, 20);
-  __menu = new Menu();
+  __menu = new Menu(__maze, __player);
   __map = new Map();
 
   Image darknessIMG = {0};
@@ -189,7 +188,8 @@ void Game::Loop() {
 
 // Function that runs in the start of the Game loop.
 void Game::init() {
-  __maze->generateMaze();
+  // __maze->generateMaze();
+  // __maze->printMazeToConsole();
   __player->setScale(scale);
   __maze->setScale(scale);
 }
