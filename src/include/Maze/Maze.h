@@ -12,7 +12,7 @@ using std::vector;
 class Maze {
 public:
   // Maze(int height, int width);
-  Maze(int width, int height);
+  Maze();
 
   Texture2D wallTexture;
   Texture2D topWallTexture;
@@ -33,6 +33,7 @@ public:
   int getWidth();
   int getHeight();
   vector<vector<int>> getMaze();
+  void resizeMaze();
 
   void setDifficulty(int diff);
 

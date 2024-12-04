@@ -37,10 +37,7 @@ void Menu::DrawMainMenu(Manager &manager) {
 
   // Logic
   if (btnStart.isPressed()) {
-    // manager.setScreen(GAME_SCREEN);
     manager.showDifficlttyMenu = true;
-    // maze->generateMaze();
-    maze->printMazeToConsole();
     PlaySound(clickSound);
   }
 
@@ -117,18 +114,25 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
   btnHard.SetPosition({635 - 48 * 5, 460});
 
   if (btnEasy.isPressed()) {
+    maze->setDifficulty(EASY_DIFF);
+    maze->resizeMaze();
     PlaySound(clickSound);
     maze->generateMaze();
     manager.setScreen(GAME_SCREEN);
   }
 
   if (btnMedium.isPressed()) {
+    maze->setDifficulty(MEDIUM_DIFF);
+    maze->resizeMaze();
     PlaySound(clickSound);
     maze->generateMaze();
+
     manager.setScreen(GAME_SCREEN);
   }
 
   if (btnHard.isPressed()) {
+    maze->setDifficulty(HARD_DIFF);
+    maze->resizeMaze();
     PlaySound(clickSound);
     maze->generateMaze();
     manager.setScreen(GAME_SCREEN);
