@@ -2,12 +2,17 @@
 #include "Game/Manager.h"
 #include "raylib.h"
 #include <vector>
+
+#define EASY_DIFF 1000
+#define MEDIUM_DIFF 1100
+#define HARD_DIFF 1110
+
 using std::vector;
 
 class Maze {
 public:
   // Maze(int height, int width);
-  Maze(int width, int height);
+  Maze();
 
   Texture2D wallTexture;
   Texture2D topWallTexture;
@@ -25,10 +30,12 @@ public:
   bool isWall(int x, int y);
   void printMazeToConsole();
   void renderMaze();
-  void renderMaze02();
   int getWidth();
   int getHeight();
   vector<vector<int>> getMaze();
+  void resizeMaze();
+
+  void setDifficulty(int diff);
 
   void setScale(float scale);
 
@@ -37,4 +44,5 @@ private:
   float scale = 1;
   int __width = -1;
   int __height = -1;
+  int difficulty = EASY_DIFF;
 };

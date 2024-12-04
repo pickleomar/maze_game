@@ -1,4 +1,4 @@
-#include "Gui.h"
+#include "Menus.h"
 #include "Button.h"
 #include "Game/Manager.h"
 #include "Maze/Maze.h"
@@ -37,20 +37,18 @@ void Menu::DrawMainMenu(Manager &manager) {
 
   // Logic
   if (btnStart.isPressed()) {
-    manager.setScreen(GAME_SCREEN);
-    maze->generateMaze();
-    maze->printMazeToConsole();
+    manager.showDifficlttyMenu = true;
     PlaySound(clickSound);
   }
 
   if (IsKeyPressed(KEY_ENTER)) {
-    maze->generateMaze();
+    // maze->generateMaze();
     manager.setScreen(GAME_SCREEN);
   }
 
   if (btnOptions.isPressed()) {
     PlaySound(clickSound);
-    manager.showDifficltty = 1;
+    manager.showDifficlttyMenu = 1;
   }
 
   if (btnExit.isPressed()) {
@@ -62,7 +60,7 @@ void Menu::DrawMainMenu(Manager &manager) {
   BeginDrawing();
   ClearBackground(GRAY);
 
-  if (manager.showDifficltty != 1) {
+  if (manager.showDifficlttyMenu != 1) {
     btnStart.drawbutton();
     btnOptions.drawbutton();
     btnExit.drawbutton();
@@ -116,23 +114,27 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
   btnHard.SetPosition({635 - 48 * 5, 460});
 
   if (btnEasy.isPressed()) {
-    manager.setDifficulty(EASY_DIFF);
+    maze->setDifficulty(EASY_DIFF);
+    maze->resizeMaze();
     PlaySound(clickSound);
-    // maze = nullptr;
+    maze->generateMaze();
     manager.setScreen(GAME_SCREEN);
   }
 
   if (btnMedium.isPressed()) {
-    manager.setDifficulty(MEDIUM_DIFF);
+    maze->setDifficulty(MEDIUM_DIFF);
+    maze->resizeMaze();
     PlaySound(clickSound);
-    // maze = nullptr;
+    maze->generateMaze();
+
     manager.setScreen(GAME_SCREEN);
   }
 
   if (btnHard.isPressed()) {
-    manager.setDifficulty(HARD_DIFF);
+    maze->setDifficulty(HARD_DIFF);
+    maze->resizeMaze();
     PlaySound(clickSound);
-    // maze = nullptr;
+    maze->generateMaze();
     manager.setScreen(GAME_SCREEN);
   }
 

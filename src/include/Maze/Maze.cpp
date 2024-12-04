@@ -28,16 +28,16 @@
 int dx[4] = {0, 1, 0, -1}; // Directions: Up, Right, Down, Left
 int dy[4] = {-1, 0, 1, 0};
 
-Maze::Maze(int width, int height) {
-  if (width % 2 == 0)
-    width++; // Ensure maze width is odd for proper path generation
-  if (height % 2 == 0)
-    height++; // Ensure maze height is odd for proper path generation
-  this->__width = width;
-  this->__height = height;
+Maze::Maze() {
 
-  maze.resize(height,
-              vector<int>(width, 1)); // Initialize all cells as walls (1)
+  __width = 15;
+  __height = 15;
+
+  maze.resize(__height);
+  for (auto &row : maze) {
+    row.resize(__width, 1); // Resize each row to the new number of columns,
+                            // initialize new elements to 0
+  }
 
   Image wall = {0};
   wall.format = WALL_FORMAT;
@@ -142,6 +142,8 @@ void Maze::generateMaze() {
     }
   }
 
+  // maze.resize(__height, vector<int>(__width, 1));
+
   std::stack<std::pair<int, int>> stack;
 
   // Step 1: Start with a random cell in the grid (ensure it is an odd cell for
@@ -197,18 +199,18 @@ void Maze::generateMaze() {
   }
 
   // Set an Entrence for the player
-  this->maze[1][0] = 0;
+  maze[1][0] = 0;
 
   int exit = rand() % 3;
 
   if (exit == 0) {
-    this->maze[__height - 2][__width - 1] = 0;
+    maze[__height - 2][__width - 1] = 0;
 
   } else if (exit == 1) {
-    this->maze[1][__width - 1] = 0;
+    maze[1][__width - 1] = 0;
 
   } else {
-    this->maze[__height - 2][0] = 0;
+    maze[__height - 2][0] = 0;
   }
   // Set an Exit for the player
   // this->maze[__height - 2][__width - 1] = 0;
@@ -313,48 +315,8 @@ void Maze::renderMaze() {
   }
 }
 
-void Maze::renderMaze02() {
-  int originX = 0;
-  int originY = 0;
-
-  for (int y = 0; y < maze.size(); ++y) {
-    for (int x = 0; x < maze[0].size(); ++x) {
-      if (maze[y][x] == 1) {
-
-        if (x != 0 && x != __width - 1 && maze[y][x - 1] == 0 &&
-            maze[y][x + 1] == 0) {
-          if (maze[y + 1][x] == 1) {
-
-            DrawTextureEx(wallLatteraleTexture,
-                          {(float)(originX + 8 + (x * TILE_SIZE * scale)),
-                           (float)(originY + (y * TILE_SIZE * scale))},
-                          0, scale, RAYWHITE);
-          } else {
-            DrawTextureEx(bottomWallTexture,
-                          {(float)(originX + 8 + (x * TILE_SIZE * scale)),
-                           (float)(originY + (y * TILE_SIZE * scale))},
-                          0, scale, RAYWHITE);
-          }
-        } else {
-
-          DrawTextureEx(wallTexture,
-                        {(float)(originX + (x * TILE_SIZE * scale)),
-                         (float)(originY + (y * TILE_SIZE * scale))},
-                        0, scale, RAYWHITE);
-        }
-
-      } else {
-        DrawTextureEx(floorTexture,
-                      {(float)(originX + (x * TILE_SIZE * scale)),
-                       (float)(originY + (y * TILE_SIZE * scale))},
-                      0, scale, RAYWHITE);
-      }
-    }
-  }
-}
-
 void Maze::printMazeToConsole() {
-  generateMaze();
+  // generateMaze();
   for (int y = 0; y < maze.size(); ++y) {
     for (int x = 0; x < maze[0].size(); ++x) {
       if (maze[y][x] == 1)
@@ -374,4 +336,33 @@ vector<vector<int>> Maze::getMaze() { return maze; }
 
 void Maze::setScale(float scale) { this->scale = scale; }
 
-bool Maze::isWall(int x, int y) { return this->maze[x][y] == 1; }
+bool Maze::isWall(int x, int y) { return maze[x][y] == 1; }
+
+void Maze::setDifficulty(int diff) { this->difficulty = diff; }
+
+void Maze::resizeMaze() {
+  if (difficulty == EASY_DIFF) {
+    TraceLog(LOG_INFO, "EASY DIFF");
+    __width = 15;
+    __height = 15;
+  } else if (difficulty == MEDIUM_DIFF) {
+    TraceLog(LOG_INFO, "MEDIUM DIFF");
+    __width = 20;
+    __height = 20;
+  } else {
+    TraceLog(LOG_INFO, "HARD DIFF");
+    __width = 30;
+    __height = 30;
+  }
+
+  if (__width % 2 == 0)
+    __width++; // Ensure maze width is odd for proper path generation
+  if (__height % 2 == 0)
+    __height++; // Ensure maze height is odd for proper path generation
+
+  maze.resize(__height);
+  for (auto &row : maze) {
+    row.resize(__width, 1); // Resize each row to the new number of columns,
+                            // initialize new elements to 0
+  }
+}
