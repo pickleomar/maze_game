@@ -15,8 +15,6 @@ public:
   ~Manager();
   void setScreen(int screen);
   void setDifficulty(int diff);
-  int generateMazeWidth();
-  int generateMazeHeight();
   int getScreen();
   inih::INIReader iniFile;
   int exitGame = 0;

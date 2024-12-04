@@ -1,4 +1,4 @@
-#include "Gui.h"
+#include "Menus.h"
 #include "Button.h"
 #include "Game/Manager.h"
 #include "Maze/Maze.h"
@@ -37,14 +37,15 @@ void Menu::DrawMainMenu(Manager &manager) {
 
   // Logic
   if (btnStart.isPressed()) {
-    manager.setScreen(GAME_SCREEN);
-    maze->generateMaze();
+    // manager.setScreen(GAME_SCREEN);
+    manager.showDifficltty = true;
+    // maze->generateMaze();
     maze->printMazeToConsole();
     PlaySound(clickSound);
   }
 
   if (IsKeyPressed(KEY_ENTER)) {
-    maze->generateMaze();
+    // maze->generateMaze();
     manager.setScreen(GAME_SCREEN);
   }
 
@@ -118,7 +119,7 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
   if (btnEasy.isPressed()) {
     manager.setDifficulty(EASY_DIFF);
     PlaySound(clickSound);
-    // maze = nullptr;
+    maze->generateMaze();
     manager.setScreen(GAME_SCREEN);
   }
 

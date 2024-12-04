@@ -1,7 +1,6 @@
 #pragma once
 #include "Game/Manager.h"
-#include "Gui/Gui.h"
-#include "Maze/Map.h"
+#include "Gui/Menus.h"
 #include "Maze/Maze.h"
 #include "Player/Player.h"
 #include "Window/Window.h"
@@ -31,6 +30,5 @@ private:
   Player *__player;
   Manager *__manager;
   Camera2D camera = {0};
-  Map *__map;
   Menu *__menu;
 };

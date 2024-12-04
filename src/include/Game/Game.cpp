@@ -6,8 +6,7 @@ loop, the variables updates , and camera movements
 
 #include "Game.h"
 #include "Game/Manager.h"
-#include "Gui/Gui.h"
-#include "Maze/Map.h"
+#include "Gui/Menus.h"
 #include "Player/Player.h"
 #include "Timer/Timer.h"
 #include "Window/Window.h"
@@ -29,14 +28,14 @@ Game::Game(Window *win, float scale) : __window(win), scale(scale) {
   __manager = new Manager();
   __maze = new Maze(20, 20);
   __menu = new Menu(__maze, __player);
-  __map = new Map();
 
-  Image darknessIMG = {0};
-  darknessIMG.data = DARKNESS_DATA;
-  darknessIMG.format = DARKNESS_FORMAT;
-  darknessIMG.height = DARKNESS_HEIGHT;
-  darknessIMG.width = DARKNESS_WIDTH;
-  darknessIMG.mipmaps = 1;
+  Image darknessIMG = {
+      .data = DARKNESS_DATA,
+      .width = DARKNESS_WIDTH,
+      .height = DARKNESS_HEIGHT,
+      .mipmaps = 1,
+      .format = DARKNESS_FORMAT,
+  };
 
   darknessTexture = LoadTextureFromImage(darknessIMG);
 }
@@ -67,7 +66,6 @@ Game::~Game() {
 
   delete __player;
   delete __menu;
-  delete __map;
   delete __manager;
   delete __window;
 
@@ -102,8 +100,6 @@ void Game::DrawGame(Rectangle &frameRec) {
     DrawText("You Win", __window->getWindowWidth() / 2,
              __window->getWindowHeight() / 2, 50, GREEN);
   }
-
-  __map->renderMap(*__maze, *__player);
 
   __menu->DrawGameBar(*__manager);
 
@@ -162,7 +158,6 @@ void Game::Loop() {
       camera.zoom += ((float)GetMouseWheelMove() * 0.1f);
 
       __player->updatePlayer(*__maze, camera, inputTimer);
-      __map->update();
     }
 
     if (IsKeyPressed(KEY_SPACE) && __manager->getScreen() == GAME_SCREEN) {
@@ -188,8 +183,7 @@ void Game::Loop() {
 
 // Function that runs in the start of the Game loop.
 void Game::init() {
-  // __maze->generateMaze();
-  // __maze->printMazeToConsole();
+
   __player->setScale(scale);
   __maze->setScale(scale);
 }
