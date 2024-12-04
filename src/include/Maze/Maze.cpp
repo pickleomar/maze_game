@@ -142,6 +142,8 @@ void Maze::generateMaze() {
     }
   }
 
+  // maze.resize(__height, vector<int>(__width, 1));
+
   std::stack<std::pair<int, int>> stack;
 
   // Step 1: Start with a random cell in the grid (ensure it is an odd cell for
@@ -313,46 +315,6 @@ void Maze::renderMaze() {
   }
 }
 
-void Maze::renderMaze02() {
-  int originX = 0;
-  int originY = 0;
-
-  for (int y = 0; y < maze.size(); ++y) {
-    for (int x = 0; x < maze[0].size(); ++x) {
-      if (maze[y][x] == 1) {
-
-        if (x != 0 && x != __width - 1 && maze[y][x - 1] == 0 &&
-            maze[y][x + 1] == 0) {
-          if (maze[y + 1][x] == 1) {
-
-            DrawTextureEx(wallLatteraleTexture,
-                          {(float)(originX + 8 + (x * TILE_SIZE * scale)),
-                           (float)(originY + (y * TILE_SIZE * scale))},
-                          0, scale, RAYWHITE);
-          } else {
-            DrawTextureEx(bottomWallTexture,
-                          {(float)(originX + 8 + (x * TILE_SIZE * scale)),
-                           (float)(originY + (y * TILE_SIZE * scale))},
-                          0, scale, RAYWHITE);
-          }
-        } else {
-
-          DrawTextureEx(wallTexture,
-                        {(float)(originX + (x * TILE_SIZE * scale)),
-                         (float)(originY + (y * TILE_SIZE * scale))},
-                        0, scale, RAYWHITE);
-        }
-
-      } else {
-        DrawTextureEx(floorTexture,
-                      {(float)(originX + (x * TILE_SIZE * scale)),
-                       (float)(originY + (y * TILE_SIZE * scale))},
-                      0, scale, RAYWHITE);
-      }
-    }
-  }
-}
-
 void Maze::printMazeToConsole() {
   generateMaze();
   for (int y = 0; y < maze.size(); ++y) {
@@ -375,3 +337,5 @@ vector<vector<int>> Maze::getMaze() { return maze; }
 void Maze::setScale(float scale) { this->scale = scale; }
 
 bool Maze::isWall(int x, int y) { return this->maze[x][y] == 1; }
+
+void Maze::setDifficulty(int diff) { this->difficulty = diff; }

@@ -17,5 +17,3 @@ Manager::~Manager() {}
 void Manager::setScreen(int screen) { this->currentScreen = screen; }
 
 int Manager::getScreen() { return currentScreen; }
-
-void Manager::setDifficulty(int diff) { difficulty = diff; }

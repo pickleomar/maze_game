@@ -26,7 +26,7 @@ instantiate and Load the Texture from a file to the GPU VRAM
 Game::Game(Window *win, float scale) : __window(win), scale(scale) {
   __player = new Player();
   __manager = new Manager();
-  __maze = new Maze(20, 20);
+  __maze = new Maze(100, 100);
   __menu = new Menu(__maze, __player);
 
   Image darknessIMG = {
