@@ -20,6 +20,7 @@ private:
   Button btnPause;
   Button btnRegenerate;
   Button btnHome;
+  Button btnfullScreen;
 
   Button btnEasy;
   Button btnMedium;

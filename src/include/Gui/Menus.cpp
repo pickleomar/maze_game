@@ -19,6 +19,7 @@ Menu::Menu(Maze *maze, Player *player) {
   btnPause = {"Resources/gui/button_pause.png", 5};
   btnHome = {"Resources/gui/button_home.png", 5};
   btnRegenerate = {"Resources/gui/button_regenerate.png", 5};
+  btnfullScreen = {"Resources/gui/button_expand.png", 5};
   clickSound = LoadSound("Resources/audio/button_clicked.mp3");
 }
 
@@ -76,11 +77,13 @@ void Menu::DrawGameBar(Manager &manager) {
   btnPause.update(GetMousePosition());
   btnHome.update(GetMousePosition());
   btnRegenerate.update(GetMousePosition());
+  btnfullScreen.update(GetMousePosition());
 
   // Positions
   btnPause.SetPosition({1160, 30});
   btnHome.SetPosition({1060, 30});
   btnRegenerate.SetPosition({960, 30});
+  btnfullScreen.SetPosition({860, 30});
 
   // Actions
   if (btnPause.isPressed()) {
@@ -97,11 +100,21 @@ void Menu::DrawGameBar(Manager &manager) {
     TraceLog(LOG_INFO, "Generating New Maze");
   }
 
+  if (btnfullScreen.isPressed()) {
+    TraceLog(LOG_INFO, "Full Screen Trigered");
+    ToggleFullscreen();
+  }
+
+  if (IsKeyPressed(KEY_F)) {
+    ToggleFullscreen();
+  }
+
   // Rendering
   if (!manager.isPaused)
     btnPause.drawbutton();
   btnHome.drawbutton();
   btnRegenerate.drawbutton();
+  btnfullScreen.drawbutton();
 }
 
 void Menu::DrawDifficultyMenu(Manager &manager) {
