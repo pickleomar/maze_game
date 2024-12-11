@@ -42,11 +42,6 @@ void Menu::DrawMainMenu(Manager &manager) {
     PlaySound(clickSound);
   }
 
-  if (IsKeyPressed(KEY_ENTER)) {
-    // maze->generateMaze();
-    manager.setScreen(GAME_SCREEN);
-  }
-
   if (btnOptions.isPressed()) {
     PlaySound(clickSound);
     manager.showDifficlttyMenu = 1;
