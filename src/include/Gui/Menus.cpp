@@ -119,6 +119,7 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
     PlaySound(clickSound);
     maze->generateMaze();
     manager.setScreen(GAME_SCREEN);
+    manager.showDifficlttyMenu = false;
   }
 
   if (btnMedium.isPressed()) {
@@ -126,8 +127,8 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
     maze->resizeMaze();
     PlaySound(clickSound);
     maze->generateMaze();
-
     manager.setScreen(GAME_SCREEN);
+    manager.showDifficlttyMenu = false;
   }
 
   if (btnHard.isPressed()) {
@@ -136,6 +137,7 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
     PlaySound(clickSound);
     maze->generateMaze();
     manager.setScreen(GAME_SCREEN);
+    manager.showDifficlttyMenu = false;
   }
 
   btnEasy.drawbutton();
