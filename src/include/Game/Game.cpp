@@ -90,7 +90,8 @@ void Game::DrawGame(Rectangle &frameRec) {
   __player->renderPlayer(frameRec);
 
   EndMode2D();
-  __menu->DrawPlayerControls(*__player, *__maze, camera);
+  if (!__manager->isPaused)
+    __menu->DrawPlayerControls(*__player, *__maze, camera);
 
   if (__manager->isPaused) {
     DrawText("The Game is Paused", 450, 320, 40, GREEN);

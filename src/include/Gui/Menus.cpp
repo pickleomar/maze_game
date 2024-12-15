@@ -100,9 +100,10 @@ void Menu::DrawGameBar(Manager &manager) {
 
   // Check if any button is pressed and perform respective actions
   if (btnPause.isPressed()) {
-    manager.isPaused = true; // Pause the game
+    manager.isPaused = !manager.isPaused; // Pause the game
     TraceLog(LOG_INFO, "Paused");
   }
+
   if (btnHome.isPressed()) {
     manager.setScreen(MAIN_MENU_SCREEN); // Go back to main menu
   }
@@ -119,8 +120,8 @@ void Menu::DrawGameBar(Manager &manager) {
   }
 
   // If the game is not paused, draw the pause button
-  if (!manager.isPaused)
-    btnPause.drawbutton();
+
+  btnPause.drawbutton();
 
   // Always draw the other game control buttons
   btnHome.drawbutton();
