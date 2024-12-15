@@ -204,13 +204,13 @@ void Maze::generateMaze() {
   int exit = rand() % 3;
 
   if (exit == 0) {
-    maze[__height - 2][__width - 1] = 0;
+    maze[__height - 2][__width - 1] = 2;
 
   } else if (exit == 1) {
-    maze[1][__width - 1] = 0;
+    maze[1][__width - 1] = 2;
 
   } else {
-    maze[__height - 2][0] = 0;
+    maze[__height - 2][0] = 2;
   }
   // Set an Exit for the player
   // this->maze[__height - 2][__width - 1] = 0;

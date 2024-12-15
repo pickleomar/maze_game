@@ -1,5 +1,4 @@
 #pragma once
-#include "Game/Manager.h"
 #include "raylib.h"
 #include <vector>
 

@@ -95,8 +95,9 @@ void Game::DrawGame(Rectangle &frameRec) {
     DrawText("The Game is Paused", 450, 320, 40, GREEN);
   }
 
-  if (__player->getCellX() == __maze->getWidth() - 1 &&
-      __player->getCellY() == __maze->getHeight() - 2) {
+  if (__maze->getMaze()[__player->getCellY()][__player->getCellX()] == 2) {
+
+    // Win Menu GOES HERE
     DrawText("You Win", __window->getWindowWidth() / 2,
              __window->getWindowHeight() / 2, 50, GREEN);
   }
