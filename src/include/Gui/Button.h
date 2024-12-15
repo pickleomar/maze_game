@@ -20,13 +20,13 @@ public:
   bool isHovered();
   void update(Vector2 mousePos);
   void SetPosition(Vector2 position);
-  Vector2 position;
-  Texture2D texture;
+  Vector2 position;  // Button Position
+  Texture2D texture; // Button Texture
 
 private:
-  Rectangle buttonBouds;
+  Rectangle buttonBouds; // Button sides Cordinates
   float scale;
   int state = BTN_NORMAL;
-  bool buttonAction = false;
-  bool buttonHover = false;
+  bool buttonAction = false; // is The button Clicked State
+  bool buttonHover = false;  // is the Button Hovered State
 };

@@ -13,6 +13,7 @@ public:
   void DrawDifficultyMenu(Manager &manager);
 
 private:
+  // Menu Buttons
   Button btnStart;
   Button btnExit;
   Button btnOptions;
@@ -26,9 +27,13 @@ private:
   Button btnMedium;
   Button btnHard;
 
+  // The Main Menu position on the Screen
   Vector2 mainMenuPosition = {800, 160};
 
   Sound clickSound;
+  // Maze Pointer
+
   Maze *maze;
+  // Player Poiter
   Player *player;
 };

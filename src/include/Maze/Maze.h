@@ -11,9 +11,9 @@ using std::vector;
 
 class Maze {
 public:
-  // Maze(int height, int width);
   Maze();
 
+  // Textures
   Texture2D wallTexture;
   Texture2D topWallTexture;
   Texture2D bottomWallTexture;
@@ -26,23 +26,23 @@ public:
   Texture2D leftBottomCornerTexture;
   Texture2D wallLatteraleTexture;
 
-  void generateMaze();
-  bool isWall(int x, int y);
+  void generateMaze();       // Generate the Maze
+  bool isWall(int x, int y); //  check if it's a wall
   void printMazeToConsole();
-  void renderMaze();
-  int getWidth();
-  int getHeight();
-  vector<vector<int>> getMaze();
-  void resizeMaze();
+  void renderMaze();             // render the maze to the Game
+  int getWidth();                // return the width
+  int getHeight();               // return the height
+  vector<vector<int>> getMaze(); // return maze vector
+  void resizeMaze();             // resizing the Maze to new width and height
 
-  void setDifficulty(int diff);
+  void setDifficulty(int diff); // change difficulty
 
-  void setScale(float scale);
+  void setScale(float scale); // (deprecated) change scale
 
 private:
-  vector<vector<int>> maze;
+  vector<vector<int>> maze; // 2d vector the the maze
   float scale = 1;
   int __width = -1;
   int __height = -1;
-  int difficulty = EASY_DIFF;
+  int difficulty = EASY_DIFF; // difficulty
 };

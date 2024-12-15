@@ -157,7 +157,7 @@ void Game::Loop() {
 
       camera.zoom += ((float)GetMouseWheelMove() * 0.1f);
 
-      __player->updatePlayer(*__maze, camera, inputTimer);
+      __player->updatePlayer(*__maze, camera);
     }
 
     if (IsKeyPressed(KEY_SPACE) && __manager->getScreen() == GAME_SCREEN) {

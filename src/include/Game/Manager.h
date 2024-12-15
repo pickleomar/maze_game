@@ -11,12 +11,11 @@ public:
   ~Manager();
   void setScreen(int screen);
   int getScreen();
-  inih::INIReader iniFile;
-  int exitGame = 0;
-  int isPaused = 0;
-  int showDifficlttyMenu = 0;
+  inih::INIReader iniFile;    // data.ini file
+  int exitGame = 0;           // exit game state
+  int isPaused = 0;           // is the game paused 1, 0 is running
+  int showDifficlttyMenu = 0; // show difficulty menu !!
 
 private:
-  // Maze *maze;
-  int currentScreen = MAIN_MENU_SCREEN;
+  int currentScreen = MAIN_MENU_SCREEN; // Current screen State
 };
