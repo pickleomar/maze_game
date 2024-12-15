@@ -95,6 +95,51 @@ void Player::updatePlayer(Maze &maze, Camera2D &camera) {
                             (posY + PLAYER_SIZE / 2) * scale};
 }
 
+// Updates the player's position and state based on input and collision checks
+void Player::updatePlayerControls(Maze &maze, Camera2D &camera, bool up,
+                                  bool down, bool left, bool right) {
+  resetState(); // Reset the state to idle if no keys are pressed
+  float nextX = posX, nextY = posY;
+
+  // Check for movement input and attempt to move
+  if (down) {
+    nextY += speed;
+    // Check if movement down collides with maze walls
+    if (!isCollidingBottom(nextX, nextY, PLAYER_SIZE, maze)) {
+      setState(STATE_MOVING_DOWN);
+      moveDown();
+    }
+  }
+  if (up) {
+    nextY -= speed;
+    // Check if movement up collides with maze walls
+    if (!isCollidingTop(nextX, nextY, PLAYER_SIZE, maze)) {
+      setState(STATE_MOVING_UP);
+      moveUp();
+    }
+  }
+  if (right) {
+    nextX += speed;
+    // Check if movement right collides with maze walls
+    if (!isCollidingRight(nextX, nextY, PLAYER_SIZE, maze)) {
+      setState(STATE_MOVING_RIGHT);
+      moveRight();
+    }
+  }
+  if (left) {
+    nextX -= speed;
+    // Check if movement left collides with maze walls
+    if (!isCollidingLeft(nextX, nextY, PLAYER_SIZE, maze)) {
+      setState(STATE_MOVING_LEFT);
+      moveLeft();
+    }
+  }
+
+  // Update camera to follow player
+  camera.target = (Vector2){(posX + PLAYER_SIZE / 2) * scale,
+                            (posY + PLAYER_SIZE / 2) * scale};
+}
+
 // Resets the player's state to idle if no movement keys are pressed
 void Player::resetState() {
   if (IsKeyReleased(KEY_DOWN) || IsKeyReleased(KEY_S) ||

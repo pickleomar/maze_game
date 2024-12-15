@@ -39,6 +39,8 @@ public:
 
   // Update player's movement and interaction with the maze
   void updatePlayer(Maze &maze, Camera2D &camera);
+  void updatePlayerControls(Maze &maze, Camera2D &camera, bool up, bool down,
+                            bool left, bool right);
 
   // Collision detection functions for each side of the player
   bool isCollidingWithWall(float x, float y, float width, float height,

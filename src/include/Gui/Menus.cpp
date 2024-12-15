@@ -27,6 +27,12 @@ Menu::Menu(Maze *maze, Player *player) {
   btnRegenerate = {"Resources/gui/button_regenerate.png", 5};
   btnfullScreen = {"Resources/gui/button_expand.png", 5};
 
+  // Button for Player Controlling up, down, left, right
+  btnMoveUp = {"Resources/controls/MoveUp_Control.png", 4};
+  btnMoveDown = {"Resources/controls/MoveDown_Control.png", 4};
+  btnMoveRight = {"Resources/controls/MoveRight_Control.png", 4};
+  btnMoveLeft = {"Resources/controls/MoveLeft_Control.png", 4};
+
   // Load sound effect for button click
   clickSound = LoadSound("Resources/audio/button_clicked.mp3");
 }
@@ -172,4 +178,27 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
   btnHard.drawbutton();
   DrawText("Hard", btnHard.position.x + (5 * 33), btnHard.position.y + 50, 60,
            RED);
+}
+
+// Draws Controls for the Player
+void Menu::DrawPlayerControls(Player &player, Maze &maze, Camera2D &camera) {
+
+  btnMoveUp.update(GetMousePosition());
+  btnMoveDown.update(GetMousePosition());
+  btnMoveLeft.update(GetMousePosition());
+  btnMoveRight.update(GetMousePosition());
+
+  btnMoveUp.SetPosition({150, 460});
+  btnMoveDown.SetPosition({150, 570});
+  btnMoveLeft.SetPosition({960, 510});
+  btnMoveRight.SetPosition({1100, 510});
+
+  player.updatePlayerControls(maze, camera, btnMoveUp.isPressed(),
+                              btnMoveDown.isPressed(), btnMoveLeft.isPressed(),
+                              btnMoveRight.isPressed());
+
+  btnMoveUp.drawbutton();
+  btnMoveDown.drawbutton();
+  btnMoveLeft.drawbutton();
+  btnMoveRight.drawbutton();
 }
