@@ -2,6 +2,8 @@
 #include "Maze/Maze.h"
 #include <raylib.h>
 
+class Maze; // Forward declaration of Maze
+
 // Constants defining the player's state
 #define STATE_IDLE 00001         // Player is idle (not moving)
 #define STATE_MOVING_UP 00010    // Player is moving up

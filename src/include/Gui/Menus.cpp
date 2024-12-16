@@ -2,14 +2,18 @@
 #include "Button.h"
 #include "Game/Manager.h"
 #include "Maze/Maze.h"
+#include "Timer/Timer.h"
 #include "Player/Player.h"
+#include "Game/Game.h"
 #include "raylib.h"
 
 // Menu class constructor
-Menu::Menu(Maze *maze, Player *player) {
+Menu::Menu(Maze *maze, Player *player, Timer *timer, Game *game) {
   // Initializing maze and player pointers
   this->maze = maze;
   this->player = player;
+  this->sessionTimer = timer;
+  this->game= game;
 
   // Initializing buttons with images and sizes
   btnStart = {"Resources/gui/button_start.png", 8};
@@ -111,6 +115,7 @@ void Menu::DrawGameBar(Manager &manager) {
   if (btnRegenerate.isPressed()) {
     maze->generateMaze();    // Regenerate maze
     player->resetPosition(); // Reset player position
+    sessionTimer->startTimer();
     TraceLog(LOG_INFO, "Generating New Maze");
   }
 
@@ -149,6 +154,9 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
     maze->generateMaze(); // Generate maze based on selected difficulty
     manager.setScreen(GAME_SCREEN);     // Switch to game screen
     manager.showDifficlttyMenu = false; // Close difficulty menu
+    player->resetPosition();
+    sessionTimer->startTimer();
+    game->resetWinState();
   }
 
   if (btnMedium.isPressed()) {
@@ -158,6 +166,9 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
     maze->generateMaze();               // Generate maze
     manager.setScreen(GAME_SCREEN);     // Switch to game screen
     manager.showDifficlttyMenu = false; // Close difficulty menu
+    player->resetPosition();
+    sessionTimer->startTimer();
+    game->resetWinState();
   }
 
   if (btnHard.isPressed()) {
@@ -167,6 +178,9 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
     maze->generateMaze();               // Generate maze
     manager.setScreen(GAME_SCREEN);     // Switch to game screen
     manager.showDifficlttyMenu = false; // Close difficulty menu
+    player->resetPosition();
+    sessionTimer->startTimer();
+    game->resetWinState();
   }
 
   // Draw the difficulty buttons and labels
