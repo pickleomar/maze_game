@@ -38,6 +38,11 @@ Menu::Menu(Maze *maze, Player *player, Timer *timer) {
   btnMoveRight = {"Resources/controls/MoveRight_Control.png", 4};
   btnMoveLeft = {"Resources/controls/MoveLeft_Control.png", 4};
 
+  //
+  btnYes = {"Resources/gui/button_yes.png", 8};
+  btnNo = {"Resources/gui/button_no.png", 8};
+  confirmTexture = LoadTexture("Resources/gui/confirm.png");
+
   // Load sound effect for button click
   clickSound = LoadSound("Resources/audio/button_clicked.mp3");
 }
@@ -70,7 +75,8 @@ void Menu::DrawMainMenu(Manager &manager) {
     btnExit.update(GetMousePosition());
     btnExit.SetPosition({mainMenuPosition.x, mainMenuPosition.y + 280});
     if (btnExit.isPressed()) {
-      manager.exitGame = 1;  // Exit the game
+      manager.windowExitRequested = 1;
+      // manager.exitGame = 1;  // Exit the game
       PlaySound(clickSound); // Play button click sound
     }
   };
@@ -89,9 +95,13 @@ void Menu::DrawMainMenu(Manager &manager) {
 
   // Draw buttons or show the difficulty menu based on the state
   if (manager.showDifficlttyMenu != 1) {
-    btnStart.drawbutton();
-    btnOptions.drawbutton();
-    btnExit.drawbutton();
+    if (manager.windowExitRequested) {
+      DrawExitConfirmMenu(manager);
+    } else {
+      btnStart.drawbutton();
+      btnOptions.drawbutton();
+      btnExit.drawbutton();
+    }
   } else {
     DrawDifficultyMenu(manager); // Draw difficulty menu if active
   }
@@ -223,3 +233,27 @@ void Menu::DrawPlayerControls(Player &player, Maze &maze, Camera2D &camera) {
   btnMoveLeft.drawbutton();
   btnMoveRight.drawbutton();
 }
+
+void Menu::DrawExitConfirmMenu(Manager &manager) {
+
+  btnYes.update(GetMousePosition());
+  btnNo.update(GetMousePosition());
+
+  btnYes.SetPosition({500, 400});
+  btnNo.SetPosition({650, 400});
+
+  if (btnYes.isPressed()) {
+    manager.exitGame = 1;
+  }
+
+  if (btnNo.isPressed()) {
+    manager.windowExitRequested = 0;
+  }
+
+  DrawTexturePro(confirmTexture, {0, 0, 124, 20},
+                 {(1280 / 2) - 124 * 4, (720 / 2) - 40 * 3, 124 * 8, 20 * 8},
+                 {0, 0}, 0, RAYWHITE);
+
+  btnYes.drawbutton();
+  btnNo.drawbutton();
+};

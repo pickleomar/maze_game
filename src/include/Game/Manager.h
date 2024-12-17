@@ -15,6 +15,7 @@ public:
   int exitGame = 0;           // exit game state
   int isPaused = 0;           // is the game paused 1, 0 is running
   int showDifficlttyMenu = 0; // show difficulty menu !!
+  int windowExitRequested = 0;
 
   int getWinState();
   void changeToWinState();

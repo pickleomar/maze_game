@@ -187,6 +187,10 @@ void Game::Loop() {
       __manager->isPaused = !__manager->isPaused;
     }
 
+    if (IsKeyPressed(KEY_ESCAPE)) {
+      __manager->windowExitRequested = 1;
+    }
+
     if (__manager->isPaused) {
       PauseMusicStream(music);
     } else {
@@ -194,7 +198,8 @@ void Game::Loop() {
     }
 
     // Ends Updates
-    if (__manager->getScreen() == MAIN_MENU_SCREEN)
+    if (__manager->getScreen() == MAIN_MENU_SCREEN ||
+        __manager->windowExitRequested)
       __menu->DrawMainMenu(*__manager);
     else {
       UpdateMusicStream(music);
