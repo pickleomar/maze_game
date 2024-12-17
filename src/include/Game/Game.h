@@ -3,6 +3,7 @@
 #include "Gui/Menus.h"
 #include "Maze/Maze.h"
 #include "Player/Player.h"
+#include "Timer/Timer.h"
 #include "Window/Window.h"
 #include "raylib.h"
 #include <utility>
@@ -17,6 +18,7 @@ public:
   void Loop();
   void DrawGame(Rectangle &frameRec);
   void setScale(float scale); // (Deprecated) Set Scale for the Game
+  void resetWinState();
 
 private:
   Texture2D darknessTexture;            // darkness texture for drawing the area
@@ -29,5 +31,6 @@ private:
   Manager *__manager;    //  Manager Object Pointer
   Camera2D camera = {0}; // Camera Object for handling the Player View
   Menu *__menu;          // Gui Menu object Pointer
+  Timer *__sessionTimer;
 };
 // comment

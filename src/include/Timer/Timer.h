@@ -2,11 +2,15 @@
 
 class Timer {
 public:
-  void startTimer(float lifeTime);
+  // Constructor
+  Timer();
+  // Destructor
+  ~Timer(); 
+  void startTimer();
   void UpdateTimer();
-  bool timerDone();
+  void stopTimer();
+  float getElapsedTime();
 
 private:
-  float timout;
-  float lifeTime = 0;
+  float elapsedTime = 0;
 };

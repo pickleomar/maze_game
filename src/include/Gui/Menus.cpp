@@ -3,13 +3,15 @@
 #include "Game/Manager.h"
 #include "Maze/Maze.h"
 #include "Player/Player.h"
+#include "Timer/Timer.h"
 #include "raylib.h"
 
 // Menu class constructor
-Menu::Menu(Maze *maze, Player *player) {
+Menu::Menu(Maze *maze, Player *player, Timer *timer) {
   // Initializing maze and player pointers
   this->maze = maze;
   this->player = player;
+  this->sessionTimer = timer;
 
   // Initialize Background Texture
   background = LoadTexture("Resources/gui/background.png");
@@ -122,6 +124,7 @@ void Menu::DrawGameBar(Manager &manager) {
     btnRegenerate.SetPosition({960, 30});
     if (btnRegenerate.isPressed()) {
       maze->generateMaze(); // Regenerate maze
+      sessionTimer->startTimer();
       maze->showKey = 1;
       player->resetPosition(); // Reset player position
       TraceLog(LOG_INFO, "Generating New Maze");
@@ -162,6 +165,8 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
     player->resetPosition();
     PlaySound(clickSound); // Play button click sound
     maze->generateMaze();  // Generate maze based on selected difficulty
+
+    sessionTimer->startTimer();
     manager.setScreen(GAME_SCREEN);     // Switch to game screen
     manager.showDifficlttyMenu = false; // Close difficulty menu
   };
