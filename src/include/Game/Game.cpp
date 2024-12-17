@@ -69,6 +69,7 @@ Game::~Game() {
   delete __menu;
   delete __manager;
   delete __window;
+  delete __sessionTimer;
 
   // Close Window
   // CloseWindow();
