@@ -61,6 +61,9 @@ public:
   // Set player's scale (size)
   void setScale(float scale); // Scale the player texture size
 
+  bool getExitkey();
+  void setExitkey();
+
   // Set the player's current state (moving or idle)
   void setState(int state); // Change the player's movement state
 
@@ -71,4 +74,6 @@ private:
   int state = STATE_IDLE; // Current movement state (initially idle)
   float speed;            // Player's speed (movement speed)
   float scale; // Scale factor for the player (adjusts size of the player)
+
+  bool hasExitKey = 0;
 };

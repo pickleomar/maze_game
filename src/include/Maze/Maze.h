@@ -14,6 +14,7 @@ public:
 
   // Textures
   Texture2D wallTexture;
+  Texture2D keyTexture;
   Texture2D topWallTexture;
   Texture2D bottomWallTexture;
   Texture2D leftWallTexture;
@@ -32,11 +33,13 @@ public:
   int getWidth();                // return the width
   int getHeight();               // return the height
   vector<vector<int>> getMaze(); // return maze vector
-  void resizeMaze();             // resizing the Maze to new width and height
+  void resetMaze();              // resizing the Maze to new width and height
+  void unlockMaze();
 
   void setDifficulty(int diff); // change difficulty
 
   void setScale(float scale); // (deprecated) change scale
+  bool showKey = true;
 
 private:
   vector<vector<int>> maze; // 2d vector the the maze

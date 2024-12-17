@@ -14,6 +14,8 @@ public:
   void DrawPlayerControls(Player &player, Maze &maze, Camera2D &camera);
 
 private:
+  // Background for the main menu
+  Texture2D background;
   // Menu Main Buttons
   Button btnStart;
   Button btnExit;

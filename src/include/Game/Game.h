@@ -5,6 +5,7 @@
 #include "Player/Player.h"
 #include "Window/Window.h"
 #include "raylib.h"
+#include <utility>
 
 class Game {
 
@@ -18,8 +19,8 @@ public:
   void setScale(float scale); // (Deprecated) Set Scale for the Game
 
 private:
-  Texture2D
-      darknessTexture; // darkness texture for drawing the area outside the maze
+  Texture2D darknessTexture;            // darkness texture for drawing the area
+                                        // outside the maze
   Vector2 mousePosition = {0.0f, 0.0f}; // Mouse position (Updated Every Frame)
   float scale = 1;
   Window *__window;      //  Window Object Pointer

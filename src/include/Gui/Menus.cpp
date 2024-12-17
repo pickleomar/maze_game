@@ -11,6 +11,9 @@ Menu::Menu(Maze *maze, Player *player) {
   this->maze = maze;
   this->player = player;
 
+  // Initialize Background Texture
+  background = LoadTexture("Resources/gui/background.png");
+
   // Initializing buttons with images and sizes
   btnStart = {"Resources/gui/button_start.png", 8};
   btnOptions = {"Resources/gui/button_options.png", 8};
@@ -42,35 +45,45 @@ Menu::~Menu() { UnloadSound(clickSound); }
 
 // Draws the main menu screen
 void Menu::DrawMainMenu(Manager &manager) {
-  // Updates button states based on mouse position
-  btnStart.update(GetMousePosition());
-  btnOptions.update(GetMousePosition());
-  btnExit.update(GetMousePosition());
 
-  // Set button positions relative to mainMenuPosition
-  btnStart.SetPosition(mainMenuPosition);
-  btnOptions.SetPosition({mainMenuPosition.x, mainMenuPosition.y + 140});
-  btnExit.SetPosition({mainMenuPosition.x, mainMenuPosition.y + 280});
+  auto setUpStartButton = [&]() {
+    btnStart.update(GetMousePosition());
+    btnStart.SetPosition(mainMenuPosition);
+    if (btnStart.isPressed()) {
+      manager.showDifficlttyMenu = true; // Show difficulty menu
+      PlaySound(clickSound);             // Play button click sound
+    }
+  };
 
-  // Check if any button is pressed and perform respective actions
-  if (btnStart.isPressed()) {
-    manager.showDifficlttyMenu = true; // Show difficulty menu
-    PlaySound(clickSound);             // Play button click sound
-  }
+  auto setUpOptionsButton = [&]() {
+    btnOptions.update(GetMousePosition());
+    btnOptions.SetPosition({mainMenuPosition.x, mainMenuPosition.y + 140});
+    if (btnOptions.isPressed()) {
+      PlaySound(clickSound);          // Play button click sound
+      manager.showDifficlttyMenu = 1; // Show difficulty menu
+    }
+  };
 
-  if (btnOptions.isPressed()) {
-    PlaySound(clickSound);          // Play button click sound
-    manager.showDifficlttyMenu = 1; // Show difficulty menu
-  }
+  auto setUpExitButton = [&]() {
+    btnExit.update(GetMousePosition());
+    btnExit.SetPosition({mainMenuPosition.x, mainMenuPosition.y + 280});
+    if (btnExit.isPressed()) {
+      manager.exitGame = 1;  // Exit the game
+      PlaySound(clickSound); // Play button click sound
+    }
+  };
 
-  if (btnExit.isPressed()) {
-    manager.exitGame = 1;  // Exit the game
-    PlaySound(clickSound); // Play button click sound
-  }
+  setUpStartButton();
+  setUpOptionsButton();
+  setUpExitButton();
 
   // Drawing the screen
   BeginDrawing();
   ClearBackground(GRAY); // Set background color
+
+  // Draw Background Texture
+  DrawTexturePro(background, {0, 0, 270, 160}, {0, 0, 1280, 720}, {0, 0}, 0,
+                 RAYWHITE);
 
   // Draw buttons or show the difficulty menu based on the state
   if (manager.showDifficlttyMenu != 1) {
@@ -86,44 +99,51 @@ void Menu::DrawMainMenu(Manager &manager) {
 
 // Draws the game bar (pause, home, regenerate, fullscreen) in the game screen
 void Menu::DrawGameBar(Manager &manager) {
-  // Update button states based on mouse position
-  btnPause.update(GetMousePosition());
-  btnHome.update(GetMousePosition());
-  btnRegenerate.update(GetMousePosition());
-  btnfullScreen.update(GetMousePosition());
 
-  // Set button positions for the game bar
-  btnPause.SetPosition({1160, 30});
-  btnHome.SetPosition({1060, 30});
-  btnRegenerate.SetPosition({960, 30});
-  btnfullScreen.SetPosition({860, 30});
+  auto setupPauseButton = [&]() {
+    btnPause.update(GetMousePosition());
+    btnPause.SetPosition({1160, 30});
+    if (btnPause.isPressed()) {
+      manager.isPaused = !manager.isPaused; // Pause the game
+      TraceLog(LOG_INFO, "Paused");
+    }
+  };
 
-  // Check if any button is pressed and perform respective actions
-  if (btnPause.isPressed()) {
-    manager.isPaused = !manager.isPaused; // Pause the game
-    TraceLog(LOG_INFO, "Paused");
-  }
+  auto setupHomeButton = [&]() {
+    btnHome.update(GetMousePosition());
+    btnHome.SetPosition({1060, 30});
+    if (btnHome.isPressed()) {
+      manager.setScreen(MAIN_MENU_SCREEN); // Go back to main menu
+    }
+  };
 
-  if (btnHome.isPressed()) {
-    manager.setScreen(MAIN_MENU_SCREEN); // Go back to main menu
-  }
+  auto setupRegenerateButton = [&]() {
+    btnRegenerate.update(GetMousePosition());
+    btnRegenerate.SetPosition({960, 30});
+    if (btnRegenerate.isPressed()) {
+      maze->generateMaze(); // Regenerate maze
+      maze->showKey = 1;
+      player->resetPosition(); // Reset player position
+      TraceLog(LOG_INFO, "Generating New Maze");
+    }
+  };
 
-  if (btnRegenerate.isPressed()) {
-    maze->generateMaze();    // Regenerate maze
-    player->resetPosition(); // Reset player position
-    TraceLog(LOG_INFO, "Generating New Maze");
-  }
+  auto setupfullScreenButton = [&]() {
+    btnfullScreen.update(GetMousePosition());
+    btnfullScreen.SetPosition({860, 30});
+    if (btnfullScreen.isPressed()) {
+      TraceLog(LOG_INFO, "Full Screen Triggered");
+      ToggleFullscreen(); // Toggle fullscreen mode
+    }
+  };
 
-  if (btnfullScreen.isPressed()) {
-    TraceLog(LOG_INFO, "Full Screen Triggered");
-    ToggleFullscreen(); // Toggle fullscreen mode
-  }
-
-  // If the game is not paused, draw the pause button
-
-  btnPause.drawbutton();
+  setupPauseButton();
+  setupHomeButton();
+  setupRegenerateButton();
+  setupfullScreenButton();
 
   // Always draw the other game control buttons
+  btnPause.drawbutton();
   btnHome.drawbutton();
   btnRegenerate.drawbutton();
   btnfullScreen.drawbutton();
@@ -136,6 +156,16 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
   btnMedium.update(GetMousePosition());
   btnHard.update(GetMousePosition());
 
+  auto changeDifficulty = [&](int diff) {
+    maze->setDifficulty(diff); // Set difficulty to easy
+    maze->resetMaze();         // Resize maze to fit the difficulty
+    player->resetPosition();
+    PlaySound(clickSound); // Play button click sound
+    maze->generateMaze();  // Generate maze based on selected difficulty
+    manager.setScreen(GAME_SCREEN);     // Switch to game screen
+    manager.showDifficlttyMenu = false; // Close difficulty menu
+  };
+
   // Set positions for difficulty buttons
   btnEasy.SetPosition({635 - 48 * 5, 100});
   btnMedium.SetPosition({635 - 48 * 5, 280});
@@ -143,30 +173,15 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
 
   // Check if a difficulty button is pressed and perform respective actions
   if (btnEasy.isPressed()) {
-    maze->setDifficulty(EASY_DIFF); // Set difficulty to easy
-    maze->resizeMaze();             // Resize maze to fit the difficulty
-    PlaySound(clickSound);          // Play button click sound
-    maze->generateMaze(); // Generate maze based on selected difficulty
-    manager.setScreen(GAME_SCREEN);     // Switch to game screen
-    manager.showDifficlttyMenu = false; // Close difficulty menu
+    changeDifficulty(EASY_DIFF);
   }
 
   if (btnMedium.isPressed()) {
-    maze->setDifficulty(MEDIUM_DIFF);   // Set difficulty to medium
-    maze->resizeMaze();                 // Resize maze
-    PlaySound(clickSound);              // Play button click sound
-    maze->generateMaze();               // Generate maze
-    manager.setScreen(GAME_SCREEN);     // Switch to game screen
-    manager.showDifficlttyMenu = false; // Close difficulty menu
+    changeDifficulty(MEDIUM_DIFF);
   }
 
   if (btnHard.isPressed()) {
-    maze->setDifficulty(HARD_DIFF);     // Set difficulty to hard
-    maze->resizeMaze();                 // Resize maze
-    PlaySound(clickSound);              // Play button click sound
-    maze->generateMaze();               // Generate maze
-    manager.setScreen(GAME_SCREEN);     // Switch to game screen
-    manager.showDifficlttyMenu = false; // Close difficulty menu
+    changeDifficulty(HARD_DIFF);
   }
 
   // Draw the difficulty buttons and labels

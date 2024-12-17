@@ -90,11 +90,17 @@ void Game::DrawGame(Rectangle &frameRec) {
   __player->renderPlayer(frameRec);
 
   EndMode2D();
-  if (!__manager->isPaused)
-    __menu->DrawPlayerControls(*__player, *__maze, camera);
+  // if (!__manager->isPaused)
+  // __menu->DrawPlayerControls(*__player, *__maze, camera);
 
   if (__manager->isPaused) {
     DrawText("The Game is Paused", 450, 320, 40, GREEN);
+  }
+
+  if (__maze->getMaze()[__player->getCellY()][__player->getCellX()] == 3 &&
+      __maze->showKey) {
+    __maze->showKey = false;
+    __maze->unlockMaze();
   }
 
   if (__maze->getMaze()[__player->getCellY()][__player->getCellX()] == 2) {

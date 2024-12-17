@@ -230,3 +230,7 @@ void Player::resetPosition() {
   posX = PLAYER_SIZE;
   posY = PLAYER_SIZE;
 }
+
+void Player::setExitkey() { hasExitKey = 1; }
+
+bool Player::getExitkey() { return hasExitKey; }

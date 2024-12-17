@@ -39,6 +39,8 @@ Maze::Maze() {
                             // initialize new elements to 0
   }
 
+  keyTexture = LoadTexture("Resources/key.png");
+
   Image wall = {0};
   wall.format = WALL_FORMAT;
   wall.height = WALL_HEIGHT;
@@ -197,10 +199,19 @@ void Maze::generateMaze() {
 
     // If no unvisited neighbors, we will automatically backtrack via stack
   }
+  while (1) {
+    int key_X = rand() % __width;
+    int key_Y = rand() % __height;
+    if (maze[key_Y][key_X] == 0) {
+      maze[key_Y][key_X] = 3;
+      break;
+    }
+  }
 
-  // Set an Entrence for the player
-  maze[1][0] = 0;
+  // printMazeToConsole();
+};
 
+void Maze::unlockMaze() {
   int exit = rand() % 3;
 
   if (exit == 0) {
@@ -212,9 +223,7 @@ void Maze::generateMaze() {
   } else {
     maze[__height - 2][0] = 2;
   }
-  // Set an Exit for the player
-  // this->maze[__height - 2][__width - 1] = 0;
-};
+}
 
 void Maze::renderMaze() {
   int originX = 0;
@@ -305,7 +314,17 @@ void Maze::renderMaze() {
                         0, scale, RAYWHITE);
         }
 
-      } else {
+      } else if (maze[y][x] == 3) {
+        DrawTextureEx(floorTexture,
+                      {(float)(originX + (x * TILE_SIZE * scale)),
+                       (float)(originY + (y * TILE_SIZE * scale))},
+                      0, scale, RAYWHITE);
+        if (showKey)
+          DrawTextureEx(keyTexture,
+                        {(float)(originX + (x * TILE_SIZE * scale)),
+                         (float)(originY + (y * TILE_SIZE * scale))},
+                        0, scale, RAYWHITE);
+      } else if (maze[y][x] == 0) {
         DrawTextureEx(floorTexture,
                       {(float)(originX + (x * TILE_SIZE * scale)),
                        (float)(originY + (y * TILE_SIZE * scale))},
@@ -321,6 +340,8 @@ void Maze::printMazeToConsole() {
     for (int x = 0; x < maze[0].size(); ++x) {
       if (maze[y][x] == 1)
         std::cout << "# "; // Wall
+      else if (maze[y][x] == 3)
+        std::cout << "* ";
       else
         std::cout << "  "; // Path
     }
@@ -340,7 +361,8 @@ bool Maze::isWall(int x, int y) { return maze[x][y] == 1; }
 
 void Maze::setDifficulty(int diff) { this->difficulty = diff; }
 
-void Maze::resizeMaze() {
+void Maze::resetMaze() {
+  showKey = true;
   if (difficulty == EASY_DIFF) {
     TraceLog(LOG_INFO, "EASY DIFF");
     __width = 15;
