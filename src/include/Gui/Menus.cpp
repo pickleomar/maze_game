@@ -30,6 +30,7 @@ Menu::Menu(Maze *maze, Player *player, Timer *timer) {
   btnPause = {"Resources/gui/button_pause.png", 5};
   btnHome = {"Resources/gui/button_home.png", 5};
   btnRegenerate = {"Resources/gui/button_regenerate.png", 5};
+  btnRestart = {"Resources/gui/button_regenerate.png", 5};
   btnfullScreen = {"Resources/gui/button_expand.png", 5};
 
   // Button for Player Controlling up, down, left, right
@@ -41,7 +42,10 @@ Menu::Menu(Maze *maze, Player *player, Timer *timer) {
   //
   btnYes = {"Resources/gui/button_yes.png", 8};
   btnNo = {"Resources/gui/button_no.png", 8};
+  //
   confirmTexture = LoadTexture("Resources/gui/confirm.png");
+  //
+  winBgTexture = LoadTexture("Resources/gui/win_background.png");
 
   // Load sound effect for button click
   clickSound = LoadSound("Resources/audio/button_clicked.mp3");
@@ -116,6 +120,8 @@ void Menu::DrawGameBar(Manager &manager) {
     btnPause.update(GetMousePosition());
     btnPause.SetPosition({1160, 30});
     if (btnPause.isPressed()) {
+      PlaySound(clickSound); // Play button click sound
+
       manager.isPaused = !manager.isPaused; // Pause the game
       TraceLog(LOG_INFO, "Paused");
     }
@@ -125,6 +131,8 @@ void Menu::DrawGameBar(Manager &manager) {
     btnHome.update(GetMousePosition());
     btnHome.SetPosition({1060, 30});
     if (btnHome.isPressed()) {
+      PlaySound(clickSound); // Play button click sound
+
       manager.setScreen(MAIN_MENU_SCREEN); // Go back to main menu
     }
   };
@@ -133,6 +141,8 @@ void Menu::DrawGameBar(Manager &manager) {
     btnRegenerate.update(GetMousePosition());
     btnRegenerate.SetPosition({960, 30});
     if (btnRegenerate.isPressed()) {
+      PlaySound(clickSound); // Play button click sound
+
       maze->generateMaze(); // Regenerate maze
       sessionTimer->startTimer();
       maze->showKey = 1;
@@ -145,6 +155,7 @@ void Menu::DrawGameBar(Manager &manager) {
     btnfullScreen.update(GetMousePosition());
     btnfullScreen.SetPosition({860, 30});
     if (btnfullScreen.isPressed()) {
+      PlaySound(clickSound); // Play button click sound
       TraceLog(LOG_INFO, "Full Screen Triggered");
       ToggleFullscreen(); // Toggle fullscreen mode
     }
@@ -244,10 +255,12 @@ void Menu::DrawExitConfirmMenu(Manager &manager) {
 
   if (btnYes.isPressed()) {
     manager.exitGame = 1;
+    PlaySound(clickSound); // Play button click sound
   }
 
   if (btnNo.isPressed()) {
     manager.windowExitRequested = 0;
+    PlaySound(clickSound); // Play button click sound
   }
 
   DrawTexturePro(confirmTexture, {0, 0, 124, 20},
@@ -257,3 +270,35 @@ void Menu::DrawExitConfirmMenu(Manager &manager) {
   btnYes.drawbutton();
   btnNo.drawbutton();
 };
+
+void Menu::DrawWinMenu(Manager &manager) {
+  auto setupRestartButton = [&]() {
+    btnRestart.update(GetMousePosition());
+    btnRestart.SetPosition({600, 400});
+    if (btnRestart.isPressed()) {
+      PlaySound(clickSound); // Play button click sound
+      maze->generateMaze();  // Regenerate maze
+      sessionTimer->startTimer();
+      maze->showKey = 1;
+      player->resetPosition(); // Reset player position
+      manager.resetWinState();
+      TraceLog(LOG_INFO, "Generating New Maze");
+    }
+  };
+
+  // DrawRectangle(300, 200, 680, 320, BLACK);
+
+  DrawTexturePro(winBgTexture, {0, 0, 52, 35},
+                 {640 - (52 * 6), 360 - (35 * 6), 52 * 12, 35 * 12}, {0, 0}, 0,
+                 RAYWHITE);
+
+  DrawText("You Win", 560, 250, 50, BLACK);
+
+  char timeText[50];
+  sprintf(timeText, "Finished in : %.0f seconds",
+          sessionTimer->getElapsedTime());
+  DrawText(timeText, 460, 350, 30, WHITE);
+  setupRestartButton();
+
+  btnRestart.drawbutton();
+}

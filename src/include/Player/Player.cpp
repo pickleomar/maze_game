@@ -229,7 +229,6 @@ bool Player::isCollidingRight(float x, float y, float size, Maze &maze) {
 void Player::resetPosition() {
   posX = PLAYER_SIZE;
   posY = PLAYER_SIZE;
-  
 }
 
 void Player::setExitkey() { hasExitKey = 1; }

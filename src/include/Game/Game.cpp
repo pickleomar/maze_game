@@ -106,14 +106,14 @@ void Game::DrawGame(Rectangle &frameRec) {
   }
 
   if (__maze->getMaze()[__player->getCellY()][__player->getCellX()] == 2) {
-    // won = 1;
     __manager->changeToWinState();
-    // Win Menu GOES HERE
-    DrawText("You Win", __window->getWindowWidth() / 2,
-             __window->getWindowHeight() / 2, 40, GREEN);
-  }
+    __menu->DrawWinMenu(*__manager);
+    __player->resetState();
 
-  __menu->DrawGameBar(*__manager);
+  } else {
+    __menu->DrawGameBar(*__manager);
+    __player->updatePlayer(*__maze, camera);
+  }
 
   char timeText[50];
   sprintf(timeText, "Time: %.0f seconds", __sessionTimer->getElapsedTime());
@@ -179,8 +179,6 @@ void Game::Loop() {
       }
 
       camera.zoom += ((float)GetMouseWheelMove() * 0.1f);
-
-      __player->updatePlayer(*__maze, camera);
     }
 
     if (IsKeyPressed(KEY_SPACE) && __manager->getScreen() == GAME_SCREEN) {

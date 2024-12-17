@@ -15,6 +15,7 @@ public:
   void DrawDifficultyMenu(Manager &manager);
   void DrawPlayerControls(Player &player, Maze &maze, Camera2D &camera);
   void DrawExitConfirmMenu(Manager &manager);
+  void DrawWinMenu(Manager &manager);
 
 private:
   // Background for the main menu
@@ -27,6 +28,7 @@ private:
   // Game Status Buttons
   Button btnPause;
   Button btnRegenerate;
+  Button btnRestart;
   Button btnHome;
   Button btnfullScreen;
 
@@ -45,6 +47,8 @@ private:
   Button btnYes;
   Button btnNo;
   Texture2D confirmTexture;
+
+  Texture2D winBgTexture;
 
   // The Main Menu position on the Screen
   Vector2 mainMenuPosition = {800, 160};
