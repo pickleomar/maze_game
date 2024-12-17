@@ -2,18 +2,16 @@
 #include "Button.h"
 #include "Game/Manager.h"
 #include "Maze/Maze.h"
-#include "Timer/Timer.h"
 #include "Player/Player.h"
-#include "Game/Game.h"
+#include "Timer/Timer.h"
 #include "raylib.h"
 
 // Menu class constructor
-Menu::Menu(Maze *maze, Player *player, Timer *timer, Game *game) {
+Menu::Menu(Maze *maze, Player *player, Timer *timer) {
   // Initializing maze and player pointers
   this->maze = maze;
   this->player = player;
   this->sessionTimer = timer;
-  this->game= game;
 
   // Initializing buttons with images and sizes
   btnStart = {"Resources/gui/button_start.png", 8};
@@ -156,7 +154,6 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
     manager.showDifficlttyMenu = false; // Close difficulty menu
     player->resetPosition();
     sessionTimer->startTimer();
-    game->resetWinState();
   }
 
   if (btnMedium.isPressed()) {
@@ -168,7 +165,6 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
     manager.showDifficlttyMenu = false; // Close difficulty menu
     player->resetPosition();
     sessionTimer->startTimer();
-    game->resetWinState();
   }
 
   if (btnHard.isPressed()) {
@@ -180,7 +176,6 @@ void Menu::DrawDifficultyMenu(Manager &manager) {
     manager.showDifficlttyMenu = false; // Close difficulty menu
     player->resetPosition();
     sessionTimer->startTimer();
-    game->resetWinState();
   }
 
   // Draw the difficulty buttons and labels

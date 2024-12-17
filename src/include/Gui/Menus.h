@@ -1,15 +1,14 @@
 #pragma once
 #include "Button.h"
 #include "Game/Manager.h"
-#include "Player/Player.h"
-#include "raylib.h"
-#include "Timer/Timer.h"
 #include "Maze/Maze.h"
+#include "Player/Player.h"
+#include "Timer/Timer.h"
+#include "raylib.h"
 
-class Game;
 class Menu {
 public:
-  Menu(Maze *maze, Player *player, Timer *sessionTimer,Game *game);
+  Menu(Maze *maze, Player *player, Timer *sessionTimer);
   ~Menu();
   void DrawMainMenu(Manager &manager);
   void DrawGameBar(Manager &manager);
@@ -43,11 +42,10 @@ private:
   Vector2 mainMenuPosition = {800, 160};
 
   Sound clickSound;
-  // Timer for the session 
+  // Timer for the session
   Timer *sessionTimer;
   // Maze Pointer
   Maze *maze;
-  Game *game;
   // Player Poiter
   Player *player;
 };

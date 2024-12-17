@@ -7,10 +7,10 @@ loop, the variables updates , and camera movements
 #include "Game.h"
 #include "Game/Manager.h"
 #include "Gui/Menus.h"
+#include "Maze/Maze.h"
 #include "Player/Player.h"
 #include "Timer/Timer.h"
 #include "Window/Window.h"
-#include "Maze/Maze.h"
 #include <raylib.h>
 
 #include "texture/darkness.h"
@@ -23,12 +23,12 @@ loop, the variables updates , and camera movements
 Game Class Constructor.
 instantiate and Load the Texture from a file to the GPU VRAM
 */
-Game::Game(Window *win, float scale) : __window(win), scale(scale),won(0),won_save(0) {
+Game::Game(Window *win, float scale) : __window(win), scale(scale) {
   __player = new Player();
   __manager = new Manager();
   __maze = new Maze();
   __sessionTimer = new Timer();
-  __menu = new Menu(__maze, __player, __sessionTimer,this);
+  __menu = new Menu(__maze, __player, __sessionTimer);
 
   Image darknessIMG = {
       .data = DARKNESS_DATA,
@@ -99,7 +99,8 @@ void Game::DrawGame(Rectangle &frameRec) {
   }
 
   if (__maze->getMaze()[__player->getCellY()][__player->getCellX()] == 2) {
-    won=1;
+    // won = 1;
+    __manager->changeToWinState();
     // Win Menu GOES HERE
     DrawText("You Win", __window->getWindowWidth() / 2,
              __window->getWindowHeight() / 2, 40, GREEN);
@@ -129,8 +130,8 @@ void Game::Loop() {
   Rectangle frameRec = {0.0f, 0.0f, (float)__player->playerIdle.width / 4,
                         (float)__player->playerIdle.height};
 
-  //Timer inputTimer;
-  //inputTimer.startTimer(0.2);
+  // Timer inputTimer;
+  // inputTimer.startTimer(0.2);
 
   camera.target = (Vector2){(__player->getPosX() + 16) * scale,
                             (__player->getPosY() + 16) * scale};
@@ -150,14 +151,14 @@ void Game::Loop() {
   while (!WindowShouldClose() && !__manager->exitGame) {
     // Updates
     if (!__manager->isPaused) {
-      if(!won){
-      __sessionTimer->UpdateTimer(); //Update the session timer while the game is not paused and the player hasnt won yet
-      }
-      else if(won && !won_save){
+      if (!__manager->getWinState()) {
+        __sessionTimer
+            ->UpdateTimer(); // Update the session timer while the game is not
+                             // paused and the player hasnt won yet
+      } else if (__manager->getWinState()) {
         __sessionTimer->stopTimer();
-        won_save=1;
       }
-      
+
       framesCounter++;
       if (framesCounter >= (60 / framesSpeed)) {
         framesCounter = 0;
@@ -195,14 +196,9 @@ void Game::Loop() {
     }
   }
 }
-void Game::resetWinState() {
-    won = 0;
-    won_save = 0;
-}
 
 // Function that runs in the start of the Game loop.
 void Game::init() {
   __player->setScale(scale);
   __maze->setScale(scale);
 }
-

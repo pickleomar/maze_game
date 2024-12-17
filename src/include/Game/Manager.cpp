@@ -27,3 +27,7 @@ void Manager::setScreen(int screen) { this->currentScreen = screen; }
 
 // Get The current Screen
 int Manager::getScreen() { return currentScreen; }
+
+int Manager::getWinState() { return wining; }
+void Manager::changeToWinState() { wining = 1; }
+void Manager::resetWinState() { wining = 0; }

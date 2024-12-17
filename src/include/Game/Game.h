@@ -3,8 +3,8 @@
 #include "Gui/Menus.h"
 #include "Maze/Maze.h"
 #include "Player/Player.h"
-#include "Window/Window.h"
 #include "Timer/Timer.h"
+#include "Window/Window.h"
 #include "raylib.h"
 
 class Game {
@@ -24,8 +24,6 @@ private:
       darknessTexture; // darkness texture for drawing the area outside the maze
   Vector2 mousePosition = {0.0f, 0.0f}; // Mouse position (Updated Every Frame)
   float scale = 1;
-  bool won=0;
-  bool won_save=0;
   Window *__window;      //  Window Object Pointer
   Maze *__maze;          //  Maze Object Pointer
   Player *__player;      //  Player Object Pointer
