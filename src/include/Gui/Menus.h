@@ -23,13 +23,13 @@ private:
   // Menu Main Buttons
   Button btnStart;
   Button btnExit;
-  Button btnOptions;
 
   // Game Status Buttons
   Button btnPause;
   Button btnRegenerate;
   Button btnRestart;
   Button btnHome;
+  // Button btnSound;
   Button btnfullScreen;
 
   // Game Difficulty Buttons
@@ -49,9 +49,7 @@ private:
   Texture2D confirmTexture;
 
   Texture2D winBgTexture;
-
-  // The Main Menu position on the Screen
-  Vector2 mainMenuPosition = {800, 160};
+  Texture2D showCase;
 
   Sound clickSound;
   // Timer for the session

@@ -18,7 +18,6 @@ Menu::Menu(Maze *maze, Player *player, Timer *timer) {
 
   // Initializing buttons with images and sizes
   btnStart = {"Resources/gui/button_start.png", 8};
-  btnOptions = {"Resources/gui/button_options.png", 8};
   btnExit = {"Resources/gui/button_exit.png", 8};
 
   // Buttons for difficulty selection
@@ -46,7 +45,8 @@ Menu::Menu(Maze *maze, Player *player, Timer *timer) {
   confirmTexture = LoadTexture("Resources/gui/confirm.png");
   //
   winBgTexture = LoadTexture("Resources/gui/win_background.png");
-
+  //
+  showCase = LoadTexture("Resources/showcase.png");
   // Load sound effect for button click
   clickSound = LoadSound("Resources/audio/button_clicked.mp3");
 }
@@ -59,25 +59,16 @@ void Menu::DrawMainMenu(Manager &manager) {
 
   auto setUpStartButton = [&]() {
     btnStart.update(GetMousePosition());
-    btnStart.SetPosition(mainMenuPosition);
+    btnStart.SetPosition({200, 450});
     if (btnStart.isPressed()) {
       manager.showDifficlttyMenu = true; // Show difficulty menu
       PlaySound(clickSound);             // Play button click sound
     }
   };
 
-  auto setUpOptionsButton = [&]() {
-    btnOptions.update(GetMousePosition());
-    btnOptions.SetPosition({mainMenuPosition.x, mainMenuPosition.y + 140});
-    if (btnOptions.isPressed()) {
-      PlaySound(clickSound);          // Play button click sound
-      manager.showDifficlttyMenu = 1; // Show difficulty menu
-    }
-  };
-
   auto setUpExitButton = [&]() {
     btnExit.update(GetMousePosition());
-    btnExit.SetPosition({mainMenuPosition.x, mainMenuPosition.y + 280});
+    btnExit.SetPosition({700, 450});
     if (btnExit.isPressed()) {
       manager.windowExitRequested = 1;
       // manager.exitGame = 1;  // Exit the game
@@ -86,7 +77,6 @@ void Menu::DrawMainMenu(Manager &manager) {
   };
 
   setUpStartButton();
-  setUpOptionsButton();
   setUpExitButton();
 
   // Drawing the screen
@@ -102,8 +92,8 @@ void Menu::DrawMainMenu(Manager &manager) {
     if (manager.windowExitRequested) {
       DrawExitConfirmMenu(manager);
     } else {
+      DrawText("The Explorer", 300, 200, 100, WHITE);
       btnStart.drawbutton();
-      btnOptions.drawbutton();
       btnExit.drawbutton();
     }
   } else {
@@ -250,21 +240,21 @@ void Menu::DrawExitConfirmMenu(Manager &manager) {
   btnYes.update(GetMousePosition());
   btnNo.update(GetMousePosition());
 
-  btnYes.SetPosition({500, 400});
-  btnNo.SetPosition({650, 400});
+  btnYes.SetPosition({460, 300});
+  btnNo.SetPosition({650, 300});
 
-  if (btnYes.isPressed()) {
+  if (btnYes.isPressed() || IsKeyPressed(KEY_Y)) {
     manager.exitGame = 1;
     PlaySound(clickSound); // Play button click sound
   }
 
-  if (btnNo.isPressed()) {
+  if (btnNo.isPressed() || IsKeyPressed(KEY_N)) {
     manager.windowExitRequested = 0;
     PlaySound(clickSound); // Play button click sound
   }
 
   DrawTexturePro(confirmTexture, {0, 0, 124, 20},
-                 {(1280 / 2) - 124 * 4, (720 / 2) - 40 * 3, 124 * 8, 20 * 8},
+                 {(1280 / 2) - 124 * 4, (720 / 2) - 60 * 4, 124 * 8, 20 * 8},
                  {0, 0}, 0, RAYWHITE);
 
   btnYes.drawbutton();
@@ -275,7 +265,7 @@ void Menu::DrawWinMenu(Manager &manager) {
   auto setupRestartButton = [&]() {
     btnRestart.update(GetMousePosition());
     btnRestart.SetPosition({600, 400});
-    if (btnRestart.isPressed()) {
+    if (btnRestart.isPressed() || IsKeyPressed(KEY_R)) {
       PlaySound(clickSound); // Play button click sound
       maze->generateMaze();  // Regenerate maze
       sessionTimer->startTimer();
