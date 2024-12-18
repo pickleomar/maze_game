@@ -6,6 +6,10 @@ This Project Was Made By 3 students :
 
 ## Overview
 
+
+https://github.com/user-attachments/assets/94b07585-b81d-4ecb-b276-f338f212434f
+
+
 Maze Game is a 2D maze exploration game where the player navigates through randomly generated mazes with increasing difficulty levels. The game utilizes a procedural generation algorithm to create unique mazes each time the player starts a new game. The objective is to reach the exit while avoiding walls and solving increasingly complex mazes.
 
 ## Features
