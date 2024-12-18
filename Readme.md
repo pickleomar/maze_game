@@ -1,4 +1,8 @@
-# Maze Game - README
+# Credits
+This Project Was Made By 3 students : 
+### ZARQI Ezzoubair.
+### AZZAOUI Mohamed Omar .
+### AMAMI Yousra .
 
 ## Overview
 
