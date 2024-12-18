@@ -10,6 +10,7 @@ Maze Game is a 2D maze exploration game where the player navigates through rando
 - **Dynamic Difficulty Levels:** Choose between three difficulty levels (Easy, Medium, and Hard) that affect the complexity of the maze and the challenge of solving it.
 - **Player Movement:** The player can move up, down, left, or right in the maze using the arrow keys or WASD keys.
 - **Collision Detection:** The game includes a collision system to prevent the player from walking through walls.
+- **Key Mechanic:** In higher difficulty levels, the player must find a key to unlock the exit.
 - **Regenerate Maze:** The player can regenerate the maze at any time via a button, adding replayability.
 - **Animated Player Sprite:** The player has idle and moving animations based on their current movement direction.
 - **2.5D Effect:** The game implements a basic 2.5D effect to give the maze a sense of depth, enhancing the visual experience.
@@ -27,8 +28,8 @@ Maze Game is a 2D maze exploration game where the player navigates through rando
 ## Difficulty Levels
 
 - **Easy:** Larger paths and fewer walls, suitable for beginners.
-- **Medium:** A balanced level with moderately complex mazes.
-- **Hard:** Narrower paths with more obstacles, for experienced players who enjoy a challenge.
+- **Medium:** A balanced level with moderately complex mazes and occasional key-based exits.
+- **Hard:** Narrower paths with more obstacles, key constraints for unlocking the exit, and a more challenging layout.
 
 ## Game Development
 
@@ -59,7 +60,12 @@ Maze Game is a 2D maze exploration game where the player navigates through rando
    - Smooth movement is achieved with a basic frame-rate-independent system.
 
 5. **Dynamic Maze Regeneration**:
-   - The player can click a button to regenerate a new maze layout, providing new challenges every time.
+
+   - The player can press a button to regenerate a new maze layout, providing new challenges every time.
+
+6. **Key Mechanic**:
+
+   - In Medium and Hard difficulties, the player must locate a key in the maze to unlock the exit.
 
 ### Game Loop
 
@@ -72,21 +78,46 @@ The main game loop runs continuously, checking for user inputs, updating the pla
 ### Prerequisites
 
 - **C++ compiler**: Ensure you have a C++ compiler installed (e.g., GCC or MSVC).
+- **CMake**: Install CMake for cross-platform project building.
 - **Raylib**: Download and install Raylib from [https://www.raylib.com/](https://www.raylib.com/).
   - Follow the installation instructions provided on the Raylib website for your specific operating system.
 
-### Building the Game
+### Building the Game with CMake
 
-1. Clone or download the repository.
-2. Navigate to the project directory.
-3. Compile the project using your C++ compiler:
-   - **Linux/macOS**: `g++ main.cpp -o MazeGame -lraylib -lm -lpthread -ldl -lX11`
-   - **Windows**: Use an IDE like Code::Blocks or Visual Studio, or configure your build system with Raylib linked.
-4. Run the game:
-   - **Linux/macOS**: `./game`
-   - **Windows**: `game.exe`
+1. Clone or download the repository:
 
-### Files and Directories
+   ```bash
+   git clone https://github.com/regisx001/maze-game.git
+   cd maze-game
+   ```
+
+2. Create a build directory and navigate to it:
+
+   ```bash
+   mkdir build
+   ```
+
+3. Configure the project using CMake:
+
+   ```bash
+   cmake -S . -B build
+   ```
+
+4. Build the project:
+
+   ```bash
+   cmake --build build/.
+   ```
+
+5. Run the game:
+
+   ```bash
+   ./game
+   ```
+
+---
+
+## Files and Directories
 
 - **main.cpp**: Main entry point for the game.
 - **Player.h**: Contains the player's movement logic, collision handling, and animation.
@@ -125,3 +156,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Raylib**: For providing a powerful, easy-to-use library for 2D game development.
 - **OpenGameArt**: For the free assets used in the game (if applicable).
 - **Stack Overflow and GitHub**: For community support and solutions.
+
